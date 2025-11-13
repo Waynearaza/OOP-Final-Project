@@ -31,6 +31,9 @@ public class Main {
         // Make the window visible
         window.setVisible(true);
 
+        //
+        gamePanel.setupGame();
+
         // Start the game loop
         gamePanel.startGameThread();
     }

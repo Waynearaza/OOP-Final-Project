@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
 import entity.Player;
+import object.SuperObject;
 import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -47,11 +48,18 @@ public class GamePanel extends JPanel implements Runnable {
 
     // Game loop thread
     Thread gameThread;
-    
+
+    //
+    public  AssetSetter aSetter = new AssetSetter(this);
+
+    //Checks Collision
     public CollisionChecker cChecker = new CollisionChecker(this);
 
     // Create player object
     public Player player = new Player(this, keyH);
+
+    //Prepares 10 slot of objects
+    public SuperObject obj[] = new SuperObject[10];
 
 
 
@@ -71,6 +79,10 @@ public class GamePanel extends JPanel implements Runnable {
 
         // Make panel focusable so it can receive input
         this.setFocusable(true);
+    }
+
+    public void setupGame(){
+        aSetter.setObject();
     }
 
     // Start the game loop
@@ -118,6 +130,14 @@ public class GamePanel extends JPanel implements Runnable {
         Graphics2D g2 = (Graphics2D) g;
 
         tileM.draw(g2);    // Draw the tile map
+
+        //Object
+        for (int i = 0; i < obj.length; i++) {
+            if (obj[i] != null) {
+                obj[i].draw(g2, this);
+            }
+        }
+
         player.draw(g2);   // Draw the player
 
         g2.dispose();      // Dispose graphics object to free memory
