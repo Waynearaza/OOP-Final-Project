@@ -12,7 +12,7 @@ public class Player extends Entity {
     KeyHandler keyH;
     public final int screenX;
     public final int screenY;
-    int hasKey = 0;
+    int hasKey = 0; //key number or invertory of player has
 
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp); // call Entity constructor
@@ -82,7 +82,7 @@ public class Player extends Entity {
             moving = true;
         }
 
-        if (moving) { // ✅ only move when a key is pressed
+        if (moving) { // only move when a key is pressed
             collisionOn = false;
             gp.cChecker.checkTile(this);
 
@@ -130,22 +130,30 @@ public class Player extends Entity {
         }
     }
 
+    //Sets the Behavior of the object when an object is picked up by the player
     public void pickUpObject(int i) {
         if(i != 999){
             String objectName = gp.obj[i].name;
 
             switch(objectName){
-                case "Key":
+                case "Key": //Pickups Key when player moves over it
+                    gp.playSE(1);//Plays the SFX
                     hasKey++;
                     gp.obj[i] = null;
                     System.out.println("Key:"+hasKey);
                     break;
-                case "Door":
+                case "Door": //Checks if the player has key for door access
                     if(hasKey > 0){
+                        gp.playSE(3);//Plays the SFX
                         gp.obj[i] = null;
                         hasKey--;
                     }
                     System.out.println("Key:"+hasKey);
+                    break;
+                case "Boots": //Increase the speed of the player when the Boots is picked up
+                    gp.playSE(2); //Plays the SFX
+                    speed += 2;
+                    gp.obj[i] = null;
                     break;
             }
         }

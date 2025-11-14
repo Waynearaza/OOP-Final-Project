@@ -30,8 +30,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int screenWidth = tileSize * maxScreenCol;   // 48 * 16 = 768px
     public final int screenHeight = tileSize * maxScreenRow;  // 48 * 12 = 576px
     
-    // world settings
-    
+    // WORLD SETTINGS
     public final int maxWorldCol = 50;
     public final int maxWorldRow = 50;
     public final int worldWidth = tileSize * maxWorldCol;
@@ -40,14 +39,17 @@ public class GamePanel extends JPanel implements Runnable {
     // Frames per second
     final int FPS = 60;
 
+    //SYSTEM
     // Create tile manager
     public TileManager tileM = new TileManager(this);
 
     // Create keyboard handler
     KeyHandler keyH = new KeyHandler();
 
-    // Game loop thread
-    Thread gameThread;
+    //Initiate the Sound
+    Sound sound = new Sound();
+
+
 
     //
     public  AssetSetter aSetter = new AssetSetter(this);
@@ -55,6 +57,10 @@ public class GamePanel extends JPanel implements Runnable {
     //Checks Collision
     public CollisionChecker cChecker = new CollisionChecker(this);
 
+    // Game loop thread
+    Thread gameThread;
+
+    //Entity and Object
     // Create player object
     public Player player = new Player(this, keyH);
 
@@ -81,8 +87,11 @@ public class GamePanel extends JPanel implements Runnable {
         this.setFocusable(true);
     }
 
+    //Sets Up the Game objects and music or SFX
     public void setupGame(){
         aSetter.setObject();
+
+        playMusic(0);
     }
 
     // Start the game loop
@@ -141,5 +150,23 @@ public class GamePanel extends JPanel implements Runnable {
         player.draw(g2);   // Draw the player
 
         g2.dispose();      // Dispose graphics object to free memory
+    }
+
+    //Plays the Musics
+    public void playMusic(int i){
+        sound.setFile(i);
+        sound.play();
+        sound.loop();
+    }
+
+    //Sound the Music
+    public void stopMusic(){
+        sound.stop();
+    }
+
+    //Plays the SFX
+    public void playSE(int i){
+        sound.setFile(i);
+        sound.play();
     }
 }
