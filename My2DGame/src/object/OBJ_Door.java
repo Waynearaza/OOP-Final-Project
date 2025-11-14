@@ -1,5 +1,7 @@
 package object;
 
+import tile.Tile;
+
 import javax.imageio.ImageIO;
 import java.io.IOException;
 
@@ -11,5 +13,6 @@ public class OBJ_Door extends SuperObject{
     } catch (IOException e){
         e.printStackTrace();
     }
-}
+    collision = true;
+    }
 }

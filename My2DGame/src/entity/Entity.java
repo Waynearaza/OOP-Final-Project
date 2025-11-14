@@ -27,7 +27,9 @@ public class Entity {
     public String direction = "down";
     
     public Rectangle solidArea;
-    
+
+    public  int solidAreaDefaultX, solidAreaDefaultY;
+
     public boolean collisionOn = false;
 
     // Sprite animation control

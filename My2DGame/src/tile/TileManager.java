@@ -51,6 +51,7 @@ public class TileManager {
             tile[5] = new Tile();
             tile[5].image = ImageIO.read(getClass().getResourceAsStream("/tiles/road00.png"));
 
+
         } catch (IOException e) {
             e.printStackTrace();
         }

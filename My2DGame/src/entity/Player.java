@@ -12,6 +12,7 @@ public class Player extends Entity {
     KeyHandler keyH;
     public final int screenX;
     public final int screenY;
+    int hasKey = 0;
 
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp); // call Entity constructor
@@ -24,10 +25,12 @@ public class Player extends Entity {
         
         // only the inside of the character is solid
         solidArea = new Rectangle();
-        solidArea.x = 8;
-        solidArea.y = 16;
-        solidArea.width = 32;
-        solidArea.height = 32;
+        solidArea.x = 4;
+        solidArea.y = 10;
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
+        solidArea.width = 20;
+        solidArea.height = 20;
         
 
         // Default position in the world
@@ -67,15 +70,15 @@ public class Player extends Entity {
             moving = true;
         }
         if (keyH.downPressed) {
-            direction = "down";            
+            direction = "down";
             moving = true;
         }
         if (keyH.leftPressed) {
-            direction = "left";            
+            direction = "left";
             moving = true;
         }
         if (keyH.rightPressed) {
-            direction = "right";            
+            direction = "right";
             moving = true;
         }
 
@@ -83,6 +86,11 @@ public class Player extends Entity {
             collisionOn = false;
             gp.cChecker.checkTile(this);
 
+       //Check object Collision
+        int objIndex = gp.cChecker.checkObject(this, true);
+        pickUpObject(objIndex);
+
+       //If Collision is False, Player can Move
             if (!collisionOn) {
                 switch(direction) {
                     case "up": worldY -= speed; break;
@@ -98,7 +106,8 @@ public class Player extends Entity {
                 spriteNum = (spriteNum == 1) ? 2 : 1;
                 spriteCounter = 0;
             }
-        } else {
+        }
+        else {
             // optional: reset sprite when idle
             spriteNum = 1;
             spriteCounter = 0;
@@ -117,6 +126,27 @@ public class Player extends Entity {
             if (spriteCounter > 12) {
                 spriteNum = (spriteNum == 1) ? 2 : 1;
                 spriteCounter = 0;
+            }
+        }
+    }
+
+    public void pickUpObject(int i) {
+        if(i != 999){
+            String objectName = gp.obj[i].name;
+
+            switch(objectName){
+                case "Key":
+                    hasKey++;
+                    gp.obj[i] = null;
+                    System.out.println("Key:"+hasKey);
+                    break;
+                case "Door":
+                    if(hasKey > 0){
+                        gp.obj[i] = null;
+                        hasKey--;
+                    }
+                    System.out.println("Key:"+hasKey);
+                    break;
             }
         }
     }
