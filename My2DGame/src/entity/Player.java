@@ -12,7 +12,7 @@ public class Player extends Entity {
     KeyHandler keyH;
     public final int screenX;
     public final int screenY;
-    int hasKey = 0; //key number or invertory of player has
+    public int hasKey = 0; //key number or inventory of player has
 
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp); // call Entity constructor
@@ -140,20 +140,28 @@ public class Player extends Entity {
                     gp.playSE(1);//Plays the SFX
                     hasKey++;
                     gp.obj[i] = null;
-                    System.out.println("Key:"+hasKey);
+                    gp.ui.showMessage("You Got a Key!");
                     break;
                 case "Door": //Checks if the player has key for door access
                     if(hasKey > 0){
                         gp.playSE(3);//Plays the SFX
                         gp.obj[i] = null;
+                        gp.ui.showMessage("You Opened a Door!");
                         hasKey--;
+                    }else {
+                        gp.ui.showMessage("You Need A Key Nigga");
                     }
-                    System.out.println("Key:"+hasKey);
                     break;
                 case "Boots": //Increase the speed of the player when the Boots is picked up
                     gp.playSE(2); //Plays the SFX
                     speed += 2;
                     gp.obj[i] = null;
+                    gp.ui.showMessage("Speed Up");
+                    break;
+                case "Chest":
+                    gp.ui.gameFinished = true;
+                    gp.stopMusic();;
+                    gp.playSE(4);
                     break;
             }
         }

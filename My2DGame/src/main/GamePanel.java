@@ -47,18 +47,22 @@ public class GamePanel extends JPanel implements Runnable {
     KeyHandler keyH = new KeyHandler();
 
     //Initiate the Sound
-    Sound sound = new Sound();
+    Sound music = new Sound();
+    Sound se = new Sound();
 
-
-
-    //
+    //Initiate the Asset Setter Class
     public  AssetSetter aSetter = new AssetSetter(this);
+
+    //Initiates the UI
+    public UI ui = new UI(this);
 
     //Checks Collision
     public CollisionChecker cChecker = new CollisionChecker(this);
 
     // Game loop thread
     Thread gameThread;
+
+
 
     //Entity and Object
     // Create player object
@@ -146,27 +150,29 @@ public class GamePanel extends JPanel implements Runnable {
                 obj[i].draw(g2, this);
             }
         }
-
+        //Player
         player.draw(g2);   // Draw the player
+
+        ui.draw(g2); //Draw the UI
 
         g2.dispose();      // Dispose graphics object to free memory
     }
 
     //Plays the Musics
     public void playMusic(int i){
-        sound.setFile(i);
-        sound.play();
-        sound.loop();
+        music.setFile(i);
+        music.play();
+        music.loop();
     }
 
     //Sound the Music
     public void stopMusic(){
-        sound.stop();
+        music.stop();
     }
 
     //Plays the SFX
     public void playSE(int i){
-        sound.setFile(i);
-        sound.play();
+        se.setFile(i);
+        se.play();
     }
 }
