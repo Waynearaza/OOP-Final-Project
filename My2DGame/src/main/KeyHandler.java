@@ -7,6 +7,8 @@ public class KeyHandler implements KeyListener {
 
     // Booleans to check which keys are pressed
     public boolean upPressed, downPressed, leftPressed, rightPressed;
+    // DEBUG
+    boolean checkDrawTime = false;
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -22,6 +24,11 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_S) downPressed = true;
         if (code == KeyEvent.VK_A) leftPressed = true;
         if (code == KeyEvent.VK_D) rightPressed = true;
+
+        // DEBUG toggle
+        if (code == KeyEvent.VK_T) {
+            checkDrawTime = !checkDrawTime;
+        }
     }
 
     @Override
@@ -35,4 +42,3 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_D) rightPressed = false;
     }
 }
-
