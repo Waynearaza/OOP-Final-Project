@@ -9,7 +9,7 @@ import main.GamePanel;
 import main.KeyHandler;
 import main.UtilityTool;
 
-public class Player extends Entity {
+public class   Player extends Entity {
     KeyHandler keyH;
     public final int screenX;
     public final int screenY;
