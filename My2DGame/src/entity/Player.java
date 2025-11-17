@@ -16,7 +16,6 @@ public class Player extends Entity {
     KeyHandler keyH;
     public final int screenX;
     public final int screenY;
-    public int hasKey = 0;
     private boolean moving = false;
 
     // 6-frame walking sprites
@@ -183,38 +182,9 @@ public class Player extends Entity {
 
     //Sets the Behavior of the object when an object is picked up by the player
     public void pickUpObject(int i) {
-        if(i != 999){
-            String objectName = gp.obj[i].name;
+        if(i != 999) {
 
-            switch(objectName){
-                case "Key": //Pickups Key when player moves over it
-                    gp.playSE(1);//Plays the SFX
-                    hasKey++;
-                    gp.obj[i] = null;
-                    gp.ui.showMessage("You Got a Key!");
-                    break;
-                case "Door": //Checks if the player has key for door access
-                    if(hasKey > 0){
-                        gp.playSE(3);//Plays the SFX
-                        gp.obj[i] = null;
-                        gp.ui.showMessage("You Opened a Door!");
-                        hasKey--;
-                    }else {
-                        gp.ui.showMessage("You Need A Key Nigga");
-                    }
-                    break;
-                case "Boots": //Increase the speed of the player when the Boots is picked up
-                    gp.playSE(2); //Plays the SFX
-                    speed += 2;
-                    gp.obj[i] = null;
-                    gp.ui.showMessage("Speed Up");
-                    break;
-                case "Chest":
-                    gp.ui.gameFinished = true;
-                    gp.stopMusic();;
-                    gp.playSE(4);
-                    break;
-            }
         }
     }
+
 }
