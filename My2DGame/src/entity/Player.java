@@ -4,113 +4,106 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.InputStream;
-
 import javax.imageio.ImageIO;
 import main.GamePanel;
 import main.KeyHandler;
 import main.UtilityTool;
 
 public class Player extends Entity {
-
     KeyHandler keyH;
     public final int screenX;
     public final int screenY;
-    public int hasKey = 0;
-    private boolean moving = false;
-
-    // 6-frame walking sprites
-    BufferedImage up1, up2, up3, up4, up5, up6;
-    BufferedImage down1, down2, down3, down4, down5, down6;
-    BufferedImage left1, left2, left3, left4, left5, left6;
-    BufferedImage right1, right2, right3, right4, right5, right6;
-
-    // 6-frame idle sprites
-    BufferedImage upIdle1, upIdle2, upIdle3, upIdle4, upIdle5, upIdle6;
-    BufferedImage downIdle1, downIdle2, downIdle3, downIdle4, downIdle5, downIdle6;
-    BufferedImage leftIdle1, leftIdle2, leftIdle3, leftIdle4, leftIdle5, leftIdle6;
-    BufferedImage rightIdle1, rightIdle2, rightIdle3, rightIdle4, rightIdle5, rightIdle6;
+    public int hasKey = 0; //key number or inventory of player has
 
     public Player(GamePanel gp, KeyHandler keyH) {
-        super(gp);
+        super(gp); // call Entity constructor
         this.keyH = keyH;
 
+        // Screen center coordinates
         screenX = gp.screenWidth / 2 - gp.tileSize / 2;
         screenY = gp.screenHeight / 2 - gp.tileSize / 2;
-
-        solidArea = new Rectangle(4, 10, 20, 20);
+        
+        
+        // only the inside of the character is solid
+        solidArea = new Rectangle();
+        solidArea.x = 4;
+        solidArea.y = 10;
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
+        solidArea.width = 20;
+        solidArea.height = 20;
+        
 
-        worldX = gp.tileSize * 23;
-        worldY = gp.tileSize * 21;
-        speed = 4;
-        size = gp.tileSize;
-        direction = "down";
+        // Default position in the world
+        this.worldX = gp.tileSize * 23;
+        this.worldY = gp.tileSize * 21;
+        this.speed = 4;
+        this.size = gp.tileSize;
 
-        getPlayerImage();
-        image = down1;
+        direction = "down"; // default direction
+        getPlayerImage();   // load sprites
+        image = down1;      // initial sprite
     }
 
+    // Load player sprites
     public void getPlayerImage() {
-        up1 = setup("player-31.png"); up2 = setup("player-32.png"); up3 = setup("player-33.png");
-        up4 = setup("player-34.png"); up5 = setup("player-35.png"); up6 = setup("player-36.png");
 
-        down1 = setup("player-19.png"); down2 = setup("player-20.png"); down3 = setup("player-21.png");
-        down4 = setup("player-22.png"); down5 = setup("player-23.png"); down6 = setup("player-24.png");
-
-        left1 = setup("player-37.png"); left2 = setup("player-38.png"); left3 = setup("player-39.png");
-        left4 = setup("player-40.png"); left5 = setup("player-41.png"); left6 = setup("player-42.png");
-
-        right1 = setup("player-25.png"); right2 = setup("player-26.png"); right3 = setup("player-27.png");
-        right4 = setup("player-28.png"); right5 = setup("player-29.png"); right6 = setup("player-30.png");
-
-        // Idle frames
-        upIdle1 = setup("player-13.png"); upIdle2 = setup("player-14.png"); upIdle3 = setup("player-15.png");
-        upIdle4 = setup("player-16.png"); upIdle5 = setup("player-17.png"); upIdle6 = setup("player-18.png");
-
-        downIdle1 = setup("player-1.png"); downIdle2 = setup("player-2.png"); downIdle3 = setup("player-3.png");
-        downIdle4 = setup("player-4.png"); downIdle5 = setup("player-5.png"); downIdle6 = setup("player-6.png");
-
-        leftIdle1 = setup("player-43.png"); leftIdle2 = setup("player-44.png"); leftIdle3 = setup("player-45.png");
-        leftIdle4 = setup("player-46.png"); leftIdle5 = setup("player-47.png"); leftIdle6 = setup("player-48.png");
-
-        rightIdle1 = setup("player-7.png"); rightIdle2 = setup("player-8.png"); rightIdle3 = setup("player-9.png");
-        rightIdle4 = setup("player-10.png"); rightIdle5 = setup("player-11.png"); rightIdle6 = setup("player-12.png");
+        up1 = setup("boy_up_1");
+        up2 = setup("boy_up_2");
+        down1 = setup("boy_down_1");
+        down2 = setup("boy_down_2");
+        left1 = setup("boy_left_1");
+        left2 = setup("boy_left_2");
+        right1 = setup("boy_right_1");
+        right2 = setup("boy_right_2");
     }
 
     public BufferedImage setup(String imageName) {
+
+        UtilityTool uTool = new UtilityTool();
         BufferedImage image = null;
+
         try {
-            InputStream is = getClass().getResourceAsStream("/player/" + imageName + ".png");
-            if (is == null) {
-                System.out.println("ERROR: Cannot find image: /player/" + imageName + ".png");
-                return null;
-            }
-            image = ImageIO.read(is);
-            UtilityTool uTool = new UtilityTool();
+            image = ImageIO.read(getClass().getResourceAsStream("/player/" + imageName +".png"));
             image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
         return image;
     }
 
+    // Update player every frame
     @Override
     public void update() {
-        moving = false;
+        boolean moving = false;
 
-        if (keyH.upPressed) { direction = "up"; moving = true; }
-        if (keyH.downPressed) { direction = "down"; moving = true; }
-        if (keyH.leftPressed) { direction = "left"; moving = true; }
-        if (keyH.rightPressed) { direction = "right"; moving = true; }
+        if (keyH.upPressed) {
+            direction = "up";
+            moving = true;
+        }
+        if (keyH.downPressed) {
+            direction = "down";
+            moving = true;
+        }
+        if (keyH.leftPressed) {
+            direction = "left";
+            moving = true;
+        }
+        if (keyH.rightPressed) {
+            direction = "right";
+            moving = true;
+        }
 
-        if (moving) {
+        if (moving) { // only move when a key is pressed
             collisionOn = false;
             gp.cChecker.checkTile(this);
-            int objIndex = gp.cChecker.checkObject(this, true);
-            pickUpObject(objIndex);
 
+       //Check object Collision
+        int objIndex = gp.cChecker.checkObject(this, true);
+        pickUpObject(objIndex);
+
+       //If Collision is False, Player can Move
             if (!collisionOn) {
                 switch(direction) {
                     case "up": worldY -= speed; break;
@@ -120,64 +113,33 @@ public class Player extends Entity {
                 }
             }
 
-            // Animate walking (6 frames)
+            // Animate sprite when moving
             spriteCounter++;
             if (spriteCounter > 12) {
-                spriteNum++;
-                if (spriteNum > 6) spriteNum = 1;
-                spriteCounter = 0;
-            }
-        } else {
-            // Animate idle (6 frames)
-            spriteCounter++;
-            if (spriteCounter > 20) {
-                spriteNum++;
-                if (spriteNum > 6) spriteNum = 1;
+                spriteNum = (spriteNum == 1) ? 2 : 1;
                 spriteCounter = 0;
             }
         }
+        else {
+            // optional: reset sprite when idle
+            spriteNum = 1;
+            spriteCounter = 0;
+        }
 
-        // Keep player inside map
+        // Prevent leaving map boundaries (keep inside world)
         if (worldX < 0) worldX = 0;
         if (worldY < 0) worldY = 0;
         if (worldX > gp.tileSize * (gp.maxWorldCol - 1)) worldX = gp.tileSize * (gp.maxWorldCol - 1);
         if (worldY > gp.tileSize * (gp.maxWorldRow - 1)) worldY = gp.tileSize * (gp.maxWorldRow - 1);
-    }
+    
 
-    @Override
-    public void draw(Graphics2D g2) {
-        BufferedImage img = null;
-
+        // Animate sprite when moving
         if (moving) {
-            switch(direction) {
-                case "up":    img = getSprite(up1, up2, up3, up4, up5, up6); break;
-                case "down":  img = getSprite(down1, down2, down3, down4, down5, down6); break;
-                case "left":  img = getSprite(left1, left2, left3, left4, left5, left6); break;
-                case "right": img = getSprite(right1, right2, right3, right4, right5, right6); break;
+            spriteCounter++;
+            if (spriteCounter > 12) {
+                spriteNum = (spriteNum == 1) ? 2 : 1;
+                spriteCounter = 0;
             }
-        } else {
-            switch(direction) {
-                case "up":    img = getSprite(upIdle1, upIdle2, upIdle3, upIdle4, upIdle5, upIdle6); break;
-                case "down":  img = getSprite(downIdle1, downIdle2, downIdle3, downIdle4, downIdle5, downIdle6); break;
-                case "left":  img = getSprite(leftIdle1, leftIdle2, leftIdle3, leftIdle4, leftIdle5, leftIdle6); break;
-                case "right": img = getSprite(rightIdle1, rightIdle2, rightIdle3, rightIdle4, rightIdle5, rightIdle6); break;
-            }
-        }
-
-        g2.drawImage(img, screenX, screenY, gp.tileSize, gp.tileSize, null);
-    }
-
-    // Generic sprite picker
-    private BufferedImage getSprite(BufferedImage s1, BufferedImage s2, BufferedImage s3,
-                                    BufferedImage s4, BufferedImage s5, BufferedImage s6) {
-        switch(spriteNum) {
-            case 1: return s1;
-            case 2: return s2;
-            case 3: return s3;
-            case 4: return s4;
-            case 5: return s5;
-            case 6: return s6;
-            default: return s1;
         }
     }
 
@@ -216,5 +178,20 @@ public class Player extends Entity {
                     break;
             }
         }
+    }
+
+    // Draw player at the center of the screen
+    @Override
+    public void draw(Graphics2D g2) {
+        BufferedImage img = null;
+
+        switch(direction) {
+            case "up":    img = (spriteNum == 1) ? up1 : up2; break;
+            case "down":  img = (spriteNum == 1) ? down1 : down2; break;
+            case "left":  img = (spriteNum == 1) ? left1 : left2; break;
+            case "right": img = (spriteNum == 1) ? right1 : right2; break;
+        }
+
+        g2.drawImage(img, screenX, screenY, null);
     }
 }
