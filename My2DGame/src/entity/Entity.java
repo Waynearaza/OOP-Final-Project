@@ -35,8 +35,15 @@ public class Entity {
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collisionOn = false;
 
-    //
+    //actionLock
     public int actionLockCounter = 0;
+
+    //NPC Dialogues
+    String dialogues[] = new String[20];
+    int dialogueIndex = 0;
+
+
+
 
     // Animation
     public int spriteCounter = 0;
@@ -49,6 +56,24 @@ public class Entity {
     }
 
     public  void setAction(){}
+
+    //Set the Behavior Of the NPC When Talk To
+    public void speak(){
+        //Restart the Dialogue of the npc when all of it is completed and prevent an error
+        if(dialogues[dialogueIndex] == null){
+            dialogueIndex =0;
+        }
+        gp.ui.currentDialogue = dialogues[dialogueIndex];
+        dialogueIndex++;
+
+        switch (gp.player.direction){
+            case "up": direction = "down"; break;
+            case "down": direction = "up"; break;
+            case "left": direction = "right"; break;
+            case "right": direction = "left"; break;
+
+        }
+    }
 
     public void update(){
         setAction();

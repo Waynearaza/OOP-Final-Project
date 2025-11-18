@@ -38,7 +38,8 @@ public class Player extends Entity {
         screenX = gp.screenWidth / 2 - gp.tileSize / 2;
         screenY = gp.screenHeight / 2 - gp.tileSize / 2;
 
-        solidArea = new Rectangle(4, 10, 20, 20);
+        // Sets the Player Collision Size
+        solidArea = new Rectangle(4, 10, 23, 30);
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 
@@ -222,11 +223,15 @@ public class Player extends Entity {
         }
     }
 
-    //Check the NPC
+    //Sets Behavior of NPC When You Collide With It
     public void interactNPC(int i){
         if(i != 999) {
-            System.out.println("You are Hitting an NPC");
+            if(gp.keyH.enterPressed == true){
+                gp.gameState = gp.dialogueState;
+                gp.npc[i].speak();
+            }
         }
+        gp.keyH.enterPressed = false;
     }
 
 }
