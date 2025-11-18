@@ -32,6 +32,7 @@ public class Player extends Entity {
 
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp);
+
         this.keyH = keyH;
 
         screenX = gp.screenWidth / 2 - gp.tileSize / 2;
@@ -44,7 +45,6 @@ public class Player extends Entity {
         worldX = gp.tileSize * 23;
         worldY = gp.tileSize * 21;
         speed = 4;
-        size = gp.tileSize;
         direction = "down";
 
         getPlayerImage();
@@ -52,50 +52,77 @@ public class Player extends Entity {
     }
 
     public void getPlayerImage() {
-        up1 = setup("player-31.png"); up2 = setup("player-32.png"); up3 = setup("player-33.png");
-        up4 = setup("player-34.png"); up5 = setup("player-35.png"); up6 = setup("player-36.png");
+        up1 = setup("/player/player-31.png");
+        up2 = setup("/player/player-32.png");
+        up3 = setup("/player/player-33.png");
+        up4 = setup("/player/player-34.png");
+        up5 = setup("/player/player-35.png");
+        up6 = setup("/player/player-36.png");
 
-        down1 = setup("player-19.png"); down2 = setup("player-20.png"); down3 = setup("player-21.png");
-        down4 = setup("player-22.png"); down5 = setup("player-23.png"); down6 = setup("player-24.png");
+        down1 = setup("/player/player-19.png");
+        down2 = setup("/player/player-20.png");
+        down3 = setup("/player/player-21.png");
+        down4 = setup("/player/player-22.png");
+        down5 = setup("/player/player-23.png");
+        down6 = setup("/player/player-24.png");
 
-        left1 = setup("player-37.png"); left2 = setup("player-38.png"); left3 = setup("player-39.png");
-        left4 = setup("player-40.png"); left5 = setup("player-41.png"); left6 = setup("player-42.png");
+        right1 = setup("/player/player-25.png");
+        right2 = setup("/player/player-26.png");
+        right3 = setup("/player/player-27.png");
+        right4 = setup("/player/player-28.png");
+        right5 = setup("/player/player-29.png");
+        right6 = setup("/player/player-30.png");
 
-        right1 = setup("player-25.png"); right2 = setup("player-26.png"); right3 = setup("player-27.png");
-        right4 = setup("player-28.png"); right5 = setup("player-29.png"); right6 = setup("player-30.png");
+        left1 = setup("/player/player-37.png");
+        left2 = setup("/player/player-38.png");
+        left3 = setup("/player/player-39.png");
+        left4 = setup("/player/player-40.png");
+        left5 = setup("/player/player-41.png");
+        left6 = setup("/player/player-42.png");
+
+
+
 
         // Idle frames
-        upIdle1 = setup("player-13.png"); upIdle2 = setup("player-14.png"); upIdle3 = setup("player-15.png");
-        upIdle4 = setup("player-16.png"); upIdle5 = setup("player-17.png"); upIdle6 = setup("player-18.png");
+        upIdle1 = setup("/player/player-13.png"); upIdle2 = setup("/player/player-14.png"); upIdle3 = setup("/player/player-15.png");
+        upIdle4 = setup("/player/player-16.png"); upIdle5 = setup("/player/player-17.png"); upIdle6 = setup("/player/player-18.png");
 
-        downIdle1 = setup("player-1.png"); downIdle2 = setup("player-2.png"); downIdle3 = setup("player-3.png");
-        downIdle4 = setup("player-4.png"); downIdle5 = setup("player-5.png"); downIdle6 = setup("player-6.png");
+        downIdle1 = setup("/player/player-1.png"); downIdle2 = setup("/player/player-2.png"); downIdle3 = setup("/player/player-3.png");
+        downIdle4 = setup("/player/player-4.png"); downIdle5 = setup("/player/player-5.png"); downIdle6 = setup("/player/player-6.png");
 
-        leftIdle1 = setup("player-43.png"); leftIdle2 = setup("player-44.png"); leftIdle3 = setup("player-45.png");
-        leftIdle4 = setup("player-46.png"); leftIdle5 = setup("player-47.png"); leftIdle6 = setup("player-48.png");
+        leftIdle1 = setup("/player/player-43.png"); leftIdle2 = setup("/player/player-44.png"); leftIdle3 = setup("/player/player-45.png");
+        leftIdle4 = setup("/player/player-46.png"); leftIdle5 = setup("/player/player-47.png"); leftIdle6 = setup("/player/player-48.png");
 
-        rightIdle1 = setup("player-7.png"); rightIdle2 = setup("player-8.png"); rightIdle3 = setup("player-9.png");
-        rightIdle4 = setup("player-10.png"); rightIdle5 = setup("player-11.png"); rightIdle6 = setup("player-12.png");
+        rightIdle1 = setup("/player/player-7.png"); rightIdle2 = setup("/player/player-8.png"); rightIdle3 = setup("/player/player-9.png");
+        rightIdle4 = setup("/player/player-10.png"); rightIdle5 = setup("/player/player-11.png"); rightIdle6 = setup("/player/player-12.png");
     }
 
-    public BufferedImage setup(String imageName) {
+    public BufferedImage setup(String imagePath) {
+        UtilityTool uTool = new UtilityTool();
         BufferedImage image = null;
+
         try {
-            InputStream is = getClass().getResourceAsStream("/player/" + imageName + ".png");
-            if (is == null) {
-                System.out.println("ERROR: Cannot find image: /player/" + imageName + ".png");
+            image = ImageIO.read(getClass().getResourceAsStream(imagePath + ".png"));
+
+            if (image == null) {
+                System.err.println("ERROR: Image not found: " + imagePath + ".png");
                 return null;
             }
-            image = ImageIO.read(is);
-            UtilityTool uTool = new UtilityTool();
+
             image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
-        } catch (IOException e) {
+
+        } catch (IOException | IllegalArgumentException e) {
+            System.err.println("ERROR loading image: " + imagePath + ".png");
             e.printStackTrace();
+            return null;
         }
+
         return image;
     }
 
-    @Override
+
+
+
     public void update() {
         moving = false;
 
@@ -106,9 +133,17 @@ public class Player extends Entity {
 
         if (moving) {
             collisionOn = false;
+
+            //Check the Collision
             gp.cChecker.checkTile(this);
+
+            //CheckObject Collision
             int objIndex = gp.cChecker.checkObject(this, true);
             pickUpObject(objIndex);
+
+            //Check NPC collision
+            int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
+            interactNPC(npcIndex);
 
             if (!collisionOn) {
                 switch(direction) {
@@ -143,7 +178,7 @@ public class Player extends Entity {
         if (worldY > gp.tileSize * (gp.maxWorldRow - 1)) worldY = gp.tileSize * (gp.maxWorldRow - 1);
     }
 
-    @Override
+
     public void draw(Graphics2D g2) {
         BufferedImage img = null;
 
@@ -184,6 +219,13 @@ public class Player extends Entity {
     public void pickUpObject(int i) {
         if(i != 999) {
 
+        }
+    }
+
+    //Check the NPC
+    public void interactNPC(int i){
+        if(i != 999) {
+            System.out.println("You are Hitting an NPC");
         }
     }
 

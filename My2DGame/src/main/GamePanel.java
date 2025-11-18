@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
+import entity.Entity;
 import entity.Player;
 import object.SuperObject;
 import tile.TileManager;
@@ -76,6 +77,8 @@ public class GamePanel extends JPanel implements Runnable {
     public SuperObject obj[] = new SuperObject[10];
 
 
+    public Entity npc[] = new Entity[10];
+
 
     // Constructor
     public GamePanel() {
@@ -98,7 +101,7 @@ public class GamePanel extends JPanel implements Runnable {
     //Sets Up the Game objects and music or SFX
     public void setupGame(){
         aSetter.setObject();
-
+        aSetter.seNPC();
         playMusic(0);
         stopMusic();
         gameState = playState;
@@ -140,8 +143,17 @@ public class GamePanel extends JPanel implements Runnable {
     // Update game logic
     public void update() {
         if(gameState == playState){
+            //Player
             player.update();
-        } if (gameState == pauseState){
+
+            //NPC
+            for(int i = 0;i < npc.length; i++){
+                if(npc[i]!= null){
+                    npc[i].update();
+                }
+            }
+        }
+        if (gameState == pauseState){
             //Nothing
         }
     }
@@ -159,6 +171,14 @@ public class GamePanel extends JPanel implements Runnable {
         }
 
         tileM.draw(g2);    // Draw the tile map
+
+        // NPC
+        for(int i = 0; i < npc.length; i++){
+            if (npc[i] != null){
+                npc[i].draw(g2);
+            }
+
+        }
 
         //Object
         for (int i = 0; i < obj.length; i++) {
