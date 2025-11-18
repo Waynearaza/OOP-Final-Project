@@ -158,6 +158,24 @@ public class TileManager {
         setup(109, "fence lu", true);
         setup(110, "fence dr", true);
 
+        setup(111, "houseb1", true);
+        setup(112, "houseb2", true);
+        setup(113, "houseb3", true);
+        setup(114, "houseb4", true);
+        setup(115, "houseb5", true);
+        setup(116, "houseb6", true);
+        setup(117, "houseb7", true);
+        setup(118, "houseb8", true);
+        setup(119, "houseb9", true);
+        setup(120, "houseb10", true);
+        setup(121, "houseb11", true);
+        setup(122, "houseb12", true);
+        setup(123, "houseb13", true);
+        setup(124, "houseb14", true);
+        setup(125, "houseb15", true);
+
+
+
 
 
 

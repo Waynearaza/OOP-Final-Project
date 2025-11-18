@@ -39,10 +39,11 @@ public class Player extends Entity {
         screenY = gp.screenHeight / 2 - gp.tileSize / 2;
 
         // Sets the Player Collision Size
-        solidArea = new Rectangle(4, 10, 23, 30);
+        solidArea = new Rectangle(12, 16, 24, 32);
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 
+        //spawn location
         worldX = gp.tileSize * 23;
         worldY = gp.tileSize * 21;
         speed = 4;

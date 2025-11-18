@@ -15,7 +15,7 @@ import tile.TileManager;
 public class GamePanel extends JPanel implements Runnable {
 
     // ORIGINAL TILE SIZE in pixels
-    final int originalTileSize = 16;
+    final int originalTileSize = 20;
 
     // SCALE of tiles (16*3 = 48px)
     final int scale = 3;
@@ -81,6 +81,9 @@ public class GamePanel extends JPanel implements Runnable {
     public Entity npc[] = new Entity[10];
 
 
+
+
+
     // Constructor
     public GamePanel() {
         // Set preferred size of the panel
@@ -102,7 +105,7 @@ public class GamePanel extends JPanel implements Runnable {
     //Sets Up the Game objects and music or SFX
     public void setupGame(){
         aSetter.setObject();
-        aSetter.seNPC();
+        aSetter.setNPC();
         playMusic(0);
         stopMusic();
         gameState = playState;

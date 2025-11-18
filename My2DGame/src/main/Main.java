@@ -14,7 +14,7 @@ public class Main {
         window.setResizable(false);
 
         // Set the title of the window
-        window.setTitle("Nigga Quest");
+        window.setTitle("Adventure Quest-ish?");
 
         // Create the game panel (where the game runs and draws)
         GamePanel gamePanel = new GamePanel();
