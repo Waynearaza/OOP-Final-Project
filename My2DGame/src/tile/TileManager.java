@@ -151,6 +151,16 @@ public class TileManager {
         setup(103, "well3", true);
         setup(104, "well4", true);
 
+        setup(105, "fence r", true);
+        setup(106, "fence lr", true);
+        setup(107, "fence l", true);
+        setup(108, "fence du", true);
+        setup(109, "fence lu", true);
+        setup(110, "fence dr", true);
+
+
+
+
 
 
 
