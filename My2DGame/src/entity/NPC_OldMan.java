@@ -11,7 +11,7 @@ public class NPC_OldMan extends Entity {
          speed = 1;
 
          getImage();
-
+         setDialogue();
      }
 
      // Gets image of Old Man NPC on resources
@@ -30,6 +30,12 @@ public class NPC_OldMan extends Entity {
          right2 = setup("/npc/oldman_right_2");
      }
 
+     public void setDialogue(){
+         dialogues[0] ="Hello, My Nigga!";
+         dialogues[1] ="So You've Come To This Island To \nFarm Cotton?";
+         dialogues[2] ="You are now my Slave As of Today";
+         dialogues[3] ="Now Go Work Nigga Ahh Bitch!";
+     }
 
      //Sets the action of the Old Man
      public void setAction(){
@@ -55,5 +61,10 @@ public class NPC_OldMan extends Entity {
              actionLockCounter = 0;
 
          }
+     }
+
+     public void speak(){
+         //Do THis Character Specific Stuff and Shi
+        super.speak();
      }
 }

@@ -222,11 +222,15 @@ public class Player extends Entity {
         }
     }
 
-    //Check the NPC
+    //Sets Behavior of NPC When You Collide With It
     public void interactNPC(int i){
         if(i != 999) {
-            System.out.println("You are Hitting an NPC");
+            if(gp.keyH.enterPressed == true){
+                gp.gameState = gp.dialogueState;
+                gp.npc[i].speak();
+            }
         }
+        gp.keyH.enterPressed = false;
     }
 
 }
