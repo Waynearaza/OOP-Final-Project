@@ -20,7 +20,7 @@ public class TileManager {
     public TileManager(GamePanel gp) {
         this.gp = gp;
 
-        tile = new Tile[50];
+        tile = new Tile[200];
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow]; 
 
         getTileImage();
@@ -80,6 +80,81 @@ public class TileManager {
         setup(39, "earth", false);
         setup(40, "wall", true);
         setup(41, "tree", true);
+
+        setup(42, "maki's house-1", true);
+        setup(43, "maki's house-2", true);
+        setup(44, "maki's house-3", true);
+        setup(45, "maki's house-4", true);
+        setup(46, "maki's house-5", true);
+        setup(47, "maki's house-6", true);
+        setup(48, "maki's house-7", true);
+        setup(49, "maki's house-8", true);
+        setup(50, "maki's house-9", true);
+        setup(51, "maki's house-10", true);
+        setup(52, "maki's house-11", true);
+        setup(53, "maki's house-12", true);
+        setup(54, "maki's house-13", true);
+        setup(55, "maki's house-14", true);
+        setup(56, "maki's house-15", true);
+
+        setup(57, "post1", true);
+        setup(58, "post2", true);
+        setup(59, "post3", true);
+        setup(60, "post4", true);
+
+        setup(61, "sign-1", true);
+
+
+        setup(62, "farm-1", true);
+        setup(63, "farm-2", true);
+        setup(64, "farm-3", true);
+        setup(65, "farm-4", true);
+        setup(66, "farm-5", true);
+        setup(67, "farm-6", true);
+        setup(68, "farm-7", true);
+        setup(69, "farm-8", true);
+        setup(70, "farm-9", true);
+        setup(71, "farm-10", true);
+        setup(72, "farm-11", true);
+        setup(73, "farm-12", true);
+        setup(74, "farm-13", true);
+        setup(75, "farm-14", true);
+        setup(76, "farm-15", true);
+        setup(77, "farm-16", true);
+        setup(78, "farm-17", true);
+        setup(79, "farm-18", true);
+        setup(80, "farm-19", true);
+        setup(81, "farm-20", true);
+        setup(82, "farm-21", true);
+        setup(83, "farm-22", true);
+        setup(84, "farm-23", true);
+
+        setup(85, "wayne house1", true);
+        setup(86, "wayne house2", true);
+        setup(87, "wayne house3", true);
+        setup(88, "wayne house4", true);
+        setup(89, "wayne house5", true);
+        setup(90, "wayne house6", true);
+        setup(91, "wayne house7", true);
+        setup(92, "wayne house8", true);
+        setup(93, "wayne house9", true);
+        setup(94, "wayne house10", true);
+        setup(95, "wayne house11", true);
+        setup(96, "wayne house12", true);
+        setup(97, "wayne house13", true);
+        setup(98, "wayne house14", true);
+        setup(99, "wayne house15", true);
+
+        setup(100, "well", true);
+        setup(101, "well1", true);
+        setup(102, "well2", true);
+        setup(103, "well3", true);
+        setup(104, "well4", true);
+
+
+
+
+
     }
 
     public void setup(int index, String imageName, boolean collision) {
