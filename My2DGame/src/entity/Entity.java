@@ -55,7 +55,7 @@ public class Entity {
         this.gp = gp;
     }
 
-    public  void setAction(){}
+    public void setAction(){}
 
     //Set the Behavior Of the NPC When Talk To
     public void speak(){

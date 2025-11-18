@@ -65,6 +65,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     //GAME STATES
     public int gameState;
+    public final int titleState = 0;
     public final int playState =1;
     public final int pauseState = 2 ;
     public final int dialogueState = 3;
@@ -79,9 +80,6 @@ public class GamePanel extends JPanel implements Runnable {
 
 
     public Entity npc[] = new Entity[10];
-
-
-
 
 
     // Constructor
@@ -107,8 +105,8 @@ public class GamePanel extends JPanel implements Runnable {
         aSetter.setObject();
         aSetter.setNPC();
         playMusic(0);
-        stopMusic();
-        gameState = playState;
+        //stopMusic();
+        gameState = titleState;
     }
 
     // Start the game loop
@@ -174,26 +172,33 @@ public class GamePanel extends JPanel implements Runnable {
             drawStart = System.nanoTime();
         }
 
-        tileM.draw(g2);    // Draw the tile map
+        //TITLE SCREEN
+        if(gameState == titleState){
+            ui.draw(g2);
+        } else{
+            //TILE
+            tileM.draw(g2);    // Draw the tile map
 
-        // NPC
-        for(int i = 0; i < npc.length; i++){
-            if (npc[i] != null){
-                npc[i].draw(g2);
+            // NPC
+            for(int i = 0; i < npc.length; i++){
+                if (npc[i] != null){
+                    npc[i].draw(g2);
+                }
+
             }
 
-        }
-
-        //Object
-        for (int i = 0; i < obj.length; i++) {
-            if (obj[i] != null) {
-                obj[i].draw(g2, this);
+            //Object
+            for (int i = 0; i < obj.length; i++) {
+                if (obj[i] != null) {
+                    obj[i].draw(g2, this);
+                }
             }
-        }
-        //Player
-        player.draw(g2);   // Draw the player
+            //Player
+            player.draw(g2);   // Draw the player
 
-        ui.draw(g2); //Draw the UI
+            ui.draw(g2); //Draw the UI
+        }
+
 
         // DEBUG
         if(keyH.checkDrawTime == true) {
