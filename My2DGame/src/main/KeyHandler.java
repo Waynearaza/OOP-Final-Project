@@ -33,7 +33,7 @@ public class KeyHandler implements KeyListener {
                 }
             }
             // INTRO PAGES
-            else if (gp.ui.titleScreenState >= 1 && gp.ui.titleScreenState <= 3) {
+            else if (gp.ui.titleScreenState >= 1 && gp.ui.titleScreenState <= 5) {
                 if (code == KeyEvent.VK_ENTER) {
                     gp.ui.doingTransition = true;
                     gp.ui.fadeOut = true;

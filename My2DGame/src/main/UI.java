@@ -103,16 +103,16 @@ public class UI {
         }
 
 
-        // INTRO PAGES (1-3) CENTERED TEXT, NO BOX
+        // INTRO PAGES (1-3) CENTERED TEXT, NO BOX //increase to add another page
 
-        else if (titleScreenState >= 1 && titleScreenState <= 3) {
+        else if (titleScreenState >= 1 && titleScreenState <= 5) {
             g2.setColor(Color.BLACK);
             g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
 
             g2.setFont(g2.getFont().deriveFont(48F));
             g2.setColor(Color.WHITE);
 
-            // Set text per page
+            // Set text per page //increase to add another page
             switch (titleScreenState) {
                 case 1:
                     currentDialogue = "Greetings, my Nigga!" +
@@ -131,6 +131,21 @@ public class UI {
                             "\n ENTER - to interact" +
                             "\n you retard.";
                     break;
+                case 4:
+                    currentDialogue = "okay";
+
+                    break;
+                case 5:
+                    currentDialogue = "alright";
+
+                   break;
+
+
+
+
+
+
+
             }
 
             drawCenteredDialogue();
@@ -170,10 +185,10 @@ public class UI {
                 doingTransition = false;
                 fadeOut = false;
 
-                // Move to next page
+                // Move to next page //increase to add another page
                 if (titleScreenState == 0) titleScreenState = 1;
-                else if (titleScreenState >= 1 && titleScreenState < 3) titleScreenState++;
-                else if (titleScreenState == 3) {
+                else if (titleScreenState >= 1 && titleScreenState < 5) titleScreenState++;
+                else if (titleScreenState == 5) {
                     gp.gameState = gp.playState;
                     titleScreenState = 0;
                 }
