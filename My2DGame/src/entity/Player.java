@@ -44,7 +44,7 @@ public class Player extends Entity {
         screenY = gp.screenHeight / 2 - gp.tileSize / 2;
 
         // Sets the Player Collision Size
-        solidArea = new Rectangle(12, 16, 24, 32);
+        solidArea = new Rectangle(12, 32, 24, 32);
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 
