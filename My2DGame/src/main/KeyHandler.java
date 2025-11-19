@@ -2,109 +2,66 @@ package main;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.security.Key;
 
 public class KeyHandler implements KeyListener {
 
     GamePanel gp;
-
-    // Booleans to check which keys are pressed
     public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed;
-    // DEBUG
     boolean checkDrawTime = false;
 
-    public KeyHandler(GamePanel gp){
+    public KeyHandler(GamePanel gp) {
         this.gp = gp;
     }
 
     @Override
-    public void keyTyped(KeyEvent e) {
-        // Not used
-    }
+    public void keyTyped(KeyEvent e) {}
 
     @Override
     public void keyPressed(KeyEvent e) {
-        int code = e.getKeyCode(); // Get key code
+        int code = e.getKeyCode();
 
-        //TITLE STATE
+        // TITLE STATE
         if (gp.gameState == gp.titleState) {
-            if (code == KeyEvent.VK_W) {
-                gp.ui.commandNum--;
-                if (gp.ui.commandNum < 0) {
-                    gp.ui.commandNum = 2;
+            if (gp.ui.titleScreenState == 0) {
+                if (code == KeyEvent.VK_W) { gp.ui.commandNum--; if (gp.ui.commandNum < 0) gp.ui.commandNum = 2; }
+                if (code == KeyEvent.VK_S) { gp.ui.commandNum++; if (gp.ui.commandNum > 2) gp.ui.commandNum = 0; }
+
+                if (code == KeyEvent.VK_ENTER) {
+                    if (gp.ui.commandNum == 0) { gp.ui.doingTransition = true; gp.ui.fadeOut = true; }
+                    else if (gp.ui.commandNum == 1) { /* load game */ }
+                    else if (gp.ui.commandNum == 2) { System.exit(0); }
                 }
             }
-            if (code == KeyEvent.VK_S) {
-                gp.ui.commandNum++;
-                if (gp.ui.commandNum > 2) {
-                    gp.ui.commandNum = 0;
-                }
-            }
-            if (code == KeyEvent.VK_ENTER) {
-                if (gp.ui.commandNum == 0) {
-                    gp.gameState = gp.playState;
-                    gp.playMusic(0); //Plays Music in The Title Screen
-                    gp.stopMusic(); //Stops The Music When In PlayState
-                } else if (gp.ui.commandNum == 1) {
-                    //Add Later
-                } else if (gp.ui.commandNum == 2) {
-                    System.exit(0);
+            // INTRO PAGES
+            else if (gp.ui.titleScreenState >= 1 && gp.ui.titleScreenState <= 3) {
+                if (code == KeyEvent.VK_ENTER) {
+                    gp.ui.doingTransition = true;
+                    gp.ui.fadeOut = true;
                 }
             }
         }
 
-            //PLAY STATE
-            else if (gp.gameState == gp.playState) {
-                // Set booleans based on key pressed
-                if (code == KeyEvent.VK_W) {
-                    upPressed = true;
-                }
-                if (code == KeyEvent.VK_S) {
-                    downPressed = true;
-                }
-                if (code == KeyEvent.VK_A) {
-                    leftPressed = true;
-                }
-                if (code == KeyEvent.VK_D) {
-                    rightPressed = true;
-                }
-                //Makes When You Press P You Pause the Game
-                if (code == KeyEvent.VK_P) {
-                    gp.gameState = gp.pauseState;
-                }
-                if (code == KeyEvent.VK_ENTER) {
-                    enterPressed = true;
-                }
-
-
-                // DEBUG toggle
-                if (code == KeyEvent.VK_T) {
-                    checkDrawTime = !checkDrawTime;
-                }
-            }
-
-
-            //PAUSE STATE
-            else if (gp.gameState == gp.pauseState) {
-                if (code == KeyEvent.VK_P) {
-                    gp.gameState = gp.playState;
-                }
-            }
-            //DIALOGUE STATE
-            else if (gp.gameState == gp.dialogueState) {
-                if (code == KeyEvent.VK_ENTER) {
-                    gp.gameState = gp.playState;
-                }
-            }
+        // PLAY STATE
+        else if (gp.gameState == gp.playState) {
+            if (code == KeyEvent.VK_W) upPressed = true;
+            if (code == KeyEvent.VK_S) downPressed = true;
+            if (code == KeyEvent.VK_A) leftPressed = true;
+            if (code == KeyEvent.VK_D) rightPressed = true;
+            if (code == KeyEvent.VK_P) gp.gameState = gp.pauseState;
+            if (code == KeyEvent.VK_ENTER) enterPressed = true;
+            if (code == KeyEvent.VK_T) checkDrawTime = !checkDrawTime;
         }
 
+        // PAUSE STATE
+        else if (gp.gameState == gp.pauseState) { if (code == KeyEvent.VK_P) gp.gameState = gp.playState; }
 
+        // DIALOGUE STATE
+        else if (gp.gameState == gp.dialogueState) { if (code == KeyEvent.VK_ENTER) gp.gameState = gp.playState; }
+    }
 
     @Override
     public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();
-
-        // Reset booleans when key released
         if (code == KeyEvent.VK_W) upPressed = false;
         if (code == KeyEvent.VK_S) downPressed = false;
         if (code == KeyEvent.VK_A) leftPressed = false;

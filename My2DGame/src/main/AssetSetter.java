@@ -2,6 +2,7 @@ package main;
 
 import entity.NPC_OldMan;
 import entity.NPC_Slime;
+import entity.NPC_Slime2;
 import object.OBJ_Boots;
 import object.OBJ_Chest;
 import object.OBJ_Door;
@@ -28,6 +29,10 @@ public class AssetSetter {
         gp.npc[1] = new NPC_Slime(gp);
         gp.npc[1].worldX = gp.tileSize*28;
         gp.npc[1].worldY = gp.tileSize*19;
+
+        gp.npc[2] = new NPC_Slime2(gp);
+        gp.npc[2].worldX = gp.tileSize*31;
+        gp.npc[2].worldY = gp.tileSize*27;
 
     }
 }
