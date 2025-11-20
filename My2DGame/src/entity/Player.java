@@ -3,12 +3,12 @@ package entity;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.InputStream;
 
-import javax.imageio.ImageIO;
 import main.GamePanel;
 import main.KeyHandler;
 import main.UtilityTool;
+
+import static javax.imageio.ImageIO.read;
 
 public class Player extends Entity {
 
@@ -17,22 +17,24 @@ public class Player extends Entity {
     public final int screenY;
     private boolean moving = false;
 
-    // 6-frame walking sprites
+    // Walking sprites
     BufferedImage up1, up2, up3, up4, up5, up6;
     public BufferedImage down1;
-    BufferedImage down2;
-    BufferedImage down3;
-    BufferedImage down4;
-    BufferedImage down5;
-    BufferedImage down6;
+    BufferedImage down2, down3, down4, down5, down6;
     BufferedImage left1, left2, left3, left4, left5, left6;
     BufferedImage right1, right2, right3, right4, right5, right6;
 
-    // 6-frame idle sprites
+    // Idle sprites
     BufferedImage upIdle1, upIdle2, upIdle3, upIdle4, upIdle5, upIdle6;
     BufferedImage downIdle1, downIdle2, downIdle3, downIdle4, downIdle5, downIdle6;
     BufferedImage leftIdle1, leftIdle2, leftIdle3, leftIdle4, leftIdle5, leftIdle6;
     BufferedImage rightIdle1, rightIdle2, rightIdle3, rightIdle4, rightIdle5, rightIdle6;
+
+    // Attack sprites
+    BufferedImage attackUp1, attackUp2, attackUp3, attackUp4;
+    BufferedImage attackDown1, attackDown2, attackDown3, attackDown4;
+    BufferedImage attackLeft1, attackLeft2, attackLeft3, attackLeft4;
+    BufferedImage attackRight1, attackRight2, attackRight3, attackRight4;
 
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp);
@@ -42,184 +44,249 @@ public class Player extends Entity {
         screenX = gp.screenWidth / 2 - gp.tileSize / 2;
         screenY = gp.screenHeight / 2 - gp.tileSize / 2;
 
-        // Sets the Player Collision Size
+        // Collision box
         solidArea = new Rectangle(17, 30, 24, 24);
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 
-        //spawn location
+        // Spawn
         worldX = gp.tileSize * 23;
         worldY = gp.tileSize * 21;
         speed = 4;
         direction = "down";
 
         getPlayerImage();
+        getPlayerAttackImage();
         image = down1;
 
-        //PLAYER STATUS
-        maxLife =6;
-        life =maxLife;
+        maxLife = 6;
+        life = maxLife;
     }
 
-
+    // LOAD WALK + IDLE FRAMES
     public void getPlayerImage() {
-        up1 = setup("/player/player-31.png");
-        up2 = setup("/player/player-32.png");
-        up3 = setup("/player/player-33.png");
-        up4 = setup("/player/player-34.png");
-        up5 = setup("/player/player-35.png");
-        up6 = setup("/player/player-36.png");
+        up1 = setup("/player/player-31.png", gp.tileSize, gp.tileSize);
+        up2 = setup("/player/player-32.png", gp.tileSize, gp.tileSize);
+        up3 = setup("/player/player-33.png", gp.tileSize, gp.tileSize);
+        up4 = setup("/player/player-34.png", gp.tileSize, gp.tileSize);
+        up5 = setup("/player/player-35.png", gp.tileSize, gp.tileSize);
+        up6 = setup("/player/player-36.png", gp.tileSize, gp.tileSize);
 
-        down1 = setup("/player/player-19.png");
-        down2 = setup("/player/player-20.png");
-        down3 = setup("/player/player-21.png");
-        down4 = setup("/player/player-22.png");
-        down5 = setup("/player/player-23.png");
-        down6 = setup("/player/player-24.png");
+        down1 = setup("/player/player-19.png", gp.tileSize, gp.tileSize);
+        down2 = setup("/player/player-20.png", gp.tileSize, gp.tileSize);
+        down3 = setup("/player/player-21.png", gp.tileSize, gp.tileSize);
+        down4 = setup("/player/player-22.png", gp.tileSize, gp.tileSize);
+        down5 = setup("/player/player-23.png", gp.tileSize, gp.tileSize);
+        down6 = setup("/player/player-24.png", gp.tileSize, gp.tileSize);
 
-        right1 = setup("/player/player-25.png");
-        right2 = setup("/player/player-26.png");
-        right3 = setup("/player/player-27.png");
-        right4 = setup("/player/player-28.png");
-        right5 = setup("/player/player-29.png");
-        right6 = setup("/player/player-30.png");
+        right1 = setup("/player/player-25.png", gp.tileSize, gp.tileSize);
+        right2 = setup("/player/player-26.png", gp.tileSize, gp.tileSize);
+        right3 = setup("/player/player-27.png", gp.tileSize, gp.tileSize);
+        right4 = setup("/player/player-28.png", gp.tileSize, gp.tileSize);
+        right5 = setup("/player/player-29.png", gp.tileSize, gp.tileSize);
+        right6 = setup("/player/player-30.png", gp.tileSize, gp.tileSize);
 
-        left1 = setup("/player/player-37.png");
-        left2 = setup("/player/player-38.png");
-        left3 = setup("/player/player-39.png");
-        left4 = setup("/player/player-40.png");
-        left5 = setup("/player/player-41.png");
-        left6 = setup("/player/player-42.png");
+        left1 = setup("/player/player-37.png", gp.tileSize, gp.tileSize);
+        left2 = setup("/player/player-38.png", gp.tileSize, gp.tileSize);
+        left3 = setup("/player/player-39.png", gp.tileSize, gp.tileSize);
+        left4 = setup("/player/player-40.png", gp.tileSize, gp.tileSize);
+        left5 = setup("/player/player-41.png", gp.tileSize, gp.tileSize);
+        left6 = setup("/player/player-42.png", gp.tileSize, gp.tileSize);
 
+        upIdle1 = setup("/player/player-13.png", gp.tileSize, gp.tileSize);
+        upIdle2 = setup("/player/player-14.png", gp.tileSize, gp.tileSize);
+        upIdle3 = setup("/player/player-15.png", gp.tileSize, gp.tileSize);
+        upIdle4 = setup("/player/player-16.png", gp.tileSize, gp.tileSize);
+        upIdle5 = setup("/player/player-17.png", gp.tileSize, gp.tileSize);
+        upIdle6 = setup("/player/player-18.png", gp.tileSize, gp.tileSize);
 
+        downIdle1 = setup("/player/player-1.png", gp.tileSize, gp.tileSize);
+        downIdle2 = setup("/player/player-2.png", gp.tileSize, gp.tileSize);
+        downIdle3 = setup("/player/player-3.png", gp.tileSize, gp.tileSize);
+        downIdle4 = setup("/player/player-4.png", gp.tileSize, gp.tileSize);
+        downIdle5 = setup("/player/player-5.png", gp.tileSize, gp.tileSize);
+        downIdle6 = setup("/player/player-6.png", gp.tileSize, gp.tileSize);
 
+        leftIdle1 = setup("/player/player-43.png", gp.tileSize, gp.tileSize);
+        leftIdle2 = setup("/player/player-44.png", gp.tileSize, gp.tileSize);
+        leftIdle3 = setup("/player/player-45.png", gp.tileSize, gp.tileSize);
+        leftIdle4 = setup("/player/player-46.png", gp.tileSize, gp.tileSize);
+        leftIdle5 = setup("/player/player-47.png", gp.tileSize, gp.tileSize);
+        leftIdle6 = setup("/player/player-48.png", gp.tileSize, gp.tileSize);
 
-        // Idle frames
-        upIdle1 = setup("/player/player-13.png"); upIdle2 = setup("/player/player-14.png"); upIdle3 = setup("/player/player-15.png");
-        upIdle4 = setup("/player/player-16.png"); upIdle5 = setup("/player/player-17.png"); upIdle6 = setup("/player/player-18.png");
-
-        downIdle1 = setup("/player/player-1.png"); downIdle2 = setup("/player/player-2.png"); downIdle3 = setup("/player/player-3.png");
-        downIdle4 = setup("/player/player-4.png"); downIdle5 = setup("/player/player-5.png"); downIdle6 = setup("/player/player-6.png");
-
-        leftIdle1 = setup("/player/player-43.png"); leftIdle2 = setup("/player/player-44.png"); leftIdle3 = setup("/player/player-45.png");
-        leftIdle4 = setup("/player/player-46.png"); leftIdle5 = setup("/player/player-47.png"); leftIdle6 = setup("/player/player-48.png");
-
-        rightIdle1 = setup("/player/player-7.png"); rightIdle2 = setup("/player/player-8.png"); rightIdle3 = setup("/player/player-9.png");
-        rightIdle4 = setup("/player/player-10.png"); rightIdle5 = setup("/player/player-11.png"); rightIdle6 = setup("/player/player-12.png");
+        rightIdle1 = setup("/player/player-7.png", gp.tileSize, gp.tileSize);
+        rightIdle2 = setup("/player/player-8.png", gp.tileSize, gp.tileSize);
+        rightIdle3 = setup("/player/player-9.png", gp.tileSize, gp.tileSize);
+        rightIdle4 = setup("/player/player-10.png", gp.tileSize, gp.tileSize);
+        rightIdle5 = setup("/player/player-11.png", gp.tileSize, gp.tileSize);
+        rightIdle6 = setup("/player/player-12.png", gp.tileSize, gp.tileSize);
     }
 
-    public BufferedImage setup(String imagePath) {
+    // LOAD ATTACK FRAMES
+    public void getPlayerAttackImage() {
+
+        attackUp1 = setup("/player/player attack up-1.png", gp.tileSize*2, gp.tileSize );
+        attackUp2 = setup("/player/player attack up-2.png", gp.tileSize*2, gp.tileSize );
+        attackUp3 = setup("/player/player attack up-3.png", gp.tileSize*2, gp.tileSize );
+        attackUp4 = setup("/player/player attack up-4.png", gp.tileSize*2, gp.tileSize );
+
+        attackDown1 = setup("/player/player attack down-1.png", gp.tileSize*2, gp.tileSize);
+        attackDown2 = setup("/player/player attack down-2.png", gp.tileSize*2, gp.tileSize );
+        attackDown3 = setup("/player/player attack down-3.png", gp.tileSize*2, gp.tileSize );
+        attackDown4 = setup("/player/player attack down-4.png", gp.tileSize*2, gp.tileSize );
+
+        attackLeft1 = setup("/player/player attack left-1.png", gp.tileSize *2, gp.tileSize);
+        attackLeft2 = setup("/player/player attack left-2.png", gp.tileSize *2, gp.tileSize);
+        attackLeft3 = setup("/player/player attack left-3.png", gp.tileSize *2, gp.tileSize);
+        attackLeft4 = setup("/player/player attack left-4.png", gp.tileSize *2, gp.tileSize);
+
+        attackRight1 = setup("/player/player attack right-1.png", gp.tileSize *2, gp.tileSize);
+        attackRight2 = setup("/player/player attack right-2.png", gp.tileSize *2, gp.tileSize);
+        attackRight3 = setup("/player/player attack right-3.png", gp.tileSize *2, gp.tileSize);
+        attackRight4 = setup("/player/player attack right-4.png", gp.tileSize *2, gp.tileSize);
+    }
+
+    public BufferedImage setup(String imagePath, int width, int height) {
         UtilityTool uTool = new UtilityTool();
         BufferedImage image = null;
 
         try {
-            image = ImageIO.read(getClass().getResourceAsStream(imagePath + ".png"));
-
-            if (image == null) {
-                System.err.println("ERROR: Image not found: " + imagePath + ".png");
-                return null;
-            }
-
-            image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
-
-        } catch (IOException | IllegalArgumentException e) {
-            System.err.println("ERROR loading image: " + imagePath + ".png");
-            e.printStackTrace();
-            return null;
+            image = read(getClass().getResourceAsStream(imagePath));
+            image = uTool.scaleImage(image, width, height);
+        } catch (IOException e) {
+            System.err.println("Error loading: " + imagePath);
         }
 
         return image;
     }
 
-
-
-
+    // UPDATE PLAYER
     public void update() {
+
+        if (attacking) {
+            attacking();
+            return;
+        }
+
         moving = false;
 
+        // MOVEMENT
         if (keyH.upPressed) { direction = "up"; moving = true; }
         if (keyH.downPressed) { direction = "down"; moving = true; }
         if (keyH.leftPressed) { direction = "left"; moving = true; }
         if (keyH.rightPressed) { direction = "right"; moving = true; }
 
-        if (moving) {
-            collisionOn = false;
+        // ENTER → INTERACT WITHOUT MOVING
+        if (keyH.enterPressed) moving = true;
 
-            //Check the Collision
+        if (moving) {
+
+            collisionOn = false;
             gp.cChecker.checkTile(this);
 
-            //CheckObject Collision
             int objIndex = gp.cChecker.checkObject(this, true);
             pickUpObject(objIndex);
 
-            //Check NPC collision
             int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
             interactNPC(npcIndex);
 
-            //Check Monster Collision
             int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
             contactMonster(monsterIndex);
 
-
-            //CHECK EVENT
             gp.eHandler.checkEvent();
-            gp.keyH.enterPressed = false;
 
             if (!collisionOn) {
-                switch(direction) {
-                    case "up": worldY -= speed; break;
-                    case "down": worldY += speed; break;
-                    case "left": worldX -= speed; break;
-                    case "right": worldX += speed; break;
-                }
+                if (keyH.upPressed) worldY -= speed;
+                if (keyH.downPressed) worldY += speed;
+                if (keyH.leftPressed) worldX -= speed;
+                if (keyH.rightPressed) worldX += speed;
             }
 
-            // Animate walking (6 frames)
+            gp.keyH.enterPressed = false;
+
             spriteCounter++;
-            if (spriteCounter > 12) {
+            if (spriteCounter > 18) { // slower animation
                 spriteNum++;
                 if (spriteNum > 6) spriteNum = 1;
                 spriteCounter = 0;
             }
-        } else {
-            // Animate idle (6 frames)
+        }
+        else {
             spriteCounter++;
-            if (spriteCounter > 20) {
+            if (spriteCounter > 30) { // slower idle animation
                 spriteNum++;
                 if (spriteNum > 6) spriteNum = 1;
                 spriteCounter = 0;
             }
         }
 
-        //
-        if(invincible == true){
+        if (invincible) {
             invincibleCounter++;
-            if(invincibleCounter > 60){
+            if (invincibleCounter > 60) {
                 invincible = false;
                 invincibleCounter = 0;
             }
         }
-
-        // Keep player inside map
-        if (worldX < 0) worldX = 0;
-        if (worldY < 0) worldY = 0;
-        if (worldX > gp.tileSize * (gp.maxWorldCol - 1)) worldX = gp.tileSize * (gp.maxWorldCol - 1);
-        if (worldY > gp.tileSize * (gp.maxWorldRow - 1)) worldY = gp.tileSize * (gp.maxWorldRow - 1);
     }
 
+    // 4 FRAME ATTACKING
+    public void attacking() {
+
+        spriteCounter++;
+
+        if (spriteCounter <= 10) spriteNum = 1;
+        else if (spriteCounter <= 20) spriteNum = 2;
+        else if (spriteCounter <= 30) spriteNum = 3;
+        else if (spriteCounter <= 40) spriteNum = 4;
+
+        if (spriteCounter > 40) {
+            spriteCounter = 0;
+            spriteNum = 1;
+            attacking = false;
+        }
+    }
 
     public void draw(Graphics2D g2) {
         BufferedImage img = null;
+        int drawX = screenX;
+        int drawY = screenY;
 
-        if (moving) {
-            switch(direction) {
+        if (attacking) {
+            switch (direction) {
+                case "up":
+                    img = getSprite(attackUp1, attackUp2, attackUp3, attackUp4);
+                    drawX = screenX - gp.tileSize / 2; // center wide sprite horizontally
+                    drawY = screenY; // move it up visually
+                    break;
+                case "down":
+                    img = getSprite(attackDown1, attackDown2, attackDown3, attackDown4);
+                    drawX = screenX - gp.tileSize / 2; // center wide sprite horizontally
+                    drawY = screenY; // keep at player position vertically
+                    break;
+                case "left":
+                    img = getSprite(attackLeft1, attackLeft2, attackLeft3, attackLeft4);
+                    drawX = screenX - gp.tileSize / 2; // move left to center
+                    drawY = screenY;
+                    break;
+                case "right":
+                    img = getSprite(attackRight1, attackRight2, attackRight3, attackRight4);
+                    drawX = screenX - gp.tileSize / 2; // already aligned
+                    drawY = screenY;
+                    break;
+            }
+        }
+        // WALKING
+        else if (moving) {
+            switch (direction) {
                 case "up":    img = getSprite(up1, up2, up3, up4, up5, up6); break;
                 case "down":  img = getSprite(down1, down2, down3, down4, down5, down6); break;
                 case "left":  img = getSprite(left1, left2, left3, left4, left5, left6); break;
                 case "right": img = getSprite(right1, right2, right3, right4, right5, right6); break;
             }
-        } else {
-            switch(direction) {
+        }
+        // IDLE
+        else {
+            switch (direction) {
                 case "up":    img = getSprite(upIdle1, upIdle2, upIdle3, upIdle4, upIdle5, upIdle6); break;
                 case "down":  img = getSprite(downIdle1, downIdle2, downIdle3, downIdle4, downIdle5, downIdle6); break;
                 case "left":  img = getSprite(leftIdle1, leftIdle2, leftIdle3, leftIdle4, leftIdle5, leftIdle6); break;
@@ -227,52 +294,46 @@ public class Player extends Entity {
             }
         }
 
-        //Makes Player Half Transparent When Invincible
-        if(invincible == true){
+        if (invincible)
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
-        }
 
-        g2.drawImage(img, screenX, screenY, gp.tileSize, gp.tileSize, null);
+        g2.drawImage(img, drawX, drawY, null);
 
-        //Reset Player Transparency
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
     }
 
-    // Generic sprite picker
+
     private BufferedImage getSprite(BufferedImage s1, BufferedImage s2, BufferedImage s3,
-                                    BufferedImage s4, BufferedImage s5, BufferedImage s6) {
-        switch(spriteNum) {
+                                    BufferedImage s4, BufferedImage... extra) {
+
+        switch (spriteNum) {
             case 1: return s1;
             case 2: return s2;
             case 3: return s3;
             case 4: return s4;
-            case 5: return s5;
-            case 6: return s6;
-            default: return s1;
+            case 5: return extra.length > 0 ? extra[0] : s1;
+            case 6: return extra.length > 1 ? extra[1] : s1;
         }
+        return s1;
     }
 
-    //Sets the Behavior of the object when an object is picked up by the player
-    public void pickUpObject(int i) {
-        if(i != 999) {
+    public void pickUpObject(int i) {}
 
-        }
-    }
-
-    //Sets Behavior of NPC When You Collide With It
+    // ENTER → INTERACT
     public void interactNPC(int i){
-        if(i != 999) {
-            if(gp.keyH.enterPressed == true){
+        if(gp.keyH.enterPressed){
+            if(i != 999){
                 gp.gameState = gp.dialogueState;
                 gp.npc[i].speak();
+            } else {
+                attacking = true;
             }
         }
     }
 
-
     public void contactMonster(int i){
         if(i != 999){
-            if(invincible == false){
+            if(!invincible){
                 life -= 1;
                 invincible = true;
             }

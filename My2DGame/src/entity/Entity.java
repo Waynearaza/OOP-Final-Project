@@ -11,7 +11,7 @@ import main.UtilityTool;
 import javax.imageio.ImageIO;
 
 public class Entity {
-    GamePanel gp;
+    public GamePanel gp;
 
     // Position in the world
     public int worldX, worldY;
@@ -24,6 +24,12 @@ public class Entity {
     public BufferedImage down1, down2;
     public BufferedImage left1, left2;
     public BufferedImage right1, right2;
+
+    // Sprite attack arrays (4 frames per direction)
+    public BufferedImage attackUp1, attackUp2, attackUp3, attackUp4;
+    public BufferedImage attackDown1, attackDown2, attackDown3, attackDown4;
+    public BufferedImage attackRight1, attackRight2, attackRight3, attackRight4;
+    public BufferedImage attackLeft1, attackLeft2, attackLeft3, attackLeft4;
 
 
     public String direction = "down";
@@ -39,6 +45,8 @@ public class Entity {
     //Invincible Time
     public boolean invincible = false;
     public int invincibleCounter = 0;
+
+    boolean attacking = false;
 
     //NPC Dialogues
     String dialogues[] = new String[20];
@@ -168,13 +176,13 @@ public class Entity {
             g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
     }
 
-    public BufferedImage setup(String imagePath) {
+    public BufferedImage setup(String imagePath, int width, int height) {
         UtilityTool uTool = new UtilityTool();
         BufferedImage image = null;
 
         try {
             image = ImageIO.read(getClass().getResourceAsStream(imagePath + ".png"));
-            image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
+            image = uTool.scaleImage(image, width, height);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,71 +1,66 @@
 package entity;
 import main.GamePanel;
 
-import java.util.Random;
-
 public class NPC_OldMan extends Entity {
-     public NPC_OldMan (GamePanel gamePanel){
-         super(gamePanel);
 
-         type = 1;
-         direction = "down";
-         speed = 1;
+    // Movement pattern
+    String[] pattern = {"left", "left", "left", "up", "right", "right", "right", "down"};
+    int patternIndex = 0;
+    int patternDuration = 60;   // how long each direction lasts (60 frames = 1 sec)
+    int patternCounter = 0;
 
-         getImage();
-         setDialogue();
-     }
+    public NPC_OldMan (GamePanel gamePanel){
+        super(gamePanel);
 
-     // Gets image of Old Man NPC on resources
-     public void getImage(){
-         up1 = setup("/npc/oldman_down_1");
-         up2 = setup("/npc/oldman_up_2");
+        type = 1;
+        direction = "down";
+        speed = 1;
 
-         down1 = setup("/npc/oldman_down_1");
-         down2 = setup("/npc/oldman_down_2");
+        getImage();
+        setDialogue();
+    }
 
+    public void getImage(){
+        up1 = setup("/npc/oldman_down_1", gp.tileSize, gp.tileSize);
+        up2 = setup("/npc/oldman_up_2", gp.tileSize, gp.tileSize);
 
-         left1 = setup("/npc/oldman_left_1");
-         left2 = setup("/npc/oldman_left_2");
+        down1 = setup("/npc/oldman_down_1", gp.tileSize, gp.tileSize);
+        down2 = setup("/npc/oldman_down_2", gp.tileSize, gp.tileSize);
 
-         right1 = setup("/npc/oldman_right_1");
-         right2 = setup("/npc/oldman_right_2");
-     }
+        left1 = setup("/npc/oldman_left_1", gp.tileSize, gp.tileSize);
+        left2 = setup("/npc/oldman_left_2", gp.tileSize, gp.tileSize);
 
-     public void setDialogue(){
-         dialogues[0] ="Hello, My Nigga!";
-         dialogues[1] ="So You've Come To This Island To \nFarm Cotton?";
-         dialogues[2] ="You are now my Slave As of Today";
-         dialogues[3] ="Now Go Work Nigga Ahh Bitch!";
-     }
+        right1 = setup("/npc/oldman_right_1", gp.tileSize, gp.tileSize);
+        right2 = setup("/npc/oldman_right_2", gp.tileSize, gp.tileSize);
+    }
 
-     //Sets the action of the Old Man
-     public void setAction(){
+    public void setDialogue(){
+        dialogues[0] ="Hello, My Nigga!";
+        dialogues[1] ="So You've Come To This Island To \nFarm Cotton?";
+        dialogues[2] ="You are now my Slave As of Today";
+        dialogues[3] ="Now Go Work Nigga Ahh Bitch!";
+    }
 
-         actionLockCounter ++;
+    @Override
+    public void setAction() {
 
-         if(actionLockCounter == 120){
-             Random random = new Random();
-             int i = random.nextInt(100)+1; //Pickup a number from 1 to 100
+        // Count frames
+        patternCounter++;
 
-             if(i <= 25){
-                 direction = "up";
-             }
-             if (i > 25 && i <=50){
-                 direction = "down";
-             }
-             if (i > 50 && i <=75){
-                 direction = "left";
-             }
-             if (i > 75 && i <=100){
-                 direction = "right";
-             }
-             actionLockCounter = 0;
+        // Move to next direction after duration
+        if (patternCounter >= patternDuration) {
+            patternIndex++;
+            if (patternIndex >= pattern.length) {
+                patternIndex = 0;  // loop pattern
+            }
 
-         }
-     }
+            direction = pattern[patternIndex];
+            patternCounter = 0;
+        }
+    }
 
-     public void speak(){
-         //Do THis Character Specific Stuff and Shi
+    @Override
+    public void speak(){
         super.speak();
-     }
+    }
 }

@@ -19,12 +19,12 @@ public class NPC_Slime extends Entity {
     }
 
     public void getImage() {
-        idle1 = setup("/npc/slime-1");
-        idle2 = setup("/npc/slime-2");
-        idle3 = setup("/npc/slime-3");
-        idle4 = setup("/npc/slime-4");
-        idle5 = setup("/npc/slime-5");
-        idle6 = setup("/npc/slime-6");
+        idle1 = setup("/npc/slime-1", gp.tileSize, gp.tileSize);
+        idle2 = setup("/npc/slime-2", gp.tileSize, gp.tileSize);
+        idle3 = setup("/npc/slime-3", gp.tileSize, gp.tileSize);
+        idle4 = setup("/npc/slime-4", gp.tileSize, gp.tileSize);
+        idle5 = setup("/npc/slime-5", gp.tileSize, gp.tileSize);
+        idle6 = setup("/npc/slime-6", gp.tileSize, gp.tileSize);
     }
 
     public void setDialogue() {

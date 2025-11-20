@@ -13,7 +13,7 @@ public class OBJ_Door extends Entity {
         super(gp);
 
         name = "Key";
-        down1 = setup("/objects/door");
+        down1 = setup("/objects/door", gp.tileSize, gp.tileSize);
 
         collision = true;
 
