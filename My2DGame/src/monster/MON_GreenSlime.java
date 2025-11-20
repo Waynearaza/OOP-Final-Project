@@ -66,4 +66,11 @@ public class MON_GreenSlime extends Entity {
 
         }
     }
+
+    //Makes the Monster Runaway from the player for a slight moment
+    public void damageReaction(){
+        actionLockCounter = 0;
+        direction = gp.player.direction;
+
+    }
 }

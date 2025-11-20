@@ -19,6 +19,9 @@ public class Sound {
         soundURL[2] = getClass().getResource("/sound/powerup.wav");
         soundURL[3] = getClass().getResource("/sound/unlock.wav");
         soundURL[4] = getClass().getResource("/sound/fanfare.wav");
+        soundURL[5] = getClass().getResource("/sound/hitmonster.wav");
+        soundURL[6] = getClass().getResource("/sound/receivedamage.wav");
+        soundURL[7] = getClass().getResource("/sound/swingweapon.wav");
     }
 
     public void setFile(int i){
@@ -27,7 +30,10 @@ public class Sound {
             clip = AudioSystem.getClip();
             clip.open(ais);
             volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-        } catch (Exception e){}
+        } catch (Exception e){
+            System.out.println("ERROR LOADING SOUND " + i + ": " + e);
+            System.out.println("URL = " + soundURL[i]);
+        }
     }
     public  void play(){
         clip.start();
