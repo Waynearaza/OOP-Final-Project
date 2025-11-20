@@ -6,10 +6,6 @@ import main.GamePanel;
 
 import java.util.Random;
 
-
-
-
-
 public class MON_GreenSlime extends Entity {
     GamePanel gp;
 

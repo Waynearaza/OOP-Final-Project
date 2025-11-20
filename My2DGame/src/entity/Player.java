@@ -49,6 +49,10 @@ public class Player extends Entity {
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 
+        //Attack Area
+        attackArea.width = 36;
+        attackArea.height = 36;
+
         // Spawn
         worldX = gp.tileSize * 23;
         worldY = gp.tileSize * 21;
@@ -234,10 +238,40 @@ public class Player extends Entity {
 
         spriteCounter++;
 
-        if (spriteCounter <= 10) spriteNum = 1;
-        else if (spriteCounter <= 20) spriteNum = 2;
-        else if (spriteCounter <= 30) spriteNum = 3;
-        else if (spriteCounter <= 40) spriteNum = 4;
+        if (spriteCounter <= 10) {spriteNum = 1;}
+        else if (spriteCounter <= 20) {
+            spriteNum = 2;
+
+            //Save the Current worldX, WorldY, Solid Area Width, Solid Area Height
+            int currentWorldX = worldX;
+            int currentWorldY = worldY;
+            int solidAreaWidth = solidArea.width;
+            int soldAreaHeight = solidArea.height;
+
+            switch (direction){
+                case "up": worldY -= attackArea.height; break;
+                case "down": worldY += attackArea.height; break;
+                case "left": worldX -= attackArea.width; break;
+                case "right": worldX += attackArea.width; break;
+            }
+
+            //Attack Becomes Solid Area
+            solidArea.width = attackArea.width;
+            solidArea.height = attackArea.height;
+
+            //Check Monster Collision Based with the Updated world X, World Y, and Solid Area
+            int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
+            damageMonster(monsterIndex);
+
+            //After Checking Collision, Restores Original Size
+            worldX = currentWorldX;
+            worldY = currentWorldY;
+            solidArea.width = solidAreaWidth;
+            solidArea.height = soldAreaHeight;
+
+        }
+        else if (spriteCounter <= 30) {spriteNum = 3;}
+        else if (spriteCounter <= 40) {spriteNum = 4;}
 
         if (spriteCounter > 40) {
             spriteCounter = 0;
@@ -294,9 +328,9 @@ public class Player extends Entity {
             }
         }
 
-        if (invincible)
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
-
+        if (invincible == true) {
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));
+        }
         g2.drawImage(img, drawX, drawY, null);
 
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
@@ -337,6 +371,18 @@ public class Player extends Entity {
                 life -= 1;
                 invincible = true;
             }
+        }
+    }
+
+    public void damageMonster(int i){
+        if(i != 999){
+           if(gp.monster[i].invincible == false){
+                gp.monster[i].life -=1;
+                gp.monster[i].invincible = true;
+                if(gp.monster[i].life <=0){
+                    gp.monster[i] = null;
+                }
+           }
         }
     }
 }

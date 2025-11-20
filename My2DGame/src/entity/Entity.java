@@ -1,7 +1,6 @@
 package entity;
 
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -36,6 +35,7 @@ public class Entity {
 
     // Collision
     public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
+    public  Rectangle attackArea = new Rectangle(0, 0,0,0);
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collisionOn = false;
 
@@ -133,7 +133,13 @@ public class Entity {
             spriteCounter = 0;
         }
 
-
+        if (invincible) {
+            invincibleCounter++;
+            if (invincibleCounter > 60) {
+                invincible = false;
+                invincibleCounter = 0;
+            }
+        }
     }
 
 
@@ -171,9 +177,11 @@ public class Entity {
                     break;
             }
 
-
-        }
+            if (invincible == true) {
+                g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));
+            }
             g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+        }
     }
 
     public BufferedImage setup(String imagePath, int width, int height) {
