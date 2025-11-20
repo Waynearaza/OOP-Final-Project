@@ -1,7 +1,6 @@
 package entity;
 
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -157,6 +156,11 @@ public class Player extends Entity {
             int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
             interactNPC(npcIndex);
 
+            //Check Monster Collision
+            int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
+            contactMonster(monsterIndex);
+
+
             //CHECK EVENT
             gp.eHandler.checkEvent();
             gp.keyH.enterPressed = false;
@@ -187,6 +191,15 @@ public class Player extends Entity {
             }
         }
 
+        //
+        if(invincible == true){
+            invincibleCounter++;
+            if(invincibleCounter > 60){
+                invincible = false;
+                invincibleCounter = 0;
+            }
+        }
+
         // Keep player inside map
         if (worldX < 0) worldX = 0;
         if (worldY < 0) worldY = 0;
@@ -214,7 +227,15 @@ public class Player extends Entity {
             }
         }
 
+        //Makes Player Half Transparent When Invincible
+        if(invincible == true){
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+        }
+
         g2.drawImage(img, screenX, screenY, gp.tileSize, gp.tileSize, null);
+
+        //Reset Player Transparency
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
     }
 
     // Generic sprite picker
@@ -248,4 +269,13 @@ public class Player extends Entity {
         }
     }
 
+
+    public void contactMonster(int i){
+        if(i != 999){
+            if(invincible == false){
+                life -= 1;
+                invincible = true;
+            }
+        }
+    }
 }
