@@ -60,6 +60,9 @@ public class GamePanel extends JPanel implements Runnable {
     //Checks Collision
     public CollisionChecker cChecker = new CollisionChecker(this);
 
+    //
+    public EventHandler eHandler = new EventHandler(this);
+
     // Game loop thread
     Thread gameThread;
 
