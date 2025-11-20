@@ -44,7 +44,7 @@ public class Player extends Entity {
         screenY = gp.screenHeight / 2 - gp.tileSize / 2;
 
         // Sets the Player Collision Size
-        solidArea = new Rectangle(12, 32, 24, 32);
+        solidArea = new Rectangle(17, 30, 24, 24);
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 
@@ -56,7 +56,12 @@ public class Player extends Entity {
 
         getPlayerImage();
         image = down1;
+
+        //PLAYER STATUS
+        maxLife =6;
+        life =maxLife;
     }
+
 
     public void getPlayerImage() {
         up1 = setup("/player/player-31.png");
