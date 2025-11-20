@@ -25,10 +25,9 @@ public class Entity {
     public BufferedImage down1, down2;
     public BufferedImage left1, left2;
     public BufferedImage right1, right2;
-    public BufferedImage image;
 
 
-    public String direction;
+    public String direction = "down";
 
     // Collision
     public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
@@ -41,6 +40,11 @@ public class Entity {
     //NPC Dialogues
     String dialogues[] = new String[20];
     int dialogueIndex = 0;
+
+    //From Super Object
+    public BufferedImage image, image2, image3;
+    public String name;
+    public boolean collision = false;
 
     //CHARACTER STATUS
     public int maxLife;

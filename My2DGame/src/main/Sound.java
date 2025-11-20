@@ -38,6 +38,7 @@ public class Sound {
     public void stop (){
         clip.stop();
     }
+
     public void setVolume(float value){
         if (volumeControl != null) {
             // Gain value must be in decibels, so convert:
