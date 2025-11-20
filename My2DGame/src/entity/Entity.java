@@ -4,7 +4,6 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.InputStream;
 
 import main.GamePanel;
 import main.UtilityTool;
@@ -25,10 +24,9 @@ public class Entity {
     public BufferedImage down1, down2;
     public BufferedImage left1, left2;
     public BufferedImage right1, right2;
-    public BufferedImage image;
 
 
-    public String direction;
+    public String direction = "down";
 
     // Collision
     public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
@@ -38,9 +36,23 @@ public class Entity {
     //actionLock
     public int actionLockCounter = 0;
 
+    //Invincible Time
+    public boolean invincible = false;
+    public int invincibleCounter = 0;
+
     //NPC Dialogues
     String dialogues[] = new String[20];
     int dialogueIndex = 0;
+
+    //From Super Object
+    public BufferedImage image, image2, image3;
+    public String name;
+    public boolean collision = false;
+    public int type; // 0 = Player, 1 = NPC, 2 = Monster
+
+    //CHARACTER STATUS
+    public int maxLife;
+    public int life;
 
 
 
@@ -81,7 +93,18 @@ public class Entity {
         collisionOn = false;
         gp.cChecker.checkTile(this);
         gp.cChecker.checkObject(this, false); //Checks Object Collision
-        gp.cChecker.chechkPlayer(this); //Checks Player Collision
+        gp.cChecker.checkEntity(this, gp.npc);
+        gp.cChecker.checkEntity(this, gp.monster);
+        gp.cChecker.checkPlayer(this); //Checks Player Collision
+        boolean contactPlayer = gp.cChecker.checkPlayer(this);
+
+        if(this.type == 2 && contactPlayer == true){
+           if(gp.player.invincible == false) {
+                //We Can Give Damage
+               gp.player.life -= 1;
+               gp.player.invincible = true;
+           }
+        }
 
         if (collisionOn == false){
             switch (direction){

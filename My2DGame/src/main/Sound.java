@@ -3,12 +3,15 @@ package main;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.*;
 
 import java.net.URL;
 
 public class Sound {
     Clip clip;
+    FloatControl volumeControl;
     URL soundURL[] = new URL[30];
+
 
     public Sound(){
         soundURL[0] = getClass().getResource("/sound/erika.wav");
@@ -23,6 +26,7 @@ public class Sound {
             AudioInputStream ais = AudioSystem.getAudioInputStream(soundURL[i]);
             clip = AudioSystem.getClip();
             clip.open(ais);
+            volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         } catch (Exception e){}
     }
     public  void play(){
@@ -34,4 +38,16 @@ public class Sound {
     public void stop (){
         clip.stop();
     }
+
+    public void setVolume(float value){
+        if (volumeControl != null) {
+            // Gain value must be in decibels, so convert:
+            float min = volumeControl.getMinimum();  // usually around -80 dB
+            float max = volumeControl.getMaximum();  // usually 6 dB
+
+            float gain = min + (max - min) * value;  // convert percentage to decibels
+            volumeControl.setValue(gain);
+        }
+    }
+
 }

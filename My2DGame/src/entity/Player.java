@@ -1,7 +1,6 @@
 package entity;
 
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,7 +43,7 @@ public class Player extends Entity {
         screenY = gp.screenHeight / 2 - gp.tileSize / 2;
 
         // Sets the Player Collision Size
-        solidArea = new Rectangle(12, 32, 24, 32);
+        solidArea = new Rectangle(17, 30, 24, 24);
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 
@@ -56,7 +55,12 @@ public class Player extends Entity {
 
         getPlayerImage();
         image = down1;
+
+        //PLAYER STATUS
+        maxLife =6;
+        life =maxLife;
     }
+
 
     public void getPlayerImage() {
         up1 = setup("/player/player-31.png");
@@ -152,6 +156,15 @@ public class Player extends Entity {
             int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
             interactNPC(npcIndex);
 
+            //Check Monster Collision
+            int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
+            contactMonster(monsterIndex);
+
+
+            //CHECK EVENT
+            gp.eHandler.checkEvent();
+            gp.keyH.enterPressed = false;
+
             if (!collisionOn) {
                 switch(direction) {
                     case "up": worldY -= speed; break;
@@ -175,6 +188,15 @@ public class Player extends Entity {
                 spriteNum++;
                 if (spriteNum > 6) spriteNum = 1;
                 spriteCounter = 0;
+            }
+        }
+
+        //
+        if(invincible == true){
+            invincibleCounter++;
+            if(invincibleCounter > 60){
+                invincible = false;
+                invincibleCounter = 0;
             }
         }
 
@@ -205,7 +227,15 @@ public class Player extends Entity {
             }
         }
 
+        //Makes Player Half Transparent When Invincible
+        if(invincible == true){
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+        }
+
         g2.drawImage(img, screenX, screenY, gp.tileSize, gp.tileSize, null);
+
+        //Reset Player Transparency
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
     }
 
     // Generic sprite picker
@@ -237,7 +267,15 @@ public class Player extends Entity {
                 gp.npc[i].speak();
             }
         }
-        gp.keyH.enterPressed = false;
     }
 
+
+    public void contactMonster(int i){
+        if(i != 999){
+            if(invincible == false){
+                life -= 1;
+                invincible = true;
+            }
+        }
+    }
 }

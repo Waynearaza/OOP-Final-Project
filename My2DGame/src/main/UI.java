@@ -1,6 +1,10 @@
 package main;
 
+import entity.Entity;
+import object.OBJ_Heart;
+
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -8,6 +12,7 @@ public class UI {
     GamePanel gp;
     Graphics2D g2;
     Font Pixel_Game;
+    BufferedImage heart_full, heart_half, heart_blank; //Heart Images
     public boolean messageOn = false;
     public String message = "";
     public String currentDialogue = "";
@@ -32,6 +37,12 @@ public class UI {
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
         }
+
+        //CREATE HUD
+        Entity heart = new OBJ_Heart(gp);
+        heart_full = heart.image;
+        heart_half = heart.image2;
+        heart_blank = heart.image3;
     }
 
     public void showMessage(String text) {
@@ -44,17 +55,54 @@ public class UI {
         g2.setFont(Pixel_Game);
         g2.setColor(Color.white);
 
+        //TITLE STATE
         if (gp.gameState == gp.titleState) {
             drawTitleScreen();
         }
+        else if (gp.gameState == gp.playState) {
+            drawPlayerLife();
+        }
         else if (gp.gameState == gp.pauseState) {
             drawPauseScreen();
+            drawPlayerLife();
         }
         else if (gp.gameState == gp.dialogueState) {
-            drawDialogueScreen(); // NPC dialogue uses box
+            drawPlayerLife();
+            drawDialogueScreen();// NPC dialogue uses box
+
         }
 
         drawTransition();
+    }
+
+    public void drawPlayerLife(){
+        //gp.player.life = 6;
+
+        int x = gp.tileSize/2;
+        int y = gp.tileSize/2;
+        int i = 0;
+
+        //Draw MAX LIFE
+        while (i < gp.player.maxLife/2){
+            g2.drawImage(heart_blank, x, y, null);
+            i++;
+            x += gp.tileSize;
+        }
+
+        //RESET
+        x = gp.tileSize/2;
+        y = gp.tileSize/2;
+        i = 0;
+
+        while (i < gp.player.life){
+            g2.drawImage(heart_half, x, y, null);
+            i++;
+            if(i < gp.player.life){
+                g2.drawImage(heart_full, x, y, null);
+            }
+            i++;
+            x += gp.tileSize;
+        }
     }
 
 
@@ -137,15 +185,7 @@ public class UI {
                     break;
                 case 5:
                     currentDialogue = "alright";
-
                    break;
-
-
-
-
-
-
-
             }
 
             drawCenteredDialogue();
@@ -170,7 +210,6 @@ public class UI {
 
 
     // TRANSITION SYSTEM (FADE IN / FADE OUT)
-
     public void drawTransition() {
         if (!doingTransition) return;
 
@@ -212,7 +251,6 @@ public class UI {
 
 
     // PAUSE SCREEN
-
     public void drawPauseScreen() {
         g2.setFont(g2.getFont().deriveFont(80F));
         String text = "Paused";
