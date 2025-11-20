@@ -67,8 +67,9 @@ public class UI {
             drawPlayerLife();
         }
         else if (gp.gameState == gp.dialogueState) {
-            drawDialogueScreen();// NPC dialogue uses box
             drawPlayerLife();
+            drawDialogueScreen();// NPC dialogue uses box
+
         }
 
         drawTransition();
@@ -184,15 +185,7 @@ public class UI {
                     break;
                 case 5:
                     currentDialogue = "alright";
-
                    break;
-
-
-
-
-
-
-
             }
 
             drawCenteredDialogue();
@@ -258,7 +251,6 @@ public class UI {
 
 
     // PAUSE SCREEN
-
     public void drawPauseScreen() {
         g2.setFont(g2.getFont().deriveFont(80F));
         String text = "Paused";

@@ -63,7 +63,7 @@ public class EventHandler {
 
     public void teleport(int gamestate){
         gp.gameState = gamestate;
-        gp.ui.currentDialogue = "Houdini Motherucker";
+        gp.ui.currentDialogue = "Houdini Motherfucker";
         gp.player.worldX = gp.tileSize * 37;
         gp.player.worldY = gp.tileSize * 10;
     }

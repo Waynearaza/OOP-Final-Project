@@ -11,7 +11,7 @@ public class OBJ_Heart extends SuperObject{
 
     public OBJ_Heart(GamePanel gp) {
 
-        name = "Key";
+        name = "Heart";
         try {
             image = ImageIO.read(getClass().getResourceAsStream("/objects/heart_full.png"));
             image2 = ImageIO.read(getClass().getResourceAsStream("/objects/heart_half.png"));
