@@ -175,6 +175,33 @@ public class TileManager {
         setup(125, "houseb15", true);
 
 
+        setup(126, "bridge1", true);
+        setup(127, "bridge2", true);
+        setup(128, "bridge3", true);
+        setup(129, "bridge4", true);
+        setup(130, "bridge5", true);
+        setup(131, "bridge6", true);
+        setup(132, "bridge7", true);
+        setup(133, "bridge8", true);
+        setup(134, "bridge9", true);
+        setup(135, "bridge10", true);
+        setup(136, "bridge11", true);
+        setup(137, "bridge12", true);
+        setup(138, "bridge13", true);
+        setup(139, "bridge14", true);
+        setup(140, "bridge15", true);
+        setup(141, "bridge16", true);
+        setup(142, "bridge17", true);
+        setup(143, "bridge18", true);
+        setup(144, "bridge19", true);
+        setup(145, "bridge20", true);
+        setup(146, "bridge21", true);
+        setup(147, "bridge22", true);
+        setup(148, "bridge23", true);
+        setup(149, "bridge24", true);
+
+
+
 
 
 

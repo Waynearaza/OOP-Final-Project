@@ -18,8 +18,8 @@ public class EventHandler {
         int row = 0;
         while(col < gp.maxWorldCol && row < gp.maxWorldRow){
             eventRect[col][row] = new EventRect();
-            eventRect[col][row].x = 23;
-            eventRect[col][row].y = 23;
+            eventRect[col][row].x = 40;
+            eventRect[col][row].y = 10;
             eventRect[col][row].width = 2;
             eventRect[col][row].height = 2;
             eventRect[col][row].eventRectDefaultX = eventRect[col][row].x;
@@ -45,17 +45,17 @@ public class EventHandler {
 
         if(canTouchEvent == true){
             //Calls The Event and Where and What direction to Put the Event
-            if(hit(27, 21, "right") == true) {
-                damagePit(27, 21, gp.dialogueState);
+            if(hit(40, 10, "right") == true) {
+                damagePit(40, 10, gp.dialogueState);
             }
-            if(hit(23, 19, "any") == true) {
-                damagePit(27, 21, gp.dialogueState);
+            if(hit(40, 10, "any") == true) {
+                damagePit(40, 10, gp.dialogueState);
             }
-            if(hit(21, 21, "left") == true) {
-                teleport(21, 21, gp.dialogueState);
+            if(hit(40, 10, "left") == true) {
+                teleport(40, 10, gp.dialogueState);
             }
-            if(hit(23, 12, "up") == true) {
-                healingPool(23, 12, gp.dialogueState);
+            if(hit(37, 8, "up") == true) {
+                healingPool(37, 8, gp.dialogueState);
             }
         }
     }
@@ -89,7 +89,7 @@ public class EventHandler {
     public void damagePit(int col, int row, int gameState){
         gp.gameState = gameState;
 
-        gp.ui.currentDialogue = "You Fell into a Pit";
+        gp.ui.currentDialogue = "You can't Enter, nigga.";
         gp.player.life -= 1;
         //eventRect[col][row].eventDone = true;
         canTouchEvent = false;

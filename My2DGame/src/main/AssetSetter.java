@@ -4,10 +4,7 @@ import entity.NPC_OldMan;
 import entity.NPC_Slime;
 import entity.NPC_Slime2;
 import monster.MON_GreenSlime;
-import object.OBJ_Boots;
-import object.OBJ_Chest;
-import object.OBJ_Door;
-import object.OBJ_Key;
+import object.*;
 
 public class AssetSetter {
 
@@ -26,6 +23,22 @@ public class AssetSetter {
         //gp.obj[1] = new OBJ_Door(gp);
         //gp.obj[1].worldX = gp.tileSize*23;
         //gp.obj[1].worldY = gp.tileSize*25;
+
+        gp.obj[0] = new OBJ_Bridge1(gp);
+        gp.obj[0].worldX = gp.tileSize*41;
+        gp.obj[0].worldY = gp.tileSize*8;
+
+        gp.obj[1] = new OBJ_Bridge2(gp);
+        gp.obj[1].worldX = gp.tileSize*41;
+        gp.obj[1].worldY = gp.tileSize*9;
+
+        gp.obj[2] = new OBJ_Bridge3(gp);
+        gp.obj[2].worldX = gp.tileSize*41;
+        gp.obj[2].worldY = gp.tileSize*10;
+
+        gp.obj[3] = new OBJ_Bridge4(gp);
+        gp.obj[3].worldX = gp.tileSize*42;
+        gp.obj[3].worldY = gp.tileSize*8;
     }
 
     public void setNPC(){
