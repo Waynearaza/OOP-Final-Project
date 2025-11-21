@@ -116,7 +116,7 @@ public class EventHandler {
             gp.playSE(2);
             gp.ui.currentDialogue = "You Drank the Swamp Water. \nYou Healed by Being Disgusting";
             gp.player.life = gp.player.maxLife;
+            gp.aSetter.setMonster();
         }
-        gp.keyH.enterPressed = false;
     }
 }
