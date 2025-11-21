@@ -15,9 +15,6 @@ public class Entity {
     // Position in the world
     public int worldX, worldY;
 
-    // Movement speed
-    public int speed;
-
     // Sprite arrays (6 frames per direction)
     public BufferedImage up1, up2;
     public BufferedImage down1, down2;
@@ -42,11 +39,12 @@ public class Entity {
     //actionLock
     public int actionLockCounter = 0;
 
-    //Invincible Time
+    //Invincible Time/Counter
     public boolean invincible = false;
     public int invincibleCounter = 0;
     int dyingCounter = 0;
     int hpBarCounter = 0;
+
 
     boolean attacking = false;
     public boolean alive = true;
@@ -61,11 +59,29 @@ public class Entity {
     public BufferedImage image, image2, image3;
     public String name;
     public boolean collision = false;
-    public int type; // 0 = Player, 1 = NPC, 2 = Monster
 
-    //CHARACTER STATUS
+
+    //CHARACTER ATTRIBUTES
     public int maxLife;
     public int life;
+    public int type; // 0 = Player, 1 = NPC, 2 = Monster
+    public int level;
+    public int strength;
+    public int dexterity;
+    public int attack;
+    public int defense;
+    public int exp;
+    public int nextLevelExp;
+    public int coin;
+    public  Entity currentWeapon;
+    public Entity currentShield;
+
+    // Movement speed
+    public int speed;
+
+    //ITEM ATTRIBUTES
+    public int attackValue;
+    public int defenseValue;
 
 
 

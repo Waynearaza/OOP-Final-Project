@@ -45,17 +45,17 @@ public class EventHandler {
 
         if(canTouchEvent == true){
             //Calls The Event and Where and What direction to Put the Event
-            if(hit(40, 10, "right") == true) {
-                damagePit(40, 10, gp.dialogueState);
-            }
             if(hit(40, 10, "any") == true) {
-                damagePit(40, 10, gp.dialogueState);
+                restrictedArea(40, 10, gp.dialogueState);
+            }
+            if(hit(40, 9, "any") == true) {
+                restrictedArea(40, 9, gp.dialogueState);
             }
             if(hit(40, 10, "left") == true) {
                 teleport(40, 10, gp.dialogueState);
             }
-            if(hit(37, 8, "up") == true) {
-                healingPool(37, 8, gp.dialogueState);
+            if(hit(23, 12, "up") == true) {
+                healingPool(23, 12, gp.dialogueState);
             }
         }
     }
@@ -86,12 +86,19 @@ public class EventHandler {
 
     }
 
+    //Add Events Custom Events Here
     public void damagePit(int col, int row, int gameState){
         gp.gameState = gameState;
-
-        gp.ui.currentDialogue = "You can't Enter, nigga.";
+        gp.playSE(6);
+        gp.ui.currentDialogue = "You Fell into a pit";
         gp.player.life -= 1;
         //eventRect[col][row].eventDone = true;
+        canTouchEvent = false;
+    }
+
+    public void restrictedArea(int col, int row, int gameState){
+        gp.gameState = gameState;
+        gp.ui.currentDialogue = "You can't Enter, nigga.";
         canTouchEvent = false;
     }
 
@@ -105,6 +112,8 @@ public class EventHandler {
     public void healingPool(int col, int row, int gameState){
         if(gp.keyH.enterPressed == true){
             gp.gameState = gameState;
+            gp.player.attackCanceled = true;
+            gp.playSE(2);
             gp.ui.currentDialogue = "You Drank the Swamp Water. \nYou Healed by Being Disgusting";
             gp.player.life = gp.player.maxLife;
         }

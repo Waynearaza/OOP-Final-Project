@@ -7,6 +7,8 @@ import java.io.IOException;
 import main.GamePanel;
 import main.KeyHandler;
 import main.UtilityTool;
+import object.OBJ_Shield_Wood;
+import object.OBJ_Sword_Normal;
 
 import static javax.imageio.ImageIO.read;
 
@@ -16,6 +18,7 @@ public class Player extends Entity {
     public final int screenX;
     public final int screenY;
     private boolean moving = false;
+    public boolean attackCanceled = false;
 
     // Walking sprites
     BufferedImage up1, up2, up3, up4, up5, up6;
@@ -53,18 +56,41 @@ public class Player extends Entity {
         attackArea.width = 36;
         attackArea.height = 36;
 
-        // Spawn
-        worldX = gp.tileSize * 23;
-        worldY = gp.tileSize * 21;
-        speed = 4;
-        direction = "down";
-
+        setDefaultValues();
         getPlayerImage();
         getPlayerAttackImage();
         image = down1;
+    }
 
+    public void setDefaultValues(){
+        // Spawn
+        worldX = gp.tileSize * 23;
+        worldY = gp.tileSize * 21;
+
+        speed = 4;
+        direction = "down";
+
+        //PLAYER STATUS
+        level =1;
         maxLife = 6;
         life = maxLife;
+        strength = 1; // More = More Damage Player Gives
+        dexterity = 1; //More = Less Damage Player Receives
+        exp = 0;
+        nextLevelExp = 5;
+        coin = 0; //We Broke Right Now
+        currentWeapon = new OBJ_Sword_Normal(gp);
+        currentShield = new OBJ_Shield_Wood(gp);
+        attack =  getAttack(); //Total attack Value is decided by strength and weapon
+        defense = getDefense(); //Total defense Value is decided by dexterity and shield
+    }
+
+    public int getAttack(){
+        return attack = strength * currentWeapon.attackValue;
+    }
+
+    public int getDefense(){
+        return defense = dexterity * currentShield.defenseValue;
     }
 
     // LOAD WALK + IDLE FRAMES
@@ -205,6 +231,14 @@ public class Player extends Entity {
                 if (keyH.leftPressed) worldX -= speed;
                 if (keyH.rightPressed) worldX += speed;
             }
+
+            if(keyH.enterPressed && !attackCanceled && gp.gameState == gp.playState){
+                gp.playSE(7);
+                attacking = true;
+                spriteCounter = 0;
+            }
+
+            attackCanceled = false;
 
             gp.keyH.enterPressed = false;
 
@@ -357,6 +391,7 @@ public class Player extends Entity {
     public void interactNPC(int i){
         if(gp.keyH.enterPressed){
             if(i != 999){
+                attackCanceled = true;
                 gp.gameState = gp.dialogueState;
                 gp.npc[i].speak();
             } else {
