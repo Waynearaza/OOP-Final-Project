@@ -57,8 +57,8 @@ public class Player extends Entity {
         solidAreaDefaultY = solidArea.y;
 
         //Attack Area
-        attackArea.width = 36;
-        attackArea.height = 36;
+        //attackArea.width = 36;
+        //attackArea.height = 36;
 
         setDefaultValues();
         getPlayerImage();
@@ -99,6 +99,7 @@ public class Player extends Entity {
     }
 
     public int getAttack(){
+        attackArea = currentWeapon.attackArea;
         return attack = strength * currentWeapon.attackValue;
     }
 
@@ -168,25 +169,28 @@ public class Player extends Entity {
     // LOAD ATTACK FRAMES
     public void getPlayerAttackImage() {
 
-        attackUp1 = setup("/player/player attack up-1.png", gp.tileSize*2, gp.tileSize );
-        attackUp2 = setup("/player/player attack up-2.png", gp.tileSize*2, gp.tileSize );
-        attackUp3 = setup("/player/player attack up-3.png", gp.tileSize*2, gp.tileSize );
-        attackUp4 = setup("/player/player attack up-4.png", gp.tileSize*2, gp.tileSize );
+        if(currentWeapon.type == type_sword){
+            attackUp1 = setup("/player/player attack up-1.png", gp.tileSize*2, gp.tileSize );
+            attackUp2 = setup("/player/player attack up-2.png", gp.tileSize*2, gp.tileSize );
+            attackUp3 = setup("/player/player attack up-3.png", gp.tileSize*2, gp.tileSize );
+            attackUp4 = setup("/player/player attack up-4.png", gp.tileSize*2, gp.tileSize );
 
-        attackDown1 = setup("/player/player attack down-1.png", gp.tileSize*2, gp.tileSize);
-        attackDown2 = setup("/player/player attack down-2.png", gp.tileSize*2, gp.tileSize );
-        attackDown3 = setup("/player/player attack down-3.png", gp.tileSize*2, gp.tileSize );
-        attackDown4 = setup("/player/player attack down-4.png", gp.tileSize*2, gp.tileSize );
+            attackDown1 = setup("/player/player attack down-1.png", gp.tileSize*2, gp.tileSize);
+            attackDown2 = setup("/player/player attack down-2.png", gp.tileSize*2, gp.tileSize );
+            attackDown3 = setup("/player/player attack down-3.png", gp.tileSize*2, gp.tileSize );
+            attackDown4 = setup("/player/player attack down-4.png", gp.tileSize*2, gp.tileSize );
 
-        attackLeft1 = setup("/player/player attack left-1.png", gp.tileSize *2, gp.tileSize);
-        attackLeft2 = setup("/player/player attack left-2.png", gp.tileSize *2, gp.tileSize);
-        attackLeft3 = setup("/player/player attack left-3.png", gp.tileSize *2, gp.tileSize);
-        attackLeft4 = setup("/player/player attack left-4.png", gp.tileSize *2, gp.tileSize);
+            attackLeft1 = setup("/player/player attack left-1.png", gp.tileSize *2, gp.tileSize);
+            attackLeft2 = setup("/player/player attack left-2.png", gp.tileSize *2, gp.tileSize);
+            attackLeft3 = setup("/player/player attack left-3.png", gp.tileSize *2, gp.tileSize);
+            attackLeft4 = setup("/player/player attack left-4.png", gp.tileSize *2, gp.tileSize);
 
-        attackRight1 = setup("/player/player attack right-1.png", gp.tileSize *2, gp.tileSize);
-        attackRight2 = setup("/player/player attack right-2.png", gp.tileSize *2, gp.tileSize);
-        attackRight3 = setup("/player/player attack right-3.png", gp.tileSize *2, gp.tileSize);
-        attackRight4 = setup("/player/player attack right-4.png", gp.tileSize *2, gp.tileSize);
+            attackRight1 = setup("/player/player attack right-1.png", gp.tileSize *2, gp.tileSize);
+            attackRight2 = setup("/player/player attack right-2.png", gp.tileSize *2, gp.tileSize);
+            attackRight3 = setup("/player/player attack right-3.png", gp.tileSize *2, gp.tileSize);
+            attackRight4 = setup("/player/player attack right-4.png", gp.tileSize *2, gp.tileSize);
+
+        }
     }
 
     public BufferedImage setup(String imagePath, int width, int height) {
@@ -484,5 +488,29 @@ public class Player extends Entity {
             gp.ui.currentDialogue = "You Are Now Level " + level + " Now!\n" + "You Feel More Blacker";
 
         }
+    }
+
+    //Equip Items in Inventory
+    public void selectItem(){
+        int itemIndex = gp.ui.getItemIndexOnSlot();
+
+        if(itemIndex < inventory.size()){
+            Entity selectedItem = inventory.get(itemIndex);
+
+            if(selectedItem.type == type_sword || selectedItem.type == type_axe){
+                currentWeapon = selectedItem;
+                attack = getAttack();
+            }
+            if(selectedItem.type == type_shield){
+                currentShield = selectedItem;
+                defense = getDefense();
+                //getPlayerAttackImage(); ADD WHEN AXE ANIMATION IS AVAILABLE
+            }
+            if(selectedItem.type == type_consumable){
+                selectedItem.use(this);
+                inventory.remove(itemIndex);
+            }
+        }
+
     }
 }
