@@ -25,6 +25,10 @@ public class UI {
     public int commandNum = 0;
     public int titleScreenState = 0; // 0 = main menu, 1-3 = intro pages
 
+    //INVENTORY
+    public int slotCol = 0;
+    public int slotRow = 0;
+
     // Transition system
     public int transitionAlpha = 0;
     public boolean doingTransition = false;
@@ -80,6 +84,7 @@ public class UI {
         //CHARACTER STATE
         else if (gp.gameState == gp.characterState) {
             drawCharacterScreen();
+            drawInventory();
         }
 
         drawTransition();
@@ -431,6 +436,75 @@ public class UI {
 
     }
 
+
+    public void drawInventory() {
+
+        //FRAME
+        int frameX = gp.tileSize * 8 - gp.tileSize/2;
+        int frameY = gp.tileSize;
+        int frameWidth = gp.tileSize * 6;
+        int frameHeight = gp.tileSize * 5;
+        drawSubWindow(frameX, frameY, frameWidth, frameHeight);
+
+        //SLOT
+        final int slotXstart = frameX + 20;
+        final int slotYstart = frameY + 20;
+        int slotX = slotXstart;
+        int slotY = slotYstart;
+        int slotSize = gp.tileSize + 3;
+
+        //DRAW PLAYER'S ITEMS
+        for(int i = 0; i < gp.player.inventory.size(); i++){
+            g2.drawImage(gp.player.inventory.get(i).down1, slotX, slotY, null);
+
+            slotX += slotSize;
+
+            if(i == 4 || i == 9 || i == 14){
+                slotX = slotXstart;
+                slotY += slotSize;
+            }
+        }
+
+        //CURSOR
+        int cursorX = slotXstart + (slotSize * slotCol);
+        int cursorY = slotYstart + (slotSize * slotRow);
+        int cursorWidth = gp.tileSize;
+        int cursorHeight = gp.tileSize;
+
+        //Draw Cursor
+        g2.setColor(Color.white);
+        g2.setStroke(new BasicStroke(3));
+        g2.drawRoundRect(cursorX, cursorY , cursorWidth, cursorHeight, 10, 10);
+
+        //DESCRIPTION FRAME
+        int dFrameX = frameX;
+        int dFrameY = frameY + frameHeight;
+        int dFrameWidth = frameWidth;
+        int dFrameHeight = gp.tileSize*3;
+        drawSubWindow(dFrameX, dFrameY, dFrameWidth, dFrameHeight);
+
+        //DESCRIPTION TEXT
+        int textX = dFrameX + 20;
+        int textY = dFrameY + gp.tileSize;
+        g2.setFont(g2.getFont().deriveFont(38F));
+
+        int itemIndex = getItemIndexOnSlot();
+
+        if(itemIndex < gp.player.inventory.size()){
+
+            for(String line: gp.player.inventory.get(itemIndex).description.split("\n")){
+                g2.drawString(line, textX, textY);
+                textY += 32;
+            }
+        }
+
+
+    }
+
+    public int getItemIndexOnSlot(){
+        int itemIndex = slotCol + (slotRow * 5);
+        return itemIndex;
+    }
 
     // CENTERED DIALOGUE FOR INTRO PAGES
 
