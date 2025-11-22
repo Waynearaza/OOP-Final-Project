@@ -398,7 +398,22 @@ public class Player extends Entity {
         return s1;
     }
 
-    public void pickUpObject(int i) {}
+    public void pickUpObject(int i) {
+        String text;
+
+        if (i != 999){
+            if(inventory.size() != maxinventorySize){
+                inventory.add(gp.obj[i]);
+                gp.playSE(1);
+                text = "Got a " + gp.obj[i].name + "!";
+            }
+            else {
+                text = "Inventory Fullr";
+            }
+            gp.ui.addMessage(text);
+            gp.obj[i] = null;
+        }
+    }
 
     // ENTER → INTERACT
     public void interactNPC(int i){
