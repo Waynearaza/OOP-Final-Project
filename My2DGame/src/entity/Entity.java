@@ -95,6 +95,9 @@ public class Entity {
     public final int type_consumable = 6;
 
 
+    public boolean pickUpAble = false;
+
+
 
 
     // Animation

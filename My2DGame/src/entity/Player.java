@@ -433,7 +433,7 @@ public class Player extends Entity {
                 text = "Got a " + gp.obj[i].name + "!";
             }
             else {
-                text = "Inventory Fullr";
+                text = "Your Inventory is Full Nigger";
             }
             gp.ui.addMessage(text);
             gp.obj[i] = null;

@@ -16,6 +16,7 @@ public class OBJ_Bridge1 extends Entity {
         down1 = setup("/objects/bridge1", gp.tileSize, gp.tileSize);
 
         collision = true;
+        pickUpAble = false;
 
         solidArea.x = 0;
         solidArea.y =  16;

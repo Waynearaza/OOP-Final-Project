@@ -103,13 +103,12 @@ public class CollisionChecker {
                 // Check intersection
                 if(entity.solidArea.intersects(gp.obj[i].solidArea)){
 
-                    // If object is solid
                     if(gp.obj[i].collision){
                         entity.collisionOn = true;
                     }
 
-                    // If player is checking object → return index so pickup works
-                    if(player){
+                    // ⭐ FIX HERE: Only return index for pick-up-able objects
+                    if(player && gp.obj[i].pickUpAble){
                         index = i;
                     }
                 }
@@ -123,6 +122,7 @@ public class CollisionChecker {
         }
         return index;
     }
+
 
 
     //Checks When Player is Colliding with the NPC

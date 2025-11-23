@@ -14,6 +14,7 @@ public class OBJ_Boots extends Entity {
 
         name = "Key";
         down1 = setup("/objects/boots", gp.tileSize, gp.tileSize);
+        pickUpAble = true;
 
 
     }
