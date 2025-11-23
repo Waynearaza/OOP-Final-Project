@@ -42,6 +42,7 @@ public class Entity {
     //Invincible Time/Counter
     public boolean invincible = false;
     public int invincibleCounter = 0;
+    public int shotAvailableCounter = 0;
     int dyingCounter = 0;
     int hpBarCounter = 0;
 
@@ -64,7 +65,8 @@ public class Entity {
     //CHARACTER ATTRIBUTES
     public int maxLife;
     public int life;
-
+    public int maxMana;
+    public int mana;
     public int level;
     public int strength;
     public int dexterity;
@@ -73,8 +75,9 @@ public class Entity {
     public int exp;
     public int nextLevelExp;
     public int coin;
-    public  Entity currentWeapon;
+    public Entity currentWeapon;
     public Entity currentShield;
+    public Projectile projectile;
 
     // Movement speed
     public int speed;
@@ -83,6 +86,7 @@ public class Entity {
     public int attackValue;
     public int defenseValue;
     public String description = "";
+    public int useCost;
 
     //TYPE
     public int type; // 0 = Player, 1 = NPC, 2 = Monster
@@ -94,10 +98,8 @@ public class Entity {
     public final int type_shield = 5;
     public final int type_consumable = 6;
 
-
+    //If an Object is pickable
     public boolean pickUpAble = false;
-
-
 
 
     // Animation
@@ -282,7 +284,6 @@ public class Entity {
             changeAlpha(g2, 0f);
         }
         if(dyingCounter > i*8 ){
-            dying = false;
             alive = false;
         }
     }
