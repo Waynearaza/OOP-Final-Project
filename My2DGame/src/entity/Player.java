@@ -43,6 +43,7 @@ public class Player extends Entity {
     BufferedImage attackLeft1, attackLeft2, attackLeft3, attackLeft4;
     BufferedImage attackRight1, attackRight2, attackRight3, attackRight4;
 
+
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp);
 
@@ -169,6 +170,7 @@ public class Player extends Entity {
     // LOAD ATTACK FRAMES
     public void getPlayerAttackImage() {
 
+        //LOADS SWORD ATTACK SPRITE IF PLAYER EQUIPPED AN SWORD
         if(currentWeapon.type == type_sword){
             attackUp1 = setup("/player/player attack up-1.png", gp.tileSize*2, gp.tileSize );
             attackUp2 = setup("/player/player attack up-2.png", gp.tileSize*2, gp.tileSize );
@@ -189,8 +191,27 @@ public class Player extends Entity {
             attackRight2 = setup("/player/player attack right-2.png", gp.tileSize *2, gp.tileSize);
             attackRight3 = setup("/player/player attack right-3.png", gp.tileSize *2, gp.tileSize);
             attackRight4 = setup("/player/player attack right-4.png", gp.tileSize *2, gp.tileSize);
-
         }
+
+        //LOADS AXE ATTACK SPRITE IF PLAYER EQUIPPED AN AXE
+        if(currentWeapon.type == type_axe){
+            attackUp1 = setup("/player/axe_swing/player axe up-1.png", gp.tileSize*2, gp.tileSize );
+            attackUp2 = setup("/player/axe_swing/player axe up-2.png", gp.tileSize*2, gp.tileSize );
+            attackUp3 = setup("/player/axe_swing/player axe up-3.png", gp.tileSize*2, gp.tileSize );
+
+            attackDown1 = setup("/player/axe_swing/player axe down-1.png", gp.tileSize*2, gp.tileSize);
+            attackDown2 = setup("/player/axe_swing/player axe down-2.png", gp.tileSize*2, gp.tileSize );
+            attackDown3 = setup("/player/axe_swing/player axe down-3.png", gp.tileSize*2, gp.tileSize );
+
+            attackLeft1 = setup("/player/axe_swing/player axe left-1.png", gp.tileSize *2, gp.tileSize);
+            attackLeft2 = setup("/player/axe_swing/player axe left-2.png", gp.tileSize *2, gp.tileSize);
+            attackLeft3 = setup("/player/axe_swing/player axe left-3.png", gp.tileSize *2, gp.tileSize);
+
+            attackRight1 = setup("/player/axe_swing/player axe right-1.png", gp.tileSize *2, gp.tileSize);
+            attackRight2= setup("/player/axe_swing/player axe right-2.png", gp.tileSize *2, gp.tileSize);
+            attackRight3 = setup("/player/axe_swing/player axe right-3.png", gp.tileSize *2, gp.tileSize);
+        }
+
     }
 
     public BufferedImage setup(String imagePath, int width, int height) {
@@ -497,9 +518,11 @@ public class Player extends Entity {
         if(itemIndex < inventory.size()){
             Entity selectedItem = inventory.get(itemIndex);
 
+            //CHECKS THE PLAYER CURRENT SELECTED WEAPON
             if(selectedItem.type == type_sword || selectedItem.type == type_axe){
                 currentWeapon = selectedItem;
                 attack = getAttack();
+                getPlayerAttackImage();
             }
             if(selectedItem.type == type_shield){
                 currentShield = selectedItem;
