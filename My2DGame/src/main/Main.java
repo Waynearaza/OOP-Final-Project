@@ -3,9 +3,10 @@ package main;
 import javax.swing.JFrame;
 
 public class Main {
+    public static JFrame window;
+
     public static void main(String[] args) {
-        // Create the main window (JFrame)
-        JFrame window = new JFrame();
+        window = new JFrame();
 
         // Close the program when the window is closed
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -15,6 +16,9 @@ public class Main {
 
         // Set the title of the window
         window.setTitle("Adventure Quest-ish?");
+
+        //Removes the Exit Bar on the Top
+        //window.setUndecorated(true);
 
         // Create the game panel (where the game runs and draws)
         GamePanel gamePanel = new GamePanel();
@@ -30,6 +34,7 @@ public class Main {
 
         // Make the window visible
         window.setVisible(true);
+
 
         //
         gamePanel.setupGame();

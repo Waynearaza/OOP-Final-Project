@@ -136,6 +136,7 @@ public class AssetSetter {
 
         gp.iTile[i] = new IT_DryTree(gp, 20, 20);i++;
         gp.iTile[i] = new IT_DryTree(gp, 20, 21);i++;
+        gp.iTile[i] = new IT_DryTree(gp, 20, 22);i++;
     }
 
 }

@@ -1,9 +1,7 @@
 package main;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -30,18 +28,24 @@ public class GamePanel extends JPanel implements Runnable {
     public final int tileSize = originalTileSize * scale;
 
     // Number of columns and rows on screen
-    public final int maxScreenCol = 14;
+    public final int maxScreenCol = 20;
     public final int maxScreenRow = 12;
 
     // Screen dimensions
-    public final int screenWidth = tileSize * maxScreenCol;   // 48 * 16 = 768px
-    public final int screenHeight = tileSize * maxScreenRow;  // 48 * 12 = 576px
+    public final int screenWidth = tileSize * maxScreenCol;   // 960px
+    public final int screenHeight = tileSize * maxScreenRow;  // 576px
 
     // WORLD SETTINGS
     public final int maxWorldCol = 50;
     public final int maxWorldRow = 50;
     public final int worldWidth = tileSize * maxWorldCol;
     public final int worldHeight = tileSize * maxWorldRow;
+
+    //FOR FULL SCREEN
+    int screenWidth2 = screenWidth;
+    int screenHeigh2 = screenHeight;
+    BufferedImage tempScreen;
+    Graphics2D g2;
 
     // Frames per second
     final int FPS = 60;
@@ -118,6 +122,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         // Make panel focusable so it can receive input
         this.setFocusable(true);
+
     }
 
     //Sets Up the Game objects and music or SFX
@@ -129,6 +134,26 @@ public class GamePanel extends JPanel implements Runnable {
         playMusic(0);
         //stopMusic();
         gameState = titleState;
+
+        tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
+        g2 = (Graphics2D)tempScreen.getGraphics();
+
+        //setFullScreen();
+
+        // Request focus AFTER full screen
+        this.requestFocusInWindow();
+    }
+
+    public void setFullScreen(){
+        //Get Local Screen Device
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice gd = ge.getDefaultScreenDevice();
+        gd.setFullScreenWindow(Main.window);
+
+        //GET FULL SCREEN WIDTH AND HEIGHT
+        screenHeigh2 = Main.window.getWidth();
+        screenHeigh2 = Main.window.getHeight();
+
     }
 
     // Start the game loop
@@ -158,7 +183,8 @@ public class GamePanel extends JPanel implements Runnable {
             // If it's time to update
             if (delta >= 1) {
                 update();   // Update game logic
-                repaint();  // Redraw the screen
+                drawToTempScreen(); //Draw Everything to the Buffered Image
+                repaint();// Draw the Buffered Image to the Screen
                 delta--;
             }
         }
@@ -225,12 +251,8 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    // Draw the game
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g;
-
+    //Draws the Game
+    public void drawToTempScreen() {
         // DEBUG
         long drawStart = 0;
         if(keyH.checkDrawTime == true) {
@@ -315,8 +337,26 @@ public class GamePanel extends JPanel implements Runnable {
             g2.drawString("Draw Time: " + passed, 10, 400);
             System.out.println("Draw Time: "+passed);
         }
+    }
 
-        g2.dispose();      // Dispose graphics object to free memory
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        int w = getWidth();
+        int h = getHeight();
+
+        double scaleX = (double) w / screenWidth;
+        double scaleY = (double) h / screenHeight;
+        double scale = Math.min(scaleX, scaleY); // Keep aspect ratio
+
+        int newW = (int)(screenWidth * scale);
+        int newH = (int)(screenHeight * scale);
+
+        int x = (w - newW) / 2;
+        int y = (h - newH) / 2;
+
+        g.drawImage(tempScreen, x, y, newW, newH, null);
     }
 
     //Plays the Musics

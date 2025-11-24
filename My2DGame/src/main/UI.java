@@ -473,11 +473,13 @@ public class UI {
     //Draws Players Inventory
     public void drawInventory() {
 
-        //FRAME
-        int frameX = gp.tileSize * 8 - gp.tileSize/2;
-        int frameY = gp.tileSize;
+        //FRAME — move to right side
         int frameWidth = gp.tileSize * 6;
         int frameHeight = gp.tileSize * 5;
+
+        int frameX = gp.screenWidth - frameWidth - gp.tileSize; // <-- new
+        int frameY = gp.tileSize;
+
         drawSubWindow(frameX, frameY, frameWidth, frameHeight);
 
         //SLOT
