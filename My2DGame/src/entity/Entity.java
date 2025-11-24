@@ -160,6 +160,7 @@ public class Entity {
         gp.cChecker.checkObject(this, false); //Checks Object Collision
         gp.cChecker.checkEntity(this, gp.npc);
         gp.cChecker.checkEntity(this, gp.monster);
+        gp.cChecker.checkEntity(this, gp.iTile);
         gp.cChecker.checkPlayer(this); //Checks Player Collision
         boolean contactPlayer = gp.cChecker.checkPlayer(this);
 

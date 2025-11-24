@@ -255,14 +255,21 @@ public class Player extends Entity {
             collisionOn = false;
             gp.cChecker.checkTile(this);
 
+            //Check Tile Collision
             int objIndex = gp.cChecker.checkObject(this, true);
             pickUpObject(objIndex);
 
+            //Check NPC Collision
             int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
             interactNPC(npcIndex);
 
+            //Check Monster Collision
             int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
             contactMonster(monsterIndex);
+
+            //Check Interactive Tile Collision
+            int iTileIndex = gp.cChecker.checkEntity(this, gp.iTile);
+
 
             gp.eHandler.checkEvent();
 
@@ -350,11 +357,12 @@ public class Player extends Entity {
             int solidAreaWidth = solidArea.width;
             int soldAreaHeight = solidArea.height;
 
-            switch (direction){
-                case "up": worldY -= attackArea.height; break;
-                case "down": worldY += attackArea.height; break;
-                case "left": worldX -= attackArea.width; break;
-                case "right": worldX += attackArea.width; break;
+            // CHECK COLLISION WITH ATTACK AREA
+            switch(direction){
+                case "up":    worldY -= attackArea.height; break;
+                case "down":  worldY += attackArea.height; break;
+                case "left":  worldX -= attackArea.width;  break;
+                case "right": worldX += attackArea.width;  break;
             }
 
             //Attack Becomes Solid Area
@@ -364,6 +372,10 @@ public class Player extends Entity {
             //Check Monster Collision Based with the Updated world X, World Y, and Solid Area
             int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
             damageMonster(monsterIndex, attack);
+
+            //
+            int iTileIndex = gp.cChecker.checkEntity(this, gp.iTile);
+            damageInteractiveTile(iTileIndex);
 
             //After Checking Collision, Restores Original Size
             worldX = currentWorldX;
@@ -479,9 +491,6 @@ public class Player extends Entity {
     }
 
 
-
-
-
     // ENTER → INTERACT
     public void interactNPC(int i){
         if(gp.keyH.enterPressed){
@@ -549,6 +558,19 @@ public class Player extends Entity {
             gp.playSE(8);
             gp.gameState = gp.dialogueState;
             gp.ui.currentDialogue = "You Are Now Level " + level + " Now!\n" + "You Feel More Blacker";
+
+        }
+    }
+
+    public void damageInteractiveTile(int i){
+        if(i != 999 && gp.iTile[i].destructible == true && gp.iTile[i].isCorrectItem(this) == true
+        && gp.iTile[i].invincible == false){
+            gp.iTile[i].playSE();
+            gp.iTile[i].life--;
+            gp.iTile[i].invincible = true;
+            if(gp.iTile[i].life == 0){
+                gp.iTile[i] = gp.iTile[i].getDestroyedForm();
+            }
 
         }
     }

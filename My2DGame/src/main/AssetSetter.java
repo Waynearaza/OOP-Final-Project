@@ -5,6 +5,7 @@ import entity.NPC_Slime;
 import entity.NPC_Slime2;
 import monster.MON_GreenSlime;
 import object.*;
+import tiles_interactive.IT_DryTree;
 
 public class AssetSetter {
 
@@ -121,7 +122,20 @@ public class AssetSetter {
         gp.monster[i].worldX = gp.tileSize*38;
         gp.monster[i].worldY = gp.tileSize*42;
         i++;
-
-
     }
+
+    public void setInteractiveTile(){
+        int i = 0;
+        gp.iTile[i] = new IT_DryTree(gp, 25, 14);i++;
+
+
+
+
+        gp.iTile[i] = new IT_DryTree(gp, 30, 20);i++;
+        gp.iTile[i] = new IT_DryTree(gp, 30, 22);i++;
+
+        gp.iTile[i] = new IT_DryTree(gp, 20, 20);i++;
+        gp.iTile[i] = new IT_DryTree(gp, 20, 21);i++;
+    }
+
 }

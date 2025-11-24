@@ -202,14 +202,6 @@ public class TileManager {
 
 
 
-
-
-
-
-
-
-
-
     }
 
     public void setup(int index, String imageName, boolean collision) {
