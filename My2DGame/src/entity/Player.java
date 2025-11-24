@@ -8,10 +8,7 @@ import java.util.ArrayList;
 import main.GamePanel;
 import main.KeyHandler;
 import main.UtilityTool;
-import object.OBJ_Fireball;
-import object.OBJ_Key;
-import object.OBJ_Shield_Wood;
-import object.OBJ_Sword_Normal;
+import object.*;
 
 import static javax.imageio.ImageIO.read;
 
@@ -81,6 +78,9 @@ public class Player extends Entity {
         level =1;
         maxLife = 6;
         life = maxLife;
+        maxMana = 4;
+        mana = maxMana;
+        ammo = 10;
         strength = 1; // More = More Damage Player Gives
         dexterity = 1; //More = Less Damage Player Receives
         exp = 0;
@@ -89,6 +89,7 @@ public class Player extends Entity {
         currentWeapon = new OBJ_Sword_Normal(gp);
         currentShield = new OBJ_Shield_Wood(gp);
         projectile = new OBJ_Fireball(gp);
+        //projectile = new OBJ_Rock(gp);
         attack =  getAttack(); //Total attack Value is decided by strength and weapon
         defense = getDefense(); //Total defense Value is decided by dexterity and shield
     }
@@ -298,10 +299,16 @@ public class Player extends Entity {
             }
         }
 
-        if(gp.keyH.shotKeyPressed == true && projectile.alive == false && shotAvailableCounter == 30){
+        if(gp.keyH.shotKeyPressed == true && projectile.alive == false
+                && shotAvailableCounter == 30 && projectile.havaResource(this) == true){
             //Sets Default Coordinates, Direction, and User
             projectile.set(worldX, worldY, direction, true, this);
 
+            //Subtract The Cost(Mana, Ammo, etc)
+            projectile.subtractResource(this);
+
+
+            //Add to the List
             gp.projectileList.add(projectile);
             shotAvailableCounter = 0;
             gp.playSE(10);
@@ -314,6 +321,7 @@ public class Player extends Entity {
                 invincibleCounter = 0;
             }
         }
+
         if(shotAvailableCounter < 30){
             shotAvailableCounter++;
         }
