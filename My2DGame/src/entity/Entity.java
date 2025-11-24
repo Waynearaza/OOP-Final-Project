@@ -88,6 +88,7 @@ public class Entity {
     public int defenseValue;
     public String description = "";
     public int useCost;
+    public int value;
 
     //TYPE
     public int type; // 0 = Player, 1 = NPC, 2 = Monster
@@ -98,6 +99,7 @@ public class Entity {
     public final int type_axe = 4;
     public final int type_shield = 5;
     public final int type_consumable = 6;
+    public final int type_pickupOnly = 7;
 
     //If an Object is pickable
     public boolean pickUpAble = false;
@@ -118,6 +120,19 @@ public class Entity {
     public void damageReaction(){}
 
     public void use(Entity entity){}
+
+    public void checkDrop(){}
+
+    public void dropItem(Entity droppedItem){
+        for(int i = 0; i < gp.obj.length; i++){
+            if(gp.obj[i] == null){
+                gp.obj[i] = droppedItem;
+                gp.obj[i].worldX = worldX;
+                gp.obj[i].worldY =worldY;
+                break;
+            }
+        }
+    }
 
     //Set the Behavior Of the NPC When Talk To
     public void speak(){
@@ -260,7 +275,7 @@ public class Entity {
             if(dying == true){
                 dyingAnimation(g2);
             }
-            g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+            g2.drawImage(image, screenX, screenY, null);
             changeAlpha(g2,1F);
         }
     }

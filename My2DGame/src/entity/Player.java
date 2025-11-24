@@ -325,6 +325,14 @@ public class Player extends Entity {
         if(shotAvailableCounter < 30){
             shotAvailableCounter++;
         }
+
+        if(life > maxLife){
+            life = maxLife;
+        }
+        if(mana > maxLife){
+            mana = maxMana;
+        }
+
     }
 
     // 4 FRAME ATTACKING
@@ -446,21 +454,33 @@ public class Player extends Entity {
     }
 
     public void pickUpObject(int i) {
-        String text;
-
         if (i != 999){
-            if(inventory.size() != maxinventorySize){
-                inventory.add(gp.obj[i]);
-                gp.playSE(1);
-                text = "Got a " + gp.obj[i].name + "!";
+            //Pickup Only Items
+            if(gp.obj[i].type == type_pickupOnly) {
+                gp.obj[i].use(this);
+                gp.obj[i] = null;
             }
+            //Inventory Items
             else {
-                text = "Your Inventory is Full Nigger";
+                String text;
+
+                if(inventory.size() != maxinventorySize){
+                    inventory.add(gp.obj[i]);
+                    gp.playSE(1);
+                    text = "Got a " + gp.obj[i].name + "!";
+                }
+                else {
+                    text = "Your Inventory is Full Nigger";
+                }
+                gp.ui.addMessage(text);
+                gp.obj[i] = null;
             }
-            gp.ui.addMessage(text);
-            gp.obj[i] = null;
         }
     }
+
+
+
+
 
     // ENTER → INTERACT
     public void interactNPC(int i){
