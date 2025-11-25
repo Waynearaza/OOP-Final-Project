@@ -46,6 +46,7 @@ public class GamePanel extends JPanel implements Runnable {
     int screenHeigh2 = screenHeight;
     BufferedImage tempScreen;
     Graphics2D g2;
+    public boolean fullScreenOn = false;
 
     // Frames per second
     final int FPS = 60;
@@ -83,7 +84,8 @@ public class GamePanel extends JPanel implements Runnable {
     public final int playState =1;
     public final int pauseState = 2 ;
     public final int dialogueState = 3;
-    public final  int characterState = 4;
+    public final int characterState = 4;
+    public final int optionState = 5;
 
 
     //Entity and Object
@@ -364,7 +366,6 @@ public class GamePanel extends JPanel implements Runnable {
         music.setFile(i);
         music.play();
         music.loop();
-        music.setVolume(0.7f);
     }
 
     //Sound the Music
