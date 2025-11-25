@@ -10,6 +10,7 @@ import java.util.Comparator;
 
 import javax.swing.JPanel;
 
+import ai.PathFinder;
 import entity.Entity;
 import entity.Player;
 import tile.TileManager;
@@ -79,6 +80,8 @@ public class GamePanel extends JPanel implements Runnable {
 
     //Initializes Config
     Config config = new Config(this);
+
+    public PathFinder pFinder = new PathFinder(this);
 
     // Game loop thread
     Thread gameThread;

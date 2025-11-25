@@ -44,23 +44,36 @@ public class NPC_OldMan extends Entity {
     @Override
     public void setAction() {
 
-        // Count frames
-        patternCounter++;
 
-        // Move to next direction after duration
-        if (patternCounter >= patternDuration) {
-            patternIndex++;
-            if (patternIndex >= pattern.length) {
-                patternIndex = 0;  // loop pattern
+        if(onPath == true){
+
+            int goalCol = 12;
+            int goalRow = 9;
+
+            searchPath(goalCol, goalRow);
+        }
+        else {
+            // Count frames
+            patternCounter++;
+
+            // Move to next direction after duration
+            if (patternCounter >= patternDuration) {
+                patternIndex++;
+                if (patternIndex >= pattern.length) {
+                    patternIndex = 0;  // loop pattern
+                }
+
+                direction = pattern[patternIndex];
+                patternCounter = 0;
             }
-
-            direction = pattern[patternIndex];
-            patternCounter = 0;
         }
     }
 
     @Override
     public void speak(){
+
         super.speak();
+
+        onPath = true;
     }
 }

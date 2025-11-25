@@ -53,6 +53,8 @@ public class Entity {
     public boolean dying = false;
     boolean hpBarOn = false;
 
+    public boolean onPath = false;
+
     //NPC Dialogues
     String dialogues[] = new String[20];
     int dialogueIndex = 0;
@@ -193,9 +195,7 @@ public class Entity {
         }
     }
 
-    public void update(){
-        setAction();
-
+    public void checkCollision(){
         collisionOn = false;
         gp.cChecker.checkTile(this);
         gp.cChecker.checkObject(this, false); //Checks Object Collision
@@ -208,6 +208,12 @@ public class Entity {
         if(this.type == type_monster && contactPlayer == true){
             damagePlayer(attack);
         }
+    }
+
+    public void update(){
+        setAction();
+        checkCollision();
+
 
         if (collisionOn == false){
             switch (direction){
@@ -357,6 +363,8 @@ public class Entity {
     public void changeAlpha(Graphics2D g2, float alphaValue){
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alphaValue));
     }
+
+
     public BufferedImage setup(String imagePath, int width, int height) {
         UtilityTool uTool = new UtilityTool();
         BufferedImage image = null;
@@ -368,5 +376,86 @@ public class Entity {
             e.printStackTrace();
         }
         return image;
+    }
+
+    public void searchPath(int goalCol, int goalRow){
+
+
+        int startCol = (worldX + solidArea.x)/gp.tileSize;
+        int startRow = (worldY + solidArea.y)/gp.tileSize;
+
+
+        gp.pFinder.setNodes(startCol, startRow, goalCol, goalRow, this);
+
+        if(gp.pFinder.search() == true){
+            //Next WorldX & WorldY
+            int nextX = gp.pFinder.pathList.get(0).col * gp.tileSize;
+            int nextY = gp.pFinder.pathList.get(0).row * gp.tileSize;
+
+            //Entity's Solid Area Position
+            int enLeftX = worldX + solidArea.x;
+            int enRightX = worldX + solidArea.x + solidArea.width;
+            int enTopY = worldY + solidArea.y;
+            int enBottomY = worldY + solidArea.y + solidArea.height;
+
+            if(enTopY > nextY && enLeftX >= nextX && enRightX < nextX + gp.tileSize){
+                direction = "up";
+            }
+            else if(enTopY < nextY && enLeftX >= nextX && enRightX < nextX + gp.tileSize){
+                direction = "down";
+            }
+            else if(enTopY >= nextY && enBottomY < nextY + gp.tileSize){
+                //Left Or Right
+                if(enLeftX > nextX){
+                    direction = "left";
+                }
+                if(enLeftX < nextX){
+                    direction = "right";
+                }
+            }
+            else if(enTopY > nextY && enLeftX > nextX){
+                //Up or Left
+                direction = "up";
+                checkCollision();
+                if(collisionOn == true){
+                    direction = "left";
+                }
+            }
+            else if(enTopY > nextY && enLeftX < nextX){
+                //Up or Right
+                direction = "up";
+                checkCollision();
+                if(collisionOn == true){
+                    direction = "right";
+                }
+            }
+            else if(enTopY < nextY && enLeftX > nextX){
+                //Down or Left
+                direction = "down";
+                checkCollision();
+                if(collisionOn == true){
+                    direction = "left";
+                }
+            }
+            else if(enTopY < nextY && enLeftX < nextX){
+                //Down Or Right
+                direction = "down";
+                checkCollision();
+                if(collisionOn == true){
+                    direction = "right";
+                }
+            }
+
+            //If
+            int nextCol = gp.pFinder.pathList.get(0).col;
+            int nextRow = gp.pFinder.pathList.get(0).row;
+            if(nextCol == goalCol && nextRow == goalRow){
+                onPath = false;
+            }
+
+        } else {
+            onPath = false;
+        }
+
     }
 }
