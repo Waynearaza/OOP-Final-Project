@@ -72,8 +72,11 @@ public class GamePanel extends JPanel implements Runnable {
     //Checks Collision
     public CollisionChecker cChecker = new CollisionChecker(this);
 
-    //
+    //Initializes EventHandler
     public EventHandler eHandler = new EventHandler(this);
+
+    //Initializes Config
+    Config config = new Config(this);
 
     // Game loop thread
     Thread gameThread;
@@ -140,7 +143,9 @@ public class GamePanel extends JPanel implements Runnable {
         tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
         g2 = (Graphics2D)tempScreen.getGraphics();
 
-        //setFullScreen();
+        if(fullScreenOn == true){
+            setFullScreen();
+        }
 
         // Request focus AFTER full screen
         this.requestFocusInWindow();

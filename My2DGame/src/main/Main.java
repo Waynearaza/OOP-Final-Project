@@ -17,14 +17,19 @@ public class Main {
         // Set the title of the window
         window.setTitle("Adventure Quest-ish?");
 
-        //Removes the Exit Bar on the Top
-        //window.setUndecorated(true);
 
         // Create the game panel (where the game runs and draws)
         GamePanel gamePanel = new GamePanel();
 
         // Add the game panel to the window
         window.add(gamePanel);
+
+
+        // Load Config File
+        gamePanel.config.loadConfig();
+        if(gamePanel.fullScreenOn == true){
+            window.setUndecorated(true);
+        }
 
         // Set the window size to fit the game panel
         window.pack();
