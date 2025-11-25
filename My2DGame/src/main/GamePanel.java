@@ -89,6 +89,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int dialogueState = 3;
     public final int characterState = 4;
     public final int optionState = 5;
+    public final int gameOverState = 6;
 
 
     //Entity and Object
@@ -149,6 +150,26 @@ public class GamePanel extends JPanel implements Runnable {
 
         // Request focus AFTER full screen
         this.requestFocusInWindow();
+    }
+
+    public void retry(){
+        player.setDefaultPositions();
+        player.restoreLifeAndMana();
+        aSetter.setNPC();
+        aSetter.setMonster();
+    }
+
+    public void restart(){
+        player.setDefaultPositions();
+        player.setDefaultValues();
+        player.restoreLifeAndMana();
+        player.setItems();
+        aSetter.setObject();
+        aSetter.setNPC();
+        aSetter.setMonster();
+        aSetter.setInteractiveTile();
+
+
     }
 
     public void setFullScreen(){
