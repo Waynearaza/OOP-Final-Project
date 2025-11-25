@@ -15,16 +15,17 @@ public class TileManager {
 
     GamePanel gp;
     public Tile[] tile;
-    public int[][] mapTileNum;
+    public int mapTileNum[][][];
 
     public TileManager(GamePanel gp) {
         this.gp = gp;
 
         tile = new Tile[200];
-        mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow]; 
+        mapTileNum = new int[gp.maxMap][gp.maxWorldCol][gp.maxWorldRow];
 
         getTileImage();
-        loadMap("/maps/map01.txt");
+        loadMap("/maps/map01.txt", 0);
+        loadMap("/maps/interior01.txt", 1);
     }
 
     // Load tile images
@@ -93,7 +94,7 @@ public class TileManager {
         setup(51, "maki's house-10", true);
         setup(52, "maki's house-11", true);
         setup(53, "maki's house-12", true);
-        setup(54, "maki's house-13", true);
+        setup(54, "maki's house-13", false);
         setup(55, "maki's house-14", true);
         setup(56, "maki's house-15", true);
 
@@ -200,6 +201,10 @@ public class TileManager {
         setup(148, "bridge23", true);
         setup(149, "bridge24", true);
 
+        setup(150, "hut", false);
+        setup(151, "floor01", false);
+        setup(152, "table01", true);
+
 
 
     }
@@ -227,7 +232,7 @@ public class TileManager {
 
     // Load map from text file
     // File: My2DGame/src/tile/TileManager.java
-    public void loadMap(String filePath) {
+    public void loadMap(String filePath, int map) {
         try (InputStream is = getClass().getResourceAsStream(filePath)) {
             if (is == null) {
                 throw new IOException("Map file not found: " + filePath);
@@ -243,7 +248,7 @@ public class TileManager {
                     for (int col = 0; col < gp.maxWorldCol && col < numbers.length; col++) {
                         try {
                             int num = Integer.parseInt(numbers[col]);
-                            mapTileNum[col][row] = num;
+                            mapTileNum[map][col][row] = num;
                         } catch (NumberFormatException ex) {
                             System.err.println("Invalid tile number at row " + row + " col " + col);
                         }
@@ -261,7 +266,7 @@ public class TileManager {
         for (int worldRow = 0; worldRow < gp.maxWorldRow; worldRow++) {
             for (int worldCol = 0; worldCol < gp.maxWorldCol; worldCol++) {
 
-                int tileNum = mapTileNum[worldCol][worldRow]; // Correct indexing
+                int tileNum = mapTileNum[gp.currentMap][worldCol][worldRow]; // Correct indexing
 
                 int worldX = worldCol * gp.tileSize;
                 int worldY = worldRow * gp.tileSize;
