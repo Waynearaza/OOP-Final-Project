@@ -94,7 +94,7 @@ public class TileManager {
         setup(51, "maki's house-10", true);
         setup(52, "maki's house-11", true);
         setup(53, "maki's house-12", true);
-        setup(54, "maki's house-13", false);
+        setup(54, "maki's house-13", true);
         setup(55, "maki's house-14", true);
         setup(56, "maki's house-15", true);
 

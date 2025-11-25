@@ -15,6 +15,7 @@ public class OBJ_Sword_Normal extends Entity {
         attackArea.height = 36;
         pickUpAble = true;
         description ="[" + name + "]\nAn Old Sword";
+        price = 20;
 
     }
 }

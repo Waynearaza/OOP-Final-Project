@@ -21,7 +21,7 @@ public class NPC_OldMan extends Entity {
     }
 
     public void getImage(){
-        up1 = setup("/npc/oldman_down_1", gp.tileSize, gp.tileSize);
+        up1 = setup("/npc/oldman_up_1", gp.tileSize, gp.tileSize);
         up2 = setup("/npc/oldman_up_2", gp.tileSize, gp.tileSize);
 
         down1 = setup("/npc/oldman_down_1", gp.tileSize, gp.tileSize);

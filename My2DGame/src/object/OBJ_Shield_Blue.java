@@ -13,6 +13,7 @@ public class OBJ_Shield_Blue extends Entity {
         defenseValue = 2;
         pickUpAble = true;
         description ="[" + name + "]\nMade By BLUE?";
+        price = 250;
     }
 }
 

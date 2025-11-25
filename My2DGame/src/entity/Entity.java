@@ -3,6 +3,7 @@ package entity;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import main.GamePanel;
 import main.UtilityTool;
@@ -83,12 +84,16 @@ public class Entity {
     // Movement speed
     public int speed;
 
+    public ArrayList<Entity> inventory = new ArrayList<>();
+    public final int maxinventorySize = 20;
+
     //ITEM ATTRIBUTES
     public int attackValue;
     public int defenseValue;
     public String description = "";
     public int useCost;
     public int value;
+    public int price;
 
     //TYPE
     public int type; // 0 = Player, 1 = NPC, 2 = Monster

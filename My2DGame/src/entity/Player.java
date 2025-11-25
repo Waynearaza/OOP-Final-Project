@@ -3,7 +3,6 @@ package entity;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import main.GamePanel;
 import main.KeyHandler;
@@ -19,8 +18,7 @@ public class Player extends Entity {
     public final int screenY;
     private boolean moving = false;
     public boolean attackCanceled = false;
-    public ArrayList<Entity> inventory = new ArrayList<>();
-    public final int maxinventorySize = 20;
+
 
     // Walking sprites
     BufferedImage up1, up2, up3, up4, up5, up6;
@@ -87,7 +85,7 @@ public class Player extends Entity {
         dexterity = 1; //More = Less Damage Player Receives
         exp = 0;
         nextLevelExp = 5;
-        coin = 0; //We Broke Right Now
+        coin = 500; //We Broke Right Now
         currentWeapon = new OBJ_Sword_Normal(gp);
         currentShield = new OBJ_Shield_Wood(gp);
         projectile = new OBJ_Fireball(gp);
@@ -601,7 +599,7 @@ public class Player extends Entity {
 
     //Equip Items in Inventory
     public void selectItem(){
-        int itemIndex = gp.ui.getItemIndexOnSlot();
+        int itemIndex = gp.ui.getItemIndexOnSlot(gp.ui.playerCol, gp.ui.playerSlotRow);
 
         if(itemIndex < inventory.size()){
             Entity selectedItem = inventory.get(itemIndex);
