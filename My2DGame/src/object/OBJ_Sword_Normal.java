@@ -16,6 +16,7 @@ public class OBJ_Sword_Normal extends Entity {
         pickUpAble = true;
         description ="[" + name + "]\nAn Old Sword";
         price = 20;
+        knockBackPower = 2;
 
     }
 }

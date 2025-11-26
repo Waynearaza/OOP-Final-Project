@@ -287,6 +287,7 @@ public class TileManager {
             }
         }
 
+        //Draws Red Tile to The Destination of the NPC
         if(drawPath == true) {
             g2.setColor(new Color(255, 0, 0, 70));
 
