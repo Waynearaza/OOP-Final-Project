@@ -1,6 +1,6 @@
 package tile;
 
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,6 +16,7 @@ public class TileManager {
     GamePanel gp;
     public Tile[] tile;
     public int mapTileNum[][][];
+    boolean drawPath = true;
 
     public TileManager(GamePanel gp) {
         this.gp = gp;
@@ -263,8 +264,12 @@ public class TileManager {
 
     // Draw tiles
     public void draw(Graphics2D g2) {
-        for (int worldRow = 0; worldRow < gp.maxWorldRow; worldRow++) {
-            for (int worldCol = 0; worldCol < gp.maxWorldCol; worldCol++) {
+
+        int worldCol = 0;
+        int worldRow = 0;
+
+        for (worldRow = 0; worldRow < gp.maxWorldRow; worldRow++) {
+            for (worldCol = 0; worldCol < gp.maxWorldCol; worldCol++) {
 
                 int tileNum = mapTileNum[gp.currentMap][worldCol][worldRow]; // Correct indexing
 
@@ -279,6 +284,21 @@ public class TileManager {
                     screenY + gp.tileSize > 0 && screenY < gp.screenHeight) {
                     g2.drawImage(tile[tileNum].image, screenX, screenY,null);
                 }
+            }
+        }
+
+        if(drawPath == true) {
+            g2.setColor(new Color(255, 0, 0, 70));
+
+            for (int i = 0; i < gp.pFinder.pathList.size(); i++) {
+                int worldX = gp.pFinder.pathList.get(i).col * gp.tileSize;
+                int worldY = gp.pFinder.pathList.get(i).row * gp.tileSize;
+
+                int screenX = worldX - gp.player.worldX + gp.player.screenX;
+                int screenY = worldY - gp.player.worldY + gp.player.screenY;
+
+                g2.fillRect(screenX, screenY, gp.tileSize, gp.tileSize);
+
             }
         }
     }
