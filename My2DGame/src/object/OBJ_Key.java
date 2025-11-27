@@ -17,6 +17,7 @@ public class OBJ_Key extends Entity {
         //pickUpAble = true;
         description ="[" + name + "]\nOpens A Door";
         price = 100;
+        stackable = true;
 
     }
 
