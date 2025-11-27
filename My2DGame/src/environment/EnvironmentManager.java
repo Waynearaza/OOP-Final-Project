@@ -1,0 +1,25 @@
+package environment;
+
+import main.GamePanel;
+
+import java.awt.*;
+
+public class EnvironmentManager {
+    GamePanel gp;
+    Lighting lighting;
+
+    public EnvironmentManager(GamePanel gp){
+        this.gp = gp;
+    }
+
+    public void setup(){
+        //Range of what the player can see to the darkness
+        lighting = new Lighting(gp, 600);
+
+    }
+
+    public void draw(Graphics2D g2){
+        lighting.draw(g2);
+
+    }
+}

@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import ai.PathFinder;
 import entity.Entity;
 import entity.Player;
+import environment.EnvironmentManager;
 import tile.TileManager;
 import tiles_interactive.InteractiveTile;
 
@@ -83,6 +84,8 @@ public class GamePanel extends JPanel implements Runnable {
 
     public PathFinder pFinder = new PathFinder(this);
 
+    EnvironmentManager eManager = new EnvironmentManager(this);
+
     // Game loop thread
     Thread gameThread;
 
@@ -148,6 +151,7 @@ public class GamePanel extends JPanel implements Runnable {
         aSetter.setInteractiveTile();
         playMusic(0);
         //stopMusic();
+        eManager.setup();
         gameState = titleState;
 
         tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
@@ -358,6 +362,8 @@ public class GamePanel extends JPanel implements Runnable {
             //EMPTY ENTITY LIST
             entityList.clear();
 
+            //Environment
+            eManager.draw(g2);
 
             //UI
             ui.draw(g2); //Draw the UI
