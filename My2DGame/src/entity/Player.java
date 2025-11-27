@@ -18,6 +18,7 @@ public class Player extends Entity {
     public final int screenY;
     private boolean moving = false;
     public boolean attackCanceled = false;
+    public boolean lightUpdated = false;
 
 
     // Walking sprites
@@ -652,6 +653,16 @@ public class Player extends Entity {
                 currentShield = selectedItem;
                 defense = getDefense();
             }
+            if(selectedItem.type == type_light){
+               if(currentLight == selectedItem){
+                   currentLight = null;
+               }
+               else {
+                   currentLight = selectedItem;
+               }
+               lightUpdated = true;
+            }
+
             if(selectedItem.type == type_consumable){
                 if(selectedItem.use(this) == true){
                     if(selectedItem.amount > 1){

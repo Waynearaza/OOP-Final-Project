@@ -14,8 +14,12 @@ public class EnvironmentManager {
 
     public void setup(){
         //Range of what the player can see to the darkness
-        lighting = new Lighting(gp, 600);
+        lighting = new Lighting(gp);
 
+    }
+
+    public void update(){
+        lighting.update();
     }
 
     public void draw(Graphics2D g2){
