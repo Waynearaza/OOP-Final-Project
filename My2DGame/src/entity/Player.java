@@ -540,9 +540,6 @@ public class Player extends Entity {
                 attackCanceled = true;
                 gp.gameState = gp.dialogueState;
                 gp.npc[gp.currentMap][i].speak();
-            } else {
-                gp.playSE(7);
-                attacking = true;
             }
         }
     }
