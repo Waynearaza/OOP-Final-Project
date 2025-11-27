@@ -14,14 +14,15 @@ public class OBJ_Potion_Red extends Entity {
         value = 5;
         down1 = setup("/objects/potion_red", gp.tileSize, gp.tileSize);
         description ="[" + name + "]\nHeals Your Life by " + value;
-        pickUpAble = true;
+        //pickUpAble = true;
         price = 15;
     }
 
-    public void use (Entity entity){
+    public boolean use (Entity entity){
         gp.gameState = gp.dialogueState;
         gp.ui.currentDialogue = "You Drank The Drugs\nYour Life Increased by 5\nDo More Drugs Homie";
         entity.life += value;
         gp.playSE(2);
+        return true;
     }
 }

@@ -7,11 +7,52 @@ import javax.imageio.ImageIO;
 import java.io.IOException;
 
 public class OBJ_Chest extends Entity {
-    public  OBJ_Chest(GamePanel gp) {
-        super(gp);
+    GamePanel gp;
+    Entity loot;
+    boolean opened = false;
 
+    public  OBJ_Chest(GamePanel gp, Entity loot) {
+        super(gp);
+        this.gp = gp;
+        this.loot = loot;
+
+        type = type_obstacle;
         name = "Chest";
 
-        down1 = setup("/objects/chest", gp.tileSize, gp.tileSize);
+        image = setup("/objects/chest", gp.tileSize, gp.tileSize);
+        image2 = setup("/objects/chest_opened", gp.tileSize, gp.tileSize);
+        down1 = image;
+        collision = true;
+
+        solidArea.x = 4;
+        solidArea.y =  16;
+        solidArea.width = 40;
+        solidArea.height = 32;
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
+    }
+
+    public void interact(){
+        gp.gameState = gp.dialogueState;
+
+        if(opened == false){
+            gp.playSE(3);
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("You opened this chest and found a " + loot.name +"!");
+            if(gp.player.inventory.size() == gp.player.maxinventorySize){
+                sb.append("\n...But You're Inventory is Full");
+            }
+            else {
+                sb.append("\n You Obtained the " + loot.name +"!");
+                gp.player.inventory.add(loot);
+                down1 = image2;
+                opened = true;
+            }
+            gp.ui.currentDialogue = sb.toString();
+        }
+        else {
+            gp.ui.currentDialogue= "Already Opened";
+        }
     }
 }

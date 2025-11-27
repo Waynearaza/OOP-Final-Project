@@ -107,10 +107,10 @@ public class CollisionChecker {
                         entity.collisionOn = true;
                     }
 
-                    // ⭐ FIX HERE: Only return index for pick-up-able objects
-                    if(player && gp.obj[gp.currentMap][i].pickUpAble){
+                    if(player == true){
                         index = i;
                     }
+
                 }
 
                 // Reset areas

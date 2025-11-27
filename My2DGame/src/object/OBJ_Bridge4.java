@@ -12,11 +12,12 @@ public class OBJ_Bridge4 extends Entity {
     public OBJ_Bridge4(GamePanel gp) {
         super(gp);
 
+        type = type_obstacle;
         name = "Bridge4";
         down1 = setup("/objects/bridge2", gp.tileSize, gp.tileSize);
 
         collision = true;
-        pickUpAble = false;
+        //pickUpAble = false;
 
         solidArea.x = 0;
         solidArea.y =  16;
