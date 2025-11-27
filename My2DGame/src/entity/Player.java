@@ -186,6 +186,64 @@ public class Player extends Entity {
         rightIdle6 = setup("/player/player-12.png", gp.tileSize, gp.tileSize);
     }
 
+    public void getSleepingImage(BufferedImage image){
+        up1 = image;
+        up2 = image;
+        up3 = image;
+        up4 = image;
+        up5 = image;
+        up6 = image;
+
+        down1 = image;
+        down2 = image;
+        down3 = image;
+        down4 = image;
+        down5 = image;
+        down6 = image;
+
+        right1 = image;
+        right2 = image;
+        right3 = image;
+        right4 = image;
+        right5 = image;
+        right6 = image;
+
+        left1 = image;
+        left2 = image;
+        left3 = image;
+        left4 = image;
+        left5 = image;
+        left6 = image;
+
+        upIdle1 = image;
+        upIdle2 = image;
+        upIdle3 = image;
+        upIdle4 = image;
+        upIdle5 = image;
+        upIdle6 = image;
+
+        downIdle1 = image;
+        downIdle2 = image;
+        downIdle3 = image;
+        downIdle4 = image;
+        downIdle5 = image;
+        downIdle6 = image;
+
+        leftIdle1 = image;
+        leftIdle2 = image;
+        leftIdle3 = image;
+        leftIdle4 = image;
+        leftIdle5 = image;
+        leftIdle6 = image;
+
+        rightIdle1 = image;
+        rightIdle2 = image;
+        rightIdle3 = image;
+        rightIdle4 = image;
+        rightIdle5 = image;
+        rightIdle6 = image;
+    }
+
     // LOAD ATTACK FRAMES
     public void getPlayerAttackImage() {
 
@@ -506,6 +564,7 @@ public class Player extends Entity {
                 gp.obj[gp.currentMap][i].use(this);
                 gp.obj[gp.currentMap][i] = null;
             }
+
 
             //OBSTACLE
             else if (gp.obj[gp.currentMap][i].type == type_obstacle) {
