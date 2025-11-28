@@ -120,6 +120,8 @@ public class Player extends Entity {
 
     public int getAttack(){
         attackArea = currentWeapon.attackArea;
+        motion1_Duration = currentWeapon.motion1_Duration;
+        motion2_Duration = currentWeapon.motion2_Duration;
         return attack = strength * currentWeapon.attackValue;
     }
 
@@ -428,60 +430,7 @@ public class Player extends Entity {
 
     }
 
-    // 4 FRAME ATTACKING
-    public void attacking() {
 
-        spriteCounter++;
-
-        if (spriteCounter <= 5) {spriteNum = 1;}
-        else if (spriteCounter > 5 && spriteCounter <= 25) {
-            spriteNum = 2;
-
-            //Save the Current worldX, WorldY, Solid Area Width, Solid Area Height
-            int currentWorldX = worldX;
-            int currentWorldY = worldY;
-            int solidAreaWidth = solidArea.width;
-            int soldAreaHeight = solidArea.height;
-
-            // CHECK COLLISION WITH ATTACK AREA
-            switch(direction){
-                case "up":    worldY -= attackArea.height; break;
-                case "down":  worldY += attackArea.height; break;
-                case "left":  worldX -= attackArea.width;  break;
-                case "right": worldX += attackArea.width;  break;
-            }
-
-            //Attack Becomes Solid Area
-            solidArea.width = attackArea.width;
-            solidArea.height = attackArea.height;
-
-            //Check Monster Collision Based with the Updated world X, World Y, and Solid Area
-            int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
-            damageMonster(monsterIndex, attack, currentWeapon.knockBackPower);
-
-            //
-            int iTileIndex = gp.cChecker.checkEntity(this, gp.iTile);
-            damageInteractiveTile(iTileIndex);
-
-            int projectileIndex = gp.cChecker.checkEntity(this, gp.projectile);
-            damamageProjectile(projectileIndex);
-
-            //After Checking Collision, Restores Original Size
-            worldX = currentWorldX;
-            worldY = currentWorldY;
-            solidArea.width = solidAreaWidth;
-            solidArea.height = soldAreaHeight;
-
-        }
-        else if (spriteCounter <= 30) {spriteNum = 3;}
-        else if (spriteCounter <= 40) {spriteNum = 4;}
-
-        if (spriteCounter > 40) {
-            spriteCounter = 0;
-            spriteNum = 1;
-            attacking = false;
-        }
-    }
 
     public void draw(Graphics2D g2) {
         BufferedImage img = null;
@@ -618,13 +567,13 @@ public class Player extends Entity {
         }
     }
 
-    public void damageMonster(int i, int attack, int knockBackPower){
+    public void damageMonster(int i, Entity attacker, int attack, int knockBackPower){
         if(i != 999){
            if(gp.monster[gp.currentMap][i].invincible == false){
                 gp.playSE(5);
 
                 if(knockBackPower > 0){
-                    knockBack(gp.monster[gp.currentMap][i], knockBackPower);
+                    setKnockBack(gp.monster[gp.currentMap][i],attacker, knockBackPower);
                 }
 
                 int damage = attack - gp.monster[gp.currentMap][i].defense;
@@ -667,11 +616,7 @@ public class Player extends Entity {
         }
     }
 
-    public void knockBack(Entity entity, int knockBackPower){
-        entity.direction = direction;
-        entity.speed += knockBackPower;
-        entity.knockBack = true;
-    }
+
 
     public void damageInteractiveTile(int i){
         if(i != 999 && gp.iTile[gp.currentMap][i].destructible == true && gp.iTile[gp.currentMap][i].isCorrectItem(this) == true

@@ -2,6 +2,7 @@ package main;
 
 import entity.*;
 import monster.MON_GreenSlime;
+import monster.MON_Orc;
 import object.*;
 import tiles_interactive.IT_DryTree;
 
@@ -185,6 +186,11 @@ public class AssetSetter {
         gp.monster[mapNum][i] = new MON_GreenSlime(gp);
         gp.monster[mapNum][i].worldX = gp.tileSize*38;
         gp.monster[mapNum][i].worldY = gp.tileSize*42;
+        i++;
+
+        gp.monster[mapNum][i] = new MON_Orc(gp);
+        gp.monster[mapNum][i].worldX = gp.tileSize*12;
+        gp.monster[mapNum][i].worldY = gp.tileSize*33;
         i++;
 
         //Sets Mobs On New Map
