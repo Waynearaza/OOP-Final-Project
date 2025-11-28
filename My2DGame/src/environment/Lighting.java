@@ -94,7 +94,7 @@ public class Lighting {
         if(dayState == day){
             dayCounter++;
             //Set time on where to change Cycle
-            if(dayCounter > 600){
+            if(dayCounter > 36600){
                 dayState = dusk;
                 dayCounter = 0;
             }

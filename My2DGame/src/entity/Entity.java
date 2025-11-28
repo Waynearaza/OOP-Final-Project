@@ -22,6 +22,8 @@ public class Entity {
     public BufferedImage left1, left2;
     public BufferedImage right1, right2;
 
+    public BufferedImage idle1, idle2;
+
     // Sprite attack arrays (4 frames per direction)
     public BufferedImage attackUp1, attackUp2, attackUp3, attackUp4;
     public BufferedImage attackDown1, attackDown2, attackDown3, attackDown4;

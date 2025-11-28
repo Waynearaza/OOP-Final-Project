@@ -1,6 +1,7 @@
 package entity;
 
 import main.GamePanel;
+
 import java.awt.image.BufferedImage;
 import java.awt.Graphics2D;
 
@@ -49,12 +50,24 @@ public class NPC_Slime extends Entity {
         BufferedImage image = null;
 
         switch (spriteNum) {
-            case 1: image = idle1; break;
-            case 2: image = idle2; break;
-            case 3: image = idle3; break;
-            case 4: image = idle4; break;
-            case 5: image = idle5; break;
-            case 6: image = idle6; break;
+            case 1:
+                image = idle1;
+                break;
+            case 2:
+                image = idle2;
+                break;
+            case 3:
+                image = idle3;
+                break;
+            case 4:
+                image = idle4;
+                break;
+            case 5:
+                image = idle5;
+                break;
+            case 6:
+                image = idle6;
+                break;
         }
 
         int screenX = worldX - gp.player.worldX + gp.player.screenX;

@@ -1,9 +1,6 @@
 package main;
 
-import entity.NPC_Merchant;
-import entity.NPC_OldMan;
-import entity.NPC_Slime;
-import entity.NPC_Slime2;
+import entity.*;
 import monster.MON_GreenSlime;
 import object.*;
 import tiles_interactive.IT_DryTree;
@@ -130,8 +127,23 @@ public class AssetSetter {
         i++;
 
         gp.npc[mapNum][i] = new NPC_Slime2(gp);
-        gp.npc[mapNum][i].worldX = gp.tileSize*31;
-        gp.npc[mapNum][i].worldY = gp.tileSize*27;
+        gp.npc[mapNum][i].worldX = gp.tileSize*28;
+        gp.npc[mapNum][i].worldY = gp.tileSize*14;
+        i++;
+
+        gp.npc[mapNum][i] = new NPC_Slave(gp);
+        gp.npc[mapNum][i].worldX = gp.tileSize*27;
+        gp.npc[mapNum][i].worldY = gp.tileSize*14;
+        i++;
+
+        gp.npc[mapNum][i] = new NPC_Slave3(gp);
+        gp.npc[mapNum][i].worldX = gp.tileSize*30;
+        gp.npc[mapNum][i].worldY = gp.tileSize*15;
+        i++;
+
+        gp.npc[mapNum][i] = new NPC_Slave2(gp);
+        gp.npc[mapNum][i].worldX = gp.tileSize*23;
+        gp.npc[mapNum][i].worldY = gp.tileSize*7;
         i++;
 
         mapNum = 1;
