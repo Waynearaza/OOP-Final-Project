@@ -1,8 +1,10 @@
 package main;
 
 import entity.*;
+import monster.MON_Bat;
 import monster.MON_GreenSlime;
 import monster.MON_Orc;
+import monster.MON_skeletonLord;
 import object.*;
 import tiles_interactive.IT_DryTree;
 
@@ -198,6 +200,33 @@ public class AssetSetter {
         //gp.monster[mapNum][i] = new MON_GreenSlime(gp);
         // gp.monster[mapNum][i].worldX = gp.tileSize*23;
         //gp.monster[mapNum][i].worldY = gp.tileSize*36;
+        i++;
+
+        mapNum = 2;
+        gp.monster[mapNum][i] = new MON_Bat(gp);
+        gp.monster[mapNum][i].worldX = gp.tileSize*22;
+        gp.monster[mapNum][i].worldY = gp.tileSize*22;
+        i++;
+
+        gp.monster[mapNum][i] = new MON_Bat(gp);
+        gp.monster[mapNum][i].worldX = gp.tileSize*22;
+        gp.monster[mapNum][i].worldY = gp.tileSize*24;
+        i++;
+
+        gp.monster[mapNum][i] = new MON_Bat(gp);
+        gp.monster[mapNum][i].worldX = gp.tileSize*26;
+        gp.monster[mapNum][i].worldY = gp.tileSize*21;
+        i++;
+
+
+        gp.monster[mapNum][i] = new MON_Bat(gp);
+        gp.monster[mapNum][i].worldX = gp.tileSize*27;
+        gp.monster[mapNum][i].worldY = gp.tileSize*22;
+        i++;
+
+        gp.monster[mapNum][i] = new MON_skeletonLord(gp);
+        gp.monster[mapNum][i].worldX = gp.tileSize*25;
+        gp.monster[mapNum][i].worldY = gp.tileSize*25;
         i++;
     }
 

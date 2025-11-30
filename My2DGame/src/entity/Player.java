@@ -85,7 +85,7 @@ public class Player extends Entity {
         maxMana = 4;
         mana = maxMana;
         ammo = 10;
-        strength = 1; // More = More Damage Player Gives
+        strength = 5; // More = More Damage Player Gives
         dexterity = 1; //More = Less Damage Player Receives
         exp = 0;
         nextLevelExp = 5;
@@ -99,6 +99,7 @@ public class Player extends Entity {
     }
 
     public void setDefaultPositions(){
+        gp.currentMap = 0;
         worldX = gp.tileSize*23;
         worldY = gp.tileSize*21;
         direction = "down";
@@ -124,6 +125,7 @@ public class Player extends Entity {
         inventory.add(currentShield);
         inventory.add(new OBJ_Key(gp));
         inventory.add(new OBJ_Key(gp));
+        inventory.add(new OBJ_Lantern(gp));
 
     }
 
@@ -501,13 +503,16 @@ public class Player extends Entity {
             mana = maxMana;
         }
 
-        // 6. GAME OVER CHECK
-        if (life <= 0) {
-            gp.gameState = gp.gameOverState;
-            gp.ui.commandNum = -1;
-            gp.stopMusic();
-            gp.playSE(12);
+        if(keyH.godModeOn == false){
+            // 6. GAME OVER CHECK
+            if (life <= 0) {
+                gp.gameState = gp.gameOverState;
+                gp.ui.commandNum = -1;
+                gp.stopMusic();
+                gp.playSE(12);
+            }
         }
+
     }
 
 

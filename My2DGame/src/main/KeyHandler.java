@@ -8,6 +8,7 @@ public class KeyHandler implements KeyListener {
     GamePanel gp;
     public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, shotKeyPressed, spacePressed;
     boolean checkDrawTime = false;
+    public boolean godModeOn = false;
 
     public KeyHandler(GamePanel gp) {
         this.gp = gp;
@@ -115,6 +116,15 @@ public class KeyHandler implements KeyListener {
             }
             else if (checkDrawTime) {
                 checkDrawTime = false;
+            }
+        }
+
+        if (code == KeyEvent.VK_G){
+            if(godModeOn == false){
+                godModeOn= true;
+            }
+            else if (godModeOn == true) {
+                godModeOn = false;
             }
         }
     }

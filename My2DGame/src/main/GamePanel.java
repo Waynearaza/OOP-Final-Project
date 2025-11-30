@@ -180,6 +180,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void retry(){
+        currentArea = outside;
         player.setDefaultPositions();
         player.restoreLifeAndMana();
         aSetter.setNPC();
@@ -398,7 +399,16 @@ public class GamePanel extends JPanel implements Runnable {
             long passed = drawEnd - drawStart;
             g2.setColor(Color.white);
             g2.drawString("Draw Time: " + passed, 10, 400);
+
             System.out.println("Draw Time: "+passed);
+        }
+        if(keyH.godModeOn == true){
+            g2.setFont(new Font("Arial", Font.PLAIN, 20));
+            g2.setColor(Color.white);
+            int x =10;
+            int y = 400;
+            int lineHeight = 20;
+            g2.drawString("God Mode: " + keyH.godModeOn, x, y);
         }
     }
 
