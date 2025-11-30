@@ -207,6 +207,8 @@ public class TileManager {
         setup(151, "floor01", false);
         setup(152, "table01", true);
         setup(153, "void", true);
+        setup(154, "down_dungeon", false);
+        setup(155, "up_dungeon", false);
 
 
 
