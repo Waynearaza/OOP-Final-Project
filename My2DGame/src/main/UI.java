@@ -87,6 +87,7 @@ public class UI {
         //PLAY STATE
         else if (gp.gameState == gp.playState) {
             drawPlayerLife();
+            drawMonsterLife();
             drawMessage();
         }
         //PAUSE STATE
@@ -210,6 +211,53 @@ public class UI {
                 }
             }
         }
+    }
+
+    public void drawMonsterLife(){
+
+        for(int i = 0; i < gp.monster[1].length; i++){
+            Entity monster = gp.monster[gp.currentMap][i];
+
+            if(monster!= null && gp.monster[gp.currentMap][i].inCamera() == true){
+                //Monster HP Bar
+                if(monster.hpBarOn == true && monster.boss == false){
+                    double oneScale = (double)gp.tileSize/monster.maxLife;
+                    double hpBarValue = oneScale * monster.life;
+
+
+                    g2.setColor(new Color(35, 35,35));
+                    g2.fillRect(monster.getScreenX()-1, monster.getScreenY() - 16, gp.tileSize+2, 12 );
+                    g2.setColor(new Color(255, 0, 30));
+                    g2.fillRect(monster.getScreenX(), monster.getScreenY()- 15, (int)hpBarValue, 10);
+
+                    monster.hpBarCounter++;
+
+                    if(monster.hpBarCounter >600){
+                        monster.hpBarCounter = 0;
+                        monster.hpBarOn = false;
+                    }
+                }
+                else if(monster.boss == true){
+                    double oneScale = (double)gp.tileSize*8/monster.maxLife;
+                    double hpBarValue = oneScale * monster.life;
+
+                    int x = gp.screenWidth/2 - gp.tileSize*4;
+                    int y = gp.tileSize*10;
+
+
+                    g2.setColor(new Color(35, 35,35));
+                    g2.fillRect(x-1, y-4, gp.tileSize*8+2, 40 );
+                    g2.setColor(new Color(255, 0, 30));
+                    g2.fillRect(x-1, y-4, (int)hpBarValue, 40);
+
+                    g2.setFont(g2.getFont().deriveFont(Font.BOLD, 40f));
+                    g2.setColor(Color.white);
+                    g2.drawString(monster.name, x + 4, y - 10);
+
+                }
+            }
+        }
+
     }
 
     // TITLE SCREEN / INTRO PAGES

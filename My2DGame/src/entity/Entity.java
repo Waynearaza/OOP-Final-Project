@@ -51,7 +51,7 @@ public class Entity {
     public int invincibleCounter = 0;
     public int shotAvailableCounter = 0;
     int dyingCounter = 0;
-    int hpBarCounter = 0;
+    public int hpBarCounter = 0;
     int knockBackCounter = 0;
     public int guardCounter = 0;
     int offBalanceCounter = 0;
@@ -60,7 +60,7 @@ public class Entity {
     public boolean  attacking = false;
     public boolean alive = true;
     public boolean dying = false;
-    boolean hpBarOn = false;
+    public boolean hpBarOn = false;
 
     public boolean onPath = false;
 
@@ -74,6 +74,7 @@ public class Entity {
     public boolean offBalance = false;
 
     public boolean inRage = false;
+
 
     //NPC Dialogues
     public String dialogues[][] = new String[20][20];
@@ -108,6 +109,7 @@ public class Entity {
     public Entity currentShield;
     public Entity currentLight;
     public Projectile projectile;
+    public boolean boss;
 
     // Movement speed
     public int speed;
@@ -153,6 +155,16 @@ public class Entity {
     //Entity
     public Entity(GamePanel gp) {
         this.gp = gp;
+    }
+
+    public int getScreenX(){
+        int screenX = worldX - gp.player.worldX + gp.player.screenX;
+        return screenX;
+    }
+
+    public int getScreenY(){
+        int screenY = worldY - gp.player.worldY + gp.player.screenY;
+        return screenY;
     }
 
     public int getLeftX(){return worldX + solidArea.x;}
@@ -621,21 +633,26 @@ public class Entity {
         target.knockBack = true;
     }
 
-
-    public void draw(Graphics2D g2) {
-        BufferedImage image = null;
-
-        int screenX = worldX - gp.player.worldX + gp.player.screenX;
-        int screenY = worldY - gp.player.worldY + gp.player.screenY;
-
-        // Only draw tiles that are on the screen
+    public boolean inCamera(){
+        boolean inCamera = false;
         if (worldX + gp.tileSize*5 > gp.player.worldX - gp.player.screenX &&
                 worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
                 worldY + gp.tileSize*5 > gp.player.worldY - gp.player.screenY &&
                 worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
+            inCamera = true;
+        }
+        return inCamera;
+    }
 
-            int tempScreenX = screenX;
-            int tempscreenY = screenY;
+
+    public void draw(Graphics2D g2) {
+        BufferedImage image = null;
+
+
+        // Only draw tiles that are on the screen
+        if (inCamera() == true) {
+            int tempScreenX = getScreenX();
+            int tempscreenY = getScreenY();
 
             switch(direction) {
                 case "up":
@@ -644,7 +661,7 @@ public class Entity {
                         else image = up2;
                     }
                     if(attacking == true){
-                        tempscreenY = screenY - up1.getHeight();
+                        tempscreenY = getScreenY() - up1.getHeight();
                         if(spriteNum == 1) image = attackUp1;
                         else image = attackUp2;
                     }
@@ -667,7 +684,7 @@ public class Entity {
                     else image = left2;
                 }
                 if(attacking == true){
-                    tempScreenX = screenX - left1.getWidth();
+                    tempScreenX = getScreenX() - left1.getWidth();
                     if(spriteNum == 1) image = attackLeft1;
                     else image = attackLeft2;
                 }
@@ -685,24 +702,7 @@ public class Entity {
                 break;
             }
 
-            //Monster HP Bar
-            if(type == 2 &&  hpBarOn == true){
-                double oneScale = (double)gp.tileSize/maxLife;
-                double hpBarValue = oneScale *life;
 
-
-                g2.setColor(new Color(35, 35,35));
-                g2.fillRect(screenX -1, screenY - 16, gp.tileSize+2, 12 );
-                g2.setColor(new Color(255, 0, 30));
-                g2.fillRect(screenX, screenY - 15, (int)hpBarValue, 10);
-
-                hpBarCounter++;
-
-                if(hpBarCounter >600){
-                    hpBarCounter = 0;
-                    hpBarOn = false;
-                }
-            }
 
             if (invincible == true) {
                 hpBarOn = true;
