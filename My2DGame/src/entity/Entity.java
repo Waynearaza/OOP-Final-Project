@@ -32,6 +32,9 @@ public class Entity {
     public BufferedImage attackLeft1, attackLeft2, attackLeft3, attackLeft4;
 
 
+    public BufferedImage guardUp, guardDown, guardLeft, guardRight;
+
+
     public String direction = "down";
 
     // Collision
@@ -50,6 +53,8 @@ public class Entity {
     int dyingCounter = 0;
     int hpBarCounter = 0;
     int knockBackCounter = 0;
+    public int guardCounter = 0;
+    int offBalanceCounter = 0;
 
 
     public boolean  attacking = false;
@@ -63,6 +68,10 @@ public class Entity {
 
     public Entity attacker;
     public String knockBackDirection;
+    public boolean transparent = false;
+
+    public boolean guarding = false;
+    public boolean offBalance = false;
 
     //NPC Dialogues
     String dialogues[] = new String[20];
@@ -332,6 +341,14 @@ public class Entity {
         if(shotAvailableCounter < 30) {
             shotAvailableCounter++;
         }
+
+        if(offBalance == true){
+            offBalanceCounter++;
+            if(offBalanceCounter > 60){
+                offBalance = false;
+                offBalanceCounter = 0;
+            }
+        }
     }
 
     public void checkAttackOrNot(int rate, int straight, int horizontal){
@@ -435,6 +452,18 @@ public class Entity {
         }
     }
 
+    public String getOppositeDirection(String direction){
+        String oppositeDirection = "";
+
+        switch (direction){
+            case "up": oppositeDirection = "down"; break;
+            case "down": oppositeDirection = "up"; break;
+            case "left": oppositeDirection = "right"; break;
+            case "right": oppositeDirection = "left"; break;
+        }
+        return  oppositeDirection;
+    }
+
     // 4 FRAME ATTACKING
     public void attacking() {
 
@@ -503,12 +532,42 @@ public class Entity {
 
     public void damagePlayer(int attack){
         if(gp.player.invincible == false) {
-            //We Can Give Damage
-            gp.playSE(6);
+
             int damage = attack - gp.player.defense;
-            if(damage < 0){
-                damage =0;
+
+            //Get Opposite Direction
+            String canGuardDirection = getOppositeDirection(direction);
+
+            if(gp.player.guarding == true && gp.player.direction.equals(canGuardDirection)){
+
+                // Parry (happens if guard is held for less than 10 frames)
+                if(gp.player.guardCounter < 10){
+                    damage = 0;
+                    gp.playSE(16); // Parry Sound
+                    setKnockBack(this, gp.player, knockBackPower);
+                    offBalance = true;
+                    spriteCounter -= 60; // Stun the monster
+                }
+                // Normal Guard (happens if guard is held longer)
+                else {
+                    damage /= 3;
+                    gp.playSE(15); // Guard Sound
+                }
             }
+            else {
+                //Player Not Guarding
+                gp.playSE(6);
+
+                if(damage < 1){
+                    damage = 1;
+                }
+            }
+
+            if(damage != 0){
+                gp.player.transparent = true;
+                setKnockBack(gp.player, this, knockBackPower);
+            }
+
             gp.player.life -= damage;
             gp.player.invincible = true;
         }

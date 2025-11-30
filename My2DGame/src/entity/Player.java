@@ -61,6 +61,7 @@ public class Player extends Entity {
         setDefaultValues();
         getPlayerImage();
         getPlayerAttackImage();
+        getGuardImage(); // Turn Back on When the Sprite is now okay
         setItems();
         image = down1;
     }
@@ -106,6 +107,7 @@ public class Player extends Entity {
         life = maxLife;
         mana = maxMana;
         invincible = false;
+        transparent = false;
     }
 
     public void setItems(){
@@ -293,6 +295,14 @@ public class Player extends Entity {
 
     }
 
+    public void getGuardImage(){
+        // UPDATED: Changed width from gp.tileSize*2 to gp.tileSize
+        guardUp = setup("/player/Shield/player_guard_up.png", gp.tileSize*2, gp.tileSize*2);
+        guardDown = setup("/player/Shield/player_guard_down.png", gp.tileSize*2,gp.tileSize*2);
+        guardLeft = setup("/player/Shield/player_guard_left.png",gp.tileSize*2, gp.tileSize*2);
+        guardRight = setup("/player/Shield/player_guard_right.png", gp.tileSize*2, gp.tileSize*2);
+    }
+
     public BufferedImage setup(String imagePath, int width, int height) {
         UtilityTool uTool = new UtilityTool();
         BufferedImage image = null;
@@ -308,92 +318,152 @@ public class Player extends Entity {
     }
 
     // UPDATE PLAYER
+    // UPDATE PLAYER
     public void update() {
+
+        if(knockBack == true) {
+            //Check Tile Collision
+            gp.cChecker.checkObject(this, true);
+
+            //Check NPC Collision
+            gp.cChecker.checkEntity(this, gp.npc);
+
+            //Check Monster Collision
+            gp.cChecker.checkEntity(this, gp.monster);
+
+            //Check Interactive Tile Collision
+            gp.cChecker.checkEntity(this, gp.iTile);
+
+
+            if (collisionOn == true) {
+                knockBackCounter = 0;
+                knockBack = false;
+                speed = defaultSpeed;
+            } else if (collisionOn == false) {
+                switch (knockBackDirection) {
+                    case "up":
+                        worldY -= speed;
+                        break;
+                    case "down":
+                        worldY += speed;
+                        break;
+                    case "left":
+                        worldX -= speed;
+                        break;
+                    case "right":
+                        worldX += speed;
+                        break;
+                }
+            }
+
+            knockBackCounter++;
+            if (knockBackCounter == 10) {
+                knockBackCounter = 0;
+                knockBack = false;
+                speed = defaultSpeed;
+            }
+        }
 
         if (attacking) {
             attacking();
             return;
         }
 
-        moving = false;
+        // 1. CHECK GUARDING STATE FIRST
+        if (keyH.spacePressed == true) {
+            guarding = true;
+            guardCounter++;
+        } else {
+            guarding = false;
+            guardCounter = 0;
+        }
 
-        // MOVEMENT
-        if (keyH.upPressed) { direction = "up"; moving = true; }
-        if (keyH.downPressed) { direction = "down"; moving = true; }
-        if (keyH.leftPressed) { direction = "left"; moving = true; }
-        if (keyH.rightPressed) { direction = "right"; moving = true; }
-
-        // ENTER → INTERACT WITHOUT MOVING
-        if (keyH.enterPressed) moving = true;
-
-        if (moving) {
-
-            collisionOn = false;
-            gp.cChecker.checkTile(this);
-
-            //Check Tile Collision
-            int objIndex = gp.cChecker.checkObject(this, true);
-            pickUpObject(objIndex);
-
-            //Check NPC Collision
-            int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
-            interactNPC(npcIndex);
-
-            //Check Monster Collision
-            int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
-            contactMonster(monsterIndex);
-
-            //Check Interactive Tile Collision
-            int iTileIndex = gp.cChecker.checkEntity(this, gp.iTile);
-
-
-            gp.eHandler.checkEvent();
-
-            if (!collisionOn) {
-                if (keyH.upPressed) worldY -= speed;
-                if (keyH.downPressed) worldY += speed;
-                if (keyH.leftPressed) worldX -= speed;
-                if (keyH.rightPressed) worldX += speed;
-            }
-
-            if(keyH.enterPressed && !attackCanceled && gp.gameState == gp.playState){
-                gp.playSE(7);
-                attacking = true;
-                spriteCounter = 0;
-            }
-
-            attackCanceled = false;
-
-            gp.keyH.enterPressed = false;
-
-            spriteCounter++;
-            if (spriteCounter > 18) { // slower animation
-                spriteNum++;
-                if (spriteNum > 6) spriteNum = 1;
-                spriteCounter = 0;
-            }
+        // 2. CHECK MOVEMENT (Only if NOT guarding)a
+        if (guarding == true) {
+            moving = false; // Player freezes while guarding
         }
         else {
-            spriteCounter++;
-            if (spriteCounter > 30) { // slower idle animation
-                spriteNum++;
-                if (spriteNum > 6) spriteNum = 1;
-                spriteCounter = 0;
+            moving = false;
+
+            if (keyH.upPressed) { direction = "up"; moving = true; }
+            if (keyH.downPressed) { direction = "down"; moving = true; }
+            if (keyH.leftPressed) { direction = "left"; moving = true; }
+            if (keyH.rightPressed) { direction = "right"; moving = true; }
+
+            // ENTER → INTERACT WITHOUT MOVING
+            if (keyH.enterPressed) moving = true;
+
+            if (moving) {
+
+                collisionOn = false;
+                gp.cChecker.checkTile(this);
+
+                //Check Tile Collision
+                int objIndex = gp.cChecker.checkObject(this, true);
+                pickUpObject(objIndex);
+
+                //Check NPC Collision
+                int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
+                interactNPC(npcIndex);
+
+                //Check Monster Collision
+                int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
+                contactMonster(monsterIndex);
+
+                //Check Interactive Tile Collision
+                int iTileIndex = gp.cChecker.checkEntity(this, gp.iTile);
+
+                gp.eHandler.checkEvent();
+
+                if (!collisionOn) {
+                    if (keyH.upPressed) worldY -= speed;
+                    if (keyH.downPressed) worldY += speed;
+                    if (keyH.leftPressed) worldX -= speed;
+                    if (keyH.rightPressed) worldX += speed;
+                }
+
+                if (keyH.enterPressed && !attackCanceled && gp.gameState == gp.playState) {
+                    gp.playSE(7);
+                    attacking = true;
+                    spriteCounter = 0;
+                }
+
+                attackCanceled = false;
+                gp.keyH.enterPressed = false;
+
+                // --- REMOVED "guarding = false" HERE ---
+
+                spriteCounter++;
+                if (spriteCounter > 18) { // slower animation
+                    spriteNum++;
+                    if (spriteNum > 6) spriteNum = 1;
+                    spriteCounter = 0;
+                }
+            }
+            else {
+                // IDLE ANIMATION
+                spriteCounter++;
+                if (spriteCounter > 30) { // slower idle animation
+                    spriteNum++;
+                    if (spriteNum > 6) spriteNum = 1;
+                    spriteCounter = 0;
+                }
             }
         }
 
-        if(gp.keyH.shotKeyPressed == true && projectile.alive == false
-                && shotAvailableCounter == 30 && projectile.havaResource(this) == true){
+        // 3. PROJECTILE LOGIC (Added "&& guarding == false" so you can't shoot while shielding)
+        if (gp.keyH.shotKeyPressed == true && projectile.alive == false
+                && shotAvailableCounter == 30 && projectile.havaResource(this) == true
+                && guarding == false) {
+
             //Sets Default Coordinates, Direction, and User
             projectile.set(worldX, worldY, direction, true, this);
 
             //Subtract The Cost(Mana, Ammo, etc)
             projectile.subtractResource(this);
 
-
-
-            for(int i = 0; i < gp.projectile[1].length; i++){
-                if(gp.projectile[gp.currentMap][i]  == null){
+            for (int i = 0; i < gp.projectile[1].length; i++) {
+                if (gp.projectile[gp.currentMap][i] == null) {
                     gp.projectile[gp.currentMap][i] = projectile;
                     break;
                 }
@@ -402,32 +472,35 @@ public class Player extends Entity {
             gp.playSE(10);
         }
 
+        // 4. INVINCIBLE TIMER
         if (invincible == true) {
             invincibleCounter++;
             if (invincibleCounter > 60) {
                 invincible = false;
+                transparent = false;
                 invincibleCounter = 0;
             }
         }
 
-        if(shotAvailableCounter < 30){
+        if (shotAvailableCounter < 30) {
             shotAvailableCounter++;
         }
 
-        if(life > maxLife){
+        // 5. STATUS LIMITS
+        if (life > maxLife) {
             life = maxLife;
         }
-        if(mana > maxLife){
+        if (mana > maxMana) {
             mana = maxMana;
         }
 
-        if(life <= 0){
+        // 6. GAME OVER CHECK
+        if (life <= 0) {
             gp.gameState = gp.gameOverState;
             gp.ui.commandNum = -1;
             gp.stopMusic();
             gp.playSE(12);
         }
-
     }
 
 
@@ -461,6 +534,28 @@ public class Player extends Entity {
                     break;
             }
         }
+        else if (guarding == true) {
+            switch (direction) {
+                case "up":    img = guardUp;
+                    drawX = screenX - gp.tileSize / 2; // center wide sprite horizontally
+                    drawY = screenY - gp.tileSize / 2;
+                    break;
+                case "down":  img = guardDown;
+                    drawX = screenX - gp.tileSize / 2; // center wide sprite horizontally
+                    drawY = screenY - gp.tileSize / 2;
+                    break;
+                case "left":  img = guardLeft;
+                    drawX = screenX - gp.tileSize / 2; // center wide sprite horizontally
+                    drawY = screenY - gp.tileSize / 2;
+                    break;
+
+                case "right": img = guardRight;
+                    drawX = screenX - gp.tileSize / 2; // center wide sprite horizontally
+                    drawY = screenY - gp.tileSize / 2;
+                    break;
+            }
+        }
+
         // WALKING
         else if (moving) {
             switch (direction) {
@@ -480,7 +575,7 @@ public class Player extends Entity {
             }
         }
 
-        if (invincible == true) {
+        if (transparent == true) {
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));
         }
         g2.drawImage(img, drawX, drawY, null);
@@ -558,11 +653,12 @@ public class Player extends Entity {
             if(invincible == false &&gp.monster[gp.currentMap][i].dying == false){
                 gp.playSE(6);
                 int damage = gp.monster[gp.currentMap][i].attack - defense;
-                if(damage < 0){
-                    damage =0;
+                if(damage < 1){
+                    damage =1;
                 }
                 life -= damage;
                 invincible = true;
+                transparent = true;
             }
         }
     }
@@ -574,6 +670,10 @@ public class Player extends Entity {
 
                 if(knockBackPower > 0){
                     setKnockBack(gp.monster[gp.currentMap][i],attacker, knockBackPower);
+                }
+
+                if(gp.monster[gp.currentMap][i].offBalance == true){
+                        attack *= 5;
                 }
 
                 int damage = attack - gp.monster[gp.currentMap][i].defense;
