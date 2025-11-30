@@ -6,13 +6,31 @@ import java.awt.Graphics2D;
 
 public class NPC_Slime2 extends Entity {
 
-    // 6-frame idle animation
+    // 6-frame idle animation variables
     public BufferedImage idle1, idle2, idle3, idle4, idle5, idle6;
 
     public NPC_Slime2(GamePanel gp) {
         super(gp);
 
-        speed = 0; // stationary
+        direction = "down";
+        speed = 0;
+
+        // IMPORTANT: Set type to 1 (NPC) so the collision checker knows it's interactable
+        type = 1;
+
+        // MATCHING OLD MAN LOGIC:
+        // Your working Old Man class starts this at -1.
+        // We must match that behavior to ensure the dialogue cycle works correctly.
+        dialogueSet = -1;
+
+        // HITBOX (CRITICAL):
+        // Without this, the interaction raycast passes through the empty space.
+        solidArea.x = 8;
+        solidArea.y = 16;
+        solidArea.width = 32;
+        solidArea.height = 32;
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
 
         getImage();
         setDialogue();
@@ -28,16 +46,35 @@ public class NPC_Slime2 extends Entity {
     }
 
     public void setDialogue() {
-        dialogues[0] = "The hell you lookin' at";
-        dialogues[1] = "Let me tell you something";
-        dialogues[2] = "I hate jews";
+        dialogues[0][0] = "The hell you lookin' at";
+        dialogues[0][1] = "Let me tell you something";
+        dialogues[0][2] = "I hate jews";
+    }
+
+    // Interaction method called by Player when pressing Enter
+    @Override
+    public void speak() {
+        // 1. Face the player
+        facePlayer();
+
+        // 2. Start the dialogue using the Entity helper
+        startDialogue(this, dialogueSet);
+
+        // 3. Increment dialogueSet (Logic matching your Old Man class)
+        dialogueSet++;
+
+        // 4. Safety check: if the next set is empty, loop back or stay on current
+        if (dialogues[dialogueSet][0] == null) {
+            dialogueSet--;
+            // Note: If you want it to loop back to the start, use: dialogueSet = 0;
+        }
     }
 
     @Override
     public void update() {
-        // Cycle through idle animation frames
+        // Custom animation loop for the slime (6 frames)
         spriteCounter++;
-        if (spriteCounter > 12) { // animation speed
+        if (spriteCounter > 12) { // Animation speed (higher = slower)
             spriteNum++;
             if (spriteNum > 6) spriteNum = 1;
             spriteCounter = 0;
@@ -60,6 +97,17 @@ public class NPC_Slime2 extends Entity {
         int screenX = worldX - gp.player.worldX + gp.player.screenX;
         int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
-        g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+        // Optimization: Only draw if on screen
+        if (worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
+                worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
+                worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
+                worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
+
+            g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+        }
+
     }
+
+
+
 }

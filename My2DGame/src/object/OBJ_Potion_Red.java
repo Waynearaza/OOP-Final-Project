@@ -17,11 +17,17 @@ public class OBJ_Potion_Red extends Entity {
         //pickUpAble = true;
         price = 15;
         stackable = true;
+
+        setDialogue();
+    }
+
+    public void setDialogue(){
+        dialogues[0][0] ="You Drank The Drugs\nYour Life Increased by 5\nDo More Drugs Homie";
+
     }
 
     public boolean use (Entity entity){
-        gp.gameState = gp.dialogueState;
-        gp.ui.currentDialogue = "You Drank The Drugs\nYour Life Increased by 5\nDo More Drugs Homie";
+        startDialogue(this, 0);
         entity.life += value;
         gp.playSE(2);
         return true;

@@ -27,6 +27,7 @@ public class TileManager {
         getTileImage();
         loadMap("/maps/map01.txt", 0);
         loadMap("/maps/interior01.txt", 1);
+        loadMap("/maps/dungeon01.txt", 2);
     }
 
     // Load tile images
@@ -205,6 +206,7 @@ public class TileManager {
         setup(150, "hut", false);
         setup(151, "floor01", false);
         setup(152, "table01", true);
+        setup(153, "void", true);
 
 
 

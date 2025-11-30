@@ -38,6 +38,9 @@ public class UI {
 
     public Entity npc;
 
+    int charIndex = 0;
+    String combinedText = "";
+
     // Transition system
     public int transitionAlpha = 0;
     public boolean doingTransition = false;
@@ -382,6 +385,39 @@ public class UI {
         g2.setFont(g2.getFont().deriveFont(40F));
         x += gp.tileSize;
         y += gp.tileSize;
+
+        if(npc.dialogues[npc.dialogueSet][npc.dialogueIndex] != null){
+            //currentDialogue = npc.dialogues[npc.dialogueSet][npc.dialogueIndex];
+
+            char characters[] = npc.dialogues[npc.dialogueSet][npc.dialogueIndex].toCharArray();
+
+            if(charIndex < characters.length){
+                gp.playSE(17);
+                String s = String.valueOf(characters[charIndex]);
+                combinedText = combinedText + s;
+                currentDialogue = combinedText;
+                charIndex++;
+            }
+
+            if(gp.keyH.enterPressed == true){
+                charIndex = 0;
+                combinedText = "";
+
+                if(gp.gameState == gp.dialogueState){
+                    npc.dialogueIndex++;
+                    gp.keyH.enterPressed = false;
+                }
+            }
+        }
+        else {
+            npc.dialogueIndex = 0;
+            if(gp.gameState == gp.dialogueState){
+                gp.gameState = gp.playState;
+            }
+
+        }
+
+
 
         for (String line : currentDialogue.split("\n")) {
             g2.drawString(line, x, y);
@@ -923,6 +959,7 @@ public class UI {
     }
 
     public void trade_select(){
+        npc.dialogueSet = 0;
         drawDialogueScreen();
 
         int x = gp.tileSize * 15;
@@ -959,8 +996,7 @@ public class UI {
             g2.drawString(">", x-24, y);
             if(gp.keyH.enterPressed == true){
                 commandNum = 0;
-                gp.gameState = gp.dialogueState;
-                currentDialogue = "Come Again Nigger";
+                npc.startDialogue(npc, 1);
             }
         }
 
@@ -1007,18 +1043,15 @@ public class UI {
             if(gp.keyH.enterPressed == true){
                 if(npc.inventory.get(itemIndex).price > gp.player.coin){
                     subState = 0;
-                    gp.gameState = gp.dialogueState;
-                    currentDialogue = "You're Broke, Nigger";
-                    drawDialogueScreen();
+                    npc.startDialogue(npc, 2);
                 }
                 else {
                     if(gp.player.canObtainItem(npc.inventory.get(itemIndex)) == true){
                         gp.player.coin -= npc.inventory.get(itemIndex).price;
                     }
                     else {
-                        subState = 0;
-                        gp.gameState = gp.dialogueState;
-                        currentDialogue = "Inventory is Full";
+                        subState = 0;;
+                        npc.startDialogue(npc, 2);
                     }
                 }
             }
@@ -1071,8 +1104,7 @@ public class UI {
                         gp.player.inventory.get(itemIndex) == gp.player.currentShield) {
                     commandNum = 0;
                     subState = 0;
-                    gp.gameState = gp.dialogueState;
-                    currentDialogue = "You Can't Sell an Equipped Item";
+                    npc.startDialogue(npc, 4);
                 } else {
                     if(gp.player.inventory.get(itemIndex).amount > 1){
                         gp.player.inventory.get(itemIndex).amount--;

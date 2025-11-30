@@ -74,8 +74,10 @@ public class Entity {
     public boolean offBalance = false;
 
     //NPC Dialogues
-    String dialogues[] = new String[20];
-    int dialogueIndex = 0;
+    public String dialogues[][] = new String[20][20];
+    public int dialogueIndex = 0;
+    public int dialogueSet = 0;
+
 
     //From Super Object
     public BufferedImage image, image2, image3;
@@ -241,14 +243,9 @@ public class Entity {
     }
 
     //Set the Behavior Of the NPC When Talk To
-    public void speak(){
-        //Restart the Dialogue of the npc when all of it is completed and prevent an error
-        if(dialogues[dialogueIndex] == null){
-            dialogueIndex =0;
-        }
-        gp.ui.currentDialogue = dialogues[dialogueIndex];
-        dialogueIndex++;
+    public void speak(){}
 
+    public void facePlayer(){
         switch (gp.player.direction){
             case "up": direction = "down"; break;
             case "down": direction = "up"; break;
@@ -256,6 +253,14 @@ public class Entity {
             case "right": direction = "left"; break;
 
         }
+
+    }
+
+    public void startDialogue(Entity entity, int setNum){
+        gp.gameState = gp.dialogueState;
+        gp.ui.npc = entity;
+        dialogueSet = setNum;
+
     }
 
     public void checkCollision(){

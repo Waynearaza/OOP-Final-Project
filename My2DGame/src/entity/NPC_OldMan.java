@@ -16,6 +16,8 @@ public class NPC_OldMan extends Entity {
         direction = "down";
         speed = 1;
 
+        dialogueSet = -1;
+
         getImage();
         setDialogue();
     }
@@ -35,10 +37,19 @@ public class NPC_OldMan extends Entity {
     }
 
     public void setDialogue(){
-        dialogues[0] ="Hello, My Nigga!";
-        dialogues[1] ="So You've Come To This Island To \nFarm Cotton?";
-        dialogues[2] ="You are now my Slave As of Today";
-        dialogues[3] ="Now Go Work Nigga Ahh Bitch!";
+        dialogues[0][0] ="Hello, My Nigga!";
+        dialogues[0][1] ="So You've Come To This Island To \nFarm Cotton?";
+        dialogues[0][2] ="You are now my Slave As of Today";
+        dialogues[0][3] ="Now Go Work Nigga Ahh Bitch!";
+
+
+        dialogues[1][0] ="1Now Go Work Nigga Ahh Bitch!";
+        dialogues[1][1] ="2Now Go Work Nigga Ahh Bitch!";
+        dialogues[1][2] ="3Now Go Work Nigga Ahh Bitch!";
+
+        dialogues[2][0] ="4Now Go Work Nigga Ahh Bitch!";
+
+
     }
 
     @Override
@@ -75,9 +86,17 @@ public class NPC_OldMan extends Entity {
 
     @Override
     public void speak(){
+        facePlayer();
+        startDialogue(this, dialogueSet);
 
-        super.speak();
+        dialogueSet++;
 
-        onPath = true;
+        if(dialogues[dialogueSet][0] == null){
+            dialogueSet--;
+        }
+
+
+        //onPath = true;
+
     }
 }

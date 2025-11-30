@@ -29,9 +29,9 @@ public class NPC_Slime extends Entity {
     }
 
     public void setDialogue() {
-        dialogues[0] = "Heil Hitler";
-        dialogues[1] = "9/11!";
-        dialogues[2] = "KKK";
+        dialogues[0][0] = "Heil Hitler";
+        dialogues[0][1] = "9/11!";
+        dialogues[0][2] = "KKK";
     }
 
     @Override
@@ -75,4 +75,27 @@ public class NPC_Slime extends Entity {
 
         g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
     }
+
+    @Override
+    public void speak() {
+
+        facePlayer();
+
+        // When -1, force it to 0
+        if (dialogueSet == -1) {
+            dialogueSet = 0;
+        }
+
+        startDialogue(this, dialogueSet);
+
+        dialogueSet++;
+
+        // Prevent out of bounds
+        if (dialogueSet >= dialogues.length || dialogues[dialogueSet][0] == null) {
+            dialogueSet = 0; // loop
+        }
+    }
 }
+
+
+

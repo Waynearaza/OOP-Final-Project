@@ -63,6 +63,7 @@ public class Player extends Entity {
         getPlayerAttackImage();
         getGuardImage(); // Turn Back on When the Sprite is now okay
         setItems();
+        setDialogue();
         image = down1;
     }
 
@@ -101,6 +102,12 @@ public class Player extends Entity {
         worldX = gp.tileSize*23;
         worldY = gp.tileSize*21;
         direction = "down";
+    }
+
+    public void setDialogue(){
+        dialogues[0][0] = "You Are Now Level " + level + " Now!\n" + "You Feel More Blacker";
+
+
     }
 
     public void  restoreLifeAndMana(){
@@ -642,7 +649,6 @@ public class Player extends Entity {
         if(gp.keyH.enterPressed){
             if(i != 999){
                 attackCanceled = true;
-                gp.gameState = gp.dialogueState;
                 gp.npc[gp.currentMap][i].speak();
             }
         }
@@ -711,7 +717,7 @@ public class Player extends Entity {
 
             gp.playSE(8);
             gp.gameState = gp.dialogueState;
-            gp.ui.currentDialogue = "You Are Now Level " + level + " Now!\n" + "You Feel More Blacker";
+            startDialogue(this, 0);
 
         }
     }

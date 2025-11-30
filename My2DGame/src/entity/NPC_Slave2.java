@@ -24,9 +24,9 @@ public class NPC_Slave2 extends Entity {
     }
 
     public void setDialogue() {
-        dialogues[0] = "Hello there!";
-        dialogues[1] = "Nice weather today.";
-        dialogues[2] = "Stay safe on your journey.";
+        dialogues[0][0] = "Master, I'm so tired...";
+        dialogues[0][1] = "Nice weather today.";
+        dialogues[0][2] = "Stay safe on your journey.";
     }
 
     @Override
@@ -64,5 +64,25 @@ public class NPC_Slave2 extends Entity {
 
         // The image is drawn at 2x the size (gp.tileSize * 2)
         g2.drawImage(image, screenX, screenY, gp.tileSize * 2, gp.tileSize * 2, null);
+    }
+
+    @Override
+    public void speak() {
+
+        facePlayer();
+
+        // When -1, force it to 0
+        if (dialogueSet == -1) {
+            dialogueSet = 0;
+        }
+
+        startDialogue(this, dialogueSet);
+
+        dialogueSet++;
+
+        // Prevent out of bounds
+        if (dialogueSet >= dialogues.length || dialogues[dialogueSet][0] == null) {
+            dialogueSet = 0; // loop
+        }
     }
 }
