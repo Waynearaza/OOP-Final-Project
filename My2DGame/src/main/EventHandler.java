@@ -93,6 +93,9 @@ public class EventHandler{
             else if(hit(2, 24, 46, "any") == true){
                 teleport(0, 10, 9, gp.outside);
             }
+            else if(hit(2, 24, 44, "up") == true){
+                skeletonLord();
+            }
             else if(hit(1, 12, 9, "up") == true){
                 speak(gp.npc[1][0]);
             }
@@ -168,6 +171,13 @@ public class EventHandler{
             gp.player.life = gp.player.maxLife;
             gp.player.mana = gp.player.maxMana;
             gp.aSetter.setMonster();
+        }
+    }
+
+    public void skeletonLord(){
+        if(gp.bossBattleOn == false){
+            gp.gameState = gp.cutsceneState;
+            gp.csManager.sceneNum = gp.csManager.skeletonLord;
         }
     }
 }

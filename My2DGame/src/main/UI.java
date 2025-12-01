@@ -451,7 +451,7 @@ public class UI {
                 charIndex = 0;
                 combinedText = "";
 
-                if(gp.gameState == gp.dialogueState){
+                if(gp.gameState == gp.dialogueState || gp.gameState == gp.cutsceneState){
                     npc.dialogueIndex++;
                     gp.keyH.enterPressed = false;
                 }
@@ -461,6 +461,9 @@ public class UI {
             npc.dialogueIndex = 0;
             if(gp.gameState == gp.dialogueState){
                 gp.gameState = gp.playState;
+            }
+            if(gp.gameState == gp.cutsceneState){
+                gp.csManager.scenePhase++;
             }
 
         }

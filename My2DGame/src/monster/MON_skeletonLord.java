@@ -3,6 +3,7 @@ package monster;
 import entity.Entity;
 import main.GamePanel;
 import object.OBJ_Coin_Bronze;
+import object.OBJ_Door_Iron;
 import object.OBJ_Heart;
 import object.OBJ_ManaCrystal;
 
@@ -32,6 +33,7 @@ public class MON_skeletonLord extends Entity {
         defense = 2;
         exp = 50;
         knockBackPower = 5;
+        sleep = true;
 
         int size = gp.tileSize*5;
         solidArea.x = 48;
@@ -47,6 +49,7 @@ public class MON_skeletonLord extends Entity {
 
         getImage();
         getAttackImage();
+        setDialogue();
     }
 
     public void getImage(){
@@ -107,6 +110,12 @@ public class MON_skeletonLord extends Entity {
         }
     }
 
+    public void setDialogue(){
+        dialogues[0][0]= "You Think You Can Enter This dungeon";
+        dialogues[0][1]= "You Can't Defeat Me";
+        dialogues[0][2]= "Welcome to your doom";
+    }
+
 
     public void setAction(){
         if(inRage == false && life < maxLife/2){
@@ -141,6 +150,17 @@ public class MON_skeletonLord extends Entity {
     }
 
     public void checkDrop(){
+
+        gp.bossBattleOn = false;
+        gp.playMusic(19);
+
+        for(int i = 0; i <gp.obj[1].length; i++){
+            if(gp.obj[gp.currentMap][i] != null && gp.obj[gp.currentMap][i].name.equals("Door Iron")){
+                gp.playSE(3);
+                gp.obj[gp.currentMap][i] =null;
+
+            }
+        }
 
         //CAST A DIE
         int i = new Random().nextInt(100)+1;

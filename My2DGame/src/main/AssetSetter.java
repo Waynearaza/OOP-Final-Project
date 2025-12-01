@@ -114,6 +114,14 @@ public class AssetSetter {
         gp.obj[mapNum][i].worldX = gp.tileSize*19;
         gp.obj[mapNum][i].worldY = gp.tileSize*20;
         i++;
+
+
+        mapNum = 2;
+        i = 0;
+        gp.obj[mapNum][i] = new OBJ_BlueHeart(gp);
+        gp.obj[mapNum][i].worldX = gp.tileSize*23;
+        gp.obj[mapNum][i].worldY = gp.tileSize*8;
+        i++;
     }
 
     public void setNPC(){
@@ -225,7 +233,7 @@ public class AssetSetter {
         i++;
 
         gp.monster[mapNum][i] = new MON_skeletonLord(gp);
-        gp.monster[mapNum][i].worldX = gp.tileSize*25;
+        gp.monster[mapNum][i].worldX = gp.tileSize*23;
         gp.monster[mapNum][i].worldY = gp.tileSize*25;
         i++;
     }
