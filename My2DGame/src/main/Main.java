@@ -15,7 +15,7 @@ public class Main {
         window.setResizable(false);
 
         // Set the title of the window
-        window.setTitle("Adventure Quest-ish?");
+        window.setTitle("OOP Quest");
 
 
         // Create the game panel (where the game runs and draws)

@@ -269,7 +269,7 @@ public class UI {
             g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
 
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 150F));
-            String text = "NIGGA QUEST";
+            String text = "OOP QUEST";
             int x = getXforCenteredText(text);
             int y = gp.tileSize * 3;
 
@@ -315,16 +315,26 @@ public class UI {
             g2.setColor(Color.WHITE);
 
             // Set text per page //increase to add another page
+            // Set text per page //increase to add another page
             switch (titleScreenState) {
                 case 1:
-                    currentDialogue = "Greetings, my Nigga!" +
-                            "\n Welcome to Nigga Quest.";
+                    currentDialogue = "Greetings, Traveler!" +
+                            "\n Welcome to OOP Quest.";
                     break;
                 case 2:
-                    currentDialogue = "We hate Gays, we hate Nigga's," +
-                            "\n but more importantly, we hate the Jews";
+                    currentDialogue = "Your quest is to free the village," +
+                            "\n from the possessed slimes.";
                     break;
                 case 3:
+                    currentDialogue = "On your journey, you will face many challenges," +
+                            "\n but do not worry!";
+                    break;
+                case 4:
+                    currentDialogue = "There will be companions who will join on" +
+                            "\n your journey.";
+
+                    break;
+                case 5:
                     currentDialogue = "W - UP" +
                             "\n A - LEFT" +
                             "\n S - DOWN" +
@@ -332,17 +342,13 @@ public class UI {
                             "\n P - Pause" +
                             "\n C - Inventory" +
                             "\n F - Fireball" +
+                            "\n X - Mini Map" +
+                            "\n X - Full Map" +
                             "\n ENTER - to interact" +
-                            "\n you retard.";
+                            "\n Best of luck, traveler!.";
                     break;
-                case 4:
-                    currentDialogue = "okay";
-
-                    break;
-                case 5:
-                    currentDialogue = "alright";
-                   break;
             }
+
 
             drawCenteredDialogue();
 

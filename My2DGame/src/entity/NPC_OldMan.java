@@ -37,18 +37,19 @@ public class NPC_OldMan extends Entity {
     }
 
     public void setDialogue(){
-        dialogues[0][0] ="Hello, My Nigga!";
-        dialogues[0][1] ="So You've Come To This Island To \nFarm Cotton?";
-        dialogues[0][2] ="You are now my Slave As of Today";
-        dialogues[0][3] ="Now Go Work Nigga Ahh Bitch!";
+        dialogues[0][0] ="Greetings, Traveler!";
+        dialogues[0][1] ="We are in grave danger and we need your help!";
+        dialogues[0][2] ="The possessed slimes are invading our village \n" +
+                "and we need your help to stop them.";
+        dialogues[0][3] ="Defeat the Giant Skeleton for our village to \n" +
+                "be free of their tyranny.";
 
 
-        dialogues[1][0] ="1Now Go Work Nigga Ahh Bitch!";
-        dialogues[1][1] ="2Now Go Work Nigga Ahh Bitch!";
-        dialogues[1][2] ="3Now Go Work Nigga Ahh Bitch!";
+        dialogues[1][0] ="1Good luck, traveler!";
+        dialogues[1][1] ="2Good luck, traveler!";
+        dialogues[1][2] ="3Good luck, traveler!";
 
-        dialogues[2][0] ="4Now Go Work Nigga Ahh Bitch!";
-
+        dialogues[2][0] ="4Good luck, traveler!";
 
     }
 

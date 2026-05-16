@@ -69,8 +69,8 @@ public class Player extends Entity {
 
     public void setDefaultValues(){
         // Spawn
-        worldX = gp.tileSize * 23;
-        worldY = gp.tileSize * 21;
+        worldX = gp.tileSize * 38;
+        worldY = gp.tileSize * 9;
         //worldX = gp.tileSize * 12;
         //worldY = gp.tileSize * 13;
 

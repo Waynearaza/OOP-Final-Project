@@ -32,9 +32,9 @@ public class NPC_Merchant extends Entity{
     }
 
     public void setDialogue(){
-        dialogues[0][0] ="Hello, My Nigga! Want Trade Drugs?";
-        dialogues[1][0] = "Come Again Nigger";
-        dialogues[2][0] = "You're Broke, Nigger";
+        dialogues[0][0] ="Hello, Traveler! Want to trade for supplies?";
+        dialogues[1][0] = "Come Again!";
+        dialogues[2][0] = "You have insufficient funds/";
         dialogues[3][0] = "Inventory is Full";
         dialogues[4][0] = "You Can't Sell an Equipped Item";
     }

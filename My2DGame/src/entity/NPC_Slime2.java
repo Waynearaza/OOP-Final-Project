@@ -46,9 +46,9 @@ public class NPC_Slime2 extends Entity {
     }
 
     public void setDialogue() {
-        dialogues[0][0] = "The hell you lookin' at";
-        dialogues[0][1] = "Let me tell you something";
-        dialogues[0][2] = "I hate jews";
+        dialogues[0][0] = "Traveler, you need to help us.";
+        dialogues[0][1] = "Our village has been invaded by the possessed slimes.";
+        dialogues[0][2] = "Be careful now, you're gonna need it.";
     }
 
     // Interaction method called by Player when pressing Enter

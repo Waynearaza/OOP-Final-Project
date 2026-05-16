@@ -29,9 +29,9 @@ public class NPC_Slime extends Entity {
     }
 
     public void setDialogue() {
-        dialogues[0][0] = "Heil Hitler";
-        dialogues[0][1] = "9/11!";
-        dialogues[0][2] = "KKK";
+        dialogues[0][0] = "Hello, Traveler!";
+        dialogues[0][1] = "If you need supplies, you can go inside the house to buy.";
+        dialogues[0][3] = "You just need money, of course.";
     }
 
     @Override
